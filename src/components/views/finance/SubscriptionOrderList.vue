@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     ...mapMutations(['addbreadCrumbsList']),
+    // 表格双击事件
     handleDbclickTable(){
       this.clickTypeAsync.update()
     },
