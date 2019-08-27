@@ -1,0 +1,16 @@
+export default {
+    querycarrierbaseSearch: _ => require('@/domain/tableconfig/basicdata/CarrierBase.js').default,
+    queryentrustorderSearch: _ => require('@/domain/tableconfig/commerce/EntrustOrder.js').default,
+    getCreditCompanyNameData: _ => require('@/domain/tableconfig/basicdata/CompanyInfo.js').default,
+    getCityList: _ => require('@/domain/tableconfig/other/CityList.js').default,
+    getTimeLimitData: _ => require('@/domain/tableconfig/basicdata/TransportTime.js').default,
+    getCustomerContact: _ => require('@/domain/tableconfig/basicdata/CustomerContact.js').default,
+    getDispatchLineData: _ => require('@/domain/tableconfig/basicdata/ShippingRoute.js').default,
+    getAreaData: _ => require('@/domain/tableconfig/basicdata/DeliveryArea.js').default,
+    getCreditCompanyNameData: _ => require('@/domain/tableconfig/basicdata/CompanyInfo.js').default,
+    queryclientSearch: _ => require('@/domain/tableconfig/business/Client.js').default,
+    getCustomerList: _ => require('@/domain/tableconfig/basicdata/Customer.js').default,
+    querysupplierbaseSearch: _ => require('@/domain/tableconfig/basicdata/SupplierBase.js').default,
+    getEmployeeInfo: _ => require('@/domain/tableconfig/basicdata/EmployeeInfo.js').default,
+    getCarModelList: _ => require('@/domain/tableconfig/basicdata/CarType.js').default,
+}

@@ -1,0 +1,904 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				box-sizing: border-box;
+				cursor: pointer;
+			}
+			
+			html {
+				-ms-text-size-adjust: 100%;
+				-webkit-text-size-adjust: 100%;
+				-webkit-tap-highlight-color: transparent;
+			}
+			
+			::-webkit-scrollbar {
+				display: none;
+			}
+			
+			.deptbox {
+				display: flex;
+				background-color: #409EFF;
+			}
+			
+			.box{
+				flex: 1;
+				height: 60px;
+				line-height: 60px;
+				font-size: 18px;
+				text-align: center;
+				color: white;
+			}
+			
+			.img-icon{
+				vertical-align: sub;
+				margin-right: 12px;
+			}
+			.content{
+				position: relative;
+				width: 100%;
+				margin-top: -60px;
+				padding-top: 60px;
+				height: 100vh;
+				/* height: calc(100vh - 60px); */
+				overflow: hidden;
+			}
+			.line{
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 0px;
+				height: 100%;
+				color: #A9A9A9;
+				z-index: 12;
+				border-left: 1px solid #BFBFBF;
+			}
+			
+			#canvasContent {
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="deptbox">
+			<div class="box" style="flex: 2;">
+				<img src="icon/nav_ye.png" class="img-icon" />业务部
+			</div>
+			<div class="box">
+				<img src="icon/nav_control.png" class="img-icon" />风控部
+			</div>
+			<div class="box">
+				<img src="icon/nav_business.png" class="img-icon" />商务部
+			</div>
+			<div class="box" style="flex: 2;">
+				<img src="icon/nav_finance.png" class="img-icon" />财务部
+			</div>
+			<div class="box">
+				<img src="icon/nav_xiang.png" class="img-icon" />香港仓储
+			</div>
+			<div class="box">
+				<img src="icon/nav_customs.png" class="img-icon" />关务部
+			</div>
+			<div class="box">
+				<img src="icon/nav_shen.png" class="img-icon" />深圳仓储
+			</div>
+		</div>
+		<div class="content">
+			<div class="line" style="left: calc(100%/4.5);"></div>
+			<div class="line" style="left: calc(100%/9*3);"></div>
+			<div class="line" style="left: calc(100%/9*4);"></div>
+			<div class="line" style="left: calc(100%/9*6);"></div>
+			<div class="line" style="left: calc(100%/9*7);"></div>
+			<div class="line" style="left: calc(100%/9*8);"></div>
+			<!-- 创建图容器 -->
+			<div id="canvasContent"></div>
+		</div>
+		<!-- 引入 G6 文件 -->
+		<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-2.0.5/build/g6.js"></script>
+		<script type="text/javascript">
+			// 长宽
+			var w = function() {
+				return window.innerWidth / 9 * 0.6
+			};
+
+			var h = function() {
+				return window.innerHeight / 9 * 0.6
+			};
+
+			// 坐标
+			function getX(i) {
+				var base = window.innerWidth / 9
+				return (i - 0.5) * base
+			}
+
+			function getY(i) {
+				var base = window.innerHeight / 9
+				return (i - 0.5) * base
+			}
+
+			// 初始化
+			var graph = new G6.Graph({
+				container: 'canvasContent',
+				defaultIntersectBox: 'rect'
+
+			});
+			// 全局属性
+			G6.Global.labelStyle = {
+				fill: "#ff5942",
+				textAlign: "center",
+				textBaseline: "middle",
+				fontSize: 14
+			};
+			// 圆角矩形
+			G6.registerNode('fillet', {
+				draw(item) {
+					const group = item.getGraphicGroup();
+					const model = item.getModel();
+					var bgcolor = '#e6edf8'
+					var textcolor = '#00205c'
+					if (model.type == '2') {
+						bgcolor = '#46D4ba'
+						textcolor = 'white'
+					}
+					if (model.type == '3') {
+						bgcolor = '#409EFF'
+						textcolor = 'white'
+					}
+					if (model.color != null) {
+						bgcolor = model.color
+					}
+					group.addShape('rect', {
+						attrs: {
+							x: 0 - w() / 2,
+							y: 0 - h() / 2,
+							width: w(),
+							height: h(),
+							radius: 4,
+							fill: bgcolor
+						}
+					});
+					group.addShape('text', {
+						attrs: {
+							x: 0,
+							y: 0,
+							textBaseline: 'middle',
+							textAlign: 'center',
+							fill: textcolor,
+							text: model.label,
+							fontSize: 16
+						}
+					});
+					return group.addShape('rect', {
+						attrs: {
+							x: 0 - w() / 2 - 6,
+							y: 0 - h() / 2 - 6,
+							width: w() + 12,
+							height: h() + 12,
+							radius: 4,
+						}
+					});
+				}
+			});
+
+			// 椭圆矩形
+			G6.registerNode('ellipse', {
+				draw(item) {
+					const group = item.getGraphicGroup();
+					const model = item.getModel();
+					var bgcolor = '#e6edf8'
+					var textcolor = '#00205c'
+					if (model.type == '2') {
+						bgcolor = '#46D4ba'
+						textcolor = 'white'
+					}
+					if (model.type == '3') {
+						bgcolor = '#409EFF'
+						textcolor = 'white'
+					}
+					group.addShape('rect', {
+						attrs: {
+							x: 0 - w() / 2,
+							y: 0 - h() / 2,
+							width: w(),
+							height: h(),
+							radius: h() / 2,
+							fill: bgcolor
+						}
+					});
+					group.addShape('text', {
+						attrs: {
+							x: 0,
+							y: 0,
+							textBaseline: 'middle',
+							textAlign: 'center',
+							fill: textcolor,
+							text: model.label,
+							fontSize: 16
+						}
+					});
+					return group.addShape('rect', {
+						attrs: {
+							x: 0 - w() / 2 - 6,
+							y: 0 - h() / 2 - 6,
+							width: w() + 12,
+							height: h() + 12,
+							radius: h() / 2
+						}
+					});
+				}
+			});
+
+			// 箭头边
+			G6.registerEdge('customEdge', {
+				// 绘制
+				draw(item) {
+					const group = item.getGraphicGroup();
+					const path = this.getPath(item);
+					var color = '#c8d6f2';
+					if (item.model.type == 2) {
+						color = '#409eff';
+					}
+					return group.addShape('path', {
+						attrs: {
+							path,
+							stroke: color,
+							lineWidth: 2,
+							label: 'ss'
+						}
+					});
+				},
+				getPath(item) {
+					const points = item.getPoints();
+					return G6.Util.pointsToPolygon(points);
+				},
+				// 终止箭头
+				endArrow: {
+					path(item) {
+						const keyShape = item.getKeyShape();
+						let lineWidth = keyShape.attr('lineWidth');
+						lineWidth = lineWidth > 3 ? lineWidth : 3;
+						const width = lineWidth * 10 / 3;
+						const halfHeight = lineWidth * 4 / 3;
+						const radius = lineWidth * 4;
+						return [
+							['M', -width, halfHeight],
+							['L', 0, 0],
+							['L', -width, -halfHeight],
+							['A', radius, radius, 0, 0, 1, -width, halfHeight],
+							['Z']
+						];
+					},
+					style(item) {
+						const keyShape = item.getKeyShape();
+						const {
+							strokeOpacity,
+							stroke
+						} = keyShape.attr();
+						return {
+							fill: stroke
+						};
+					}
+				}
+			});
+
+			// 节点
+			graph.node({
+				shape: 'fillet'
+			});
+
+			// 边
+			graph.edge({
+				// shape: 'customEdge',
+				// label: 'ss',
+				endArrow: true,
+				color: '#cbd6f2',
+				size: 3
+			});
+
+			// 鼠标点击
+			graph.on('node:click', ev => {
+				alert(ev.item.model.label)
+			});
+
+			// 执行
+			function down() {
+
+				// 数据
+				const data = {
+					nodes: [{
+						id: 'node11',
+						shape: 'ellipse',
+						type: '3',
+						x: getX(1),
+						y: getY(1),
+						label: '开始'
+					}, {
+						id: 'node12',
+						type: '3',
+						x: getX(1),
+						y: getY(2),
+						label: '商机管理'
+					}, {
+						id: 'node13',
+						type: '3',
+						x: getX(1),
+						y: getY(3),
+						label: '委托方'
+					}, {
+						id: 'node14',
+						type: '1',
+						x: getX(1),
+						y: getY(4),
+						label: '协议管理'
+					}, {
+						id: 'node15',
+						type: '1',
+						x: getX(1),
+						y: getY(5),
+						label: '供应商'
+					}, {
+						id: 'node16',
+						type: '1',
+						x: getX(1),
+						y: getY(5.66),
+						label: '客户'
+					}, {
+						id: 'node17',
+						type: '1',
+						x: getX(1),
+						y: getY(6.33),
+						label: '承运商'
+					}, {
+						id: 'node21', //第二列
+						type: '2',
+						x: getX(2),
+						y: getY(3),
+						label: '委托方\n评估'
+					}, {
+						id: 'node31', //第三列
+						type: '1',
+						x: getX(3),
+						y: getY(1),
+						label: '担保管理'
+					}, {
+						id: 'node32',
+						type: '1',
+						x: getX(3),
+						y: getY(1.66),
+						label: '保证金(押\n金)管理'
+					}, {
+						id: 'node33',
+						type: '1',
+						x: getX(3),
+						y: getY(2.33),
+						label: '无担保\n授信'
+					}, {
+						id: 'node34',
+						type: '1',
+						x: getX(3),
+						y: getY(3),
+						label: '抵(质)押物\n管理'
+					}, {
+						id: 'node35',
+						type: '1',
+						x: getX(3),
+						y: getY(4),
+						label: '融资授信'
+					}, { // 第四列
+						id: 'node41',
+						type: '1',
+						x: getX(4),
+						y: getY(1),
+						label: '委托单'
+					}, {
+						id: 'node42',
+						type: '1',
+						x: getX(4),
+						y: getY(2),
+						label: '采购订单'
+
+					}, {
+						id: 'node43',
+						type: '1',
+						x: getX(4),
+						y: getY(2.66),
+						label: '卖方\n交发货'
+					}, {
+						id: 'node44',
+						type: '1',
+						x: getX(4),
+						y: getY(3.33),
+						label: '买方\n接提货'
+					}, { // 第五列
+						id: 'node51',
+						type: '1',
+						x: getX(5),
+						y: getY(1),
+						label: '委托\n付款单'
+					}, {
+						id: 'node52',
+						type: '1',
+						x: getX(5),
+						y: getY(1.66),
+						label: '其他\n计费单'
+					}, {
+						id: 'node53',
+						type: '1',
+						x: getX(5),
+						y: getY(4),
+						label: '应收\n结算单'
+					}, {
+						id: 'node54',
+						type: '1',
+						x: getX(5),
+						y: getY(5),
+						label: '收款单'
+					}, {
+						id: 'node55',
+						type: '1',
+						x: getX(5),
+						y: getY(6),
+						label: '认款单'
+					}, {
+						id: 'node56',
+						type: '1',
+						x: getX(5),
+						y: getY(7),
+						label: '认款后逾\n期利息表'
+					}, {
+						id: 'node57',
+						type: '1',
+						x: getX(5),
+						y: getY(8),
+						label: '账务\n核销单'
+					}, { // 第六列
+						id: 'node61',
+						type: '1',
+						x: getX(6),
+						y: getY(1),
+						label: '付款\n申请单'
+					}, {
+						id: 'node62',
+						type: '1',
+						x: getX(6),
+						y: getY(2),
+						label: '付款单'
+					}, {
+						id: 'node63',
+						type: '1',
+						x: getX(6),
+						y: getY(3),
+						label: '应付\n结算单'
+					}, {
+						id: 'node64',
+						type: '1',
+						x: getX(6),
+						y: getY(6),
+						label: '发票'
+					}, {
+						id: 'node65',
+						type: '1',
+						x: getX(6),
+						y: getY(7),
+						label: '凭证'
+					}, { //第七列
+						id: 'node71',
+						type: '1',
+						x: getX(7),
+						y: getY(1),
+						label: '香港\n收货登记'
+					}, {
+						id: 'node72',
+						type: '1',
+						x: getX(7),
+						y: getY(2),
+						label: '香港\n收货单'
+					}, {
+						id: 'node73',
+						type: '1',
+						x: getX(7),
+						y: getY(3),
+						label: '香港\n入库单'
+					}, {
+						id: 'node74',
+						type: '1',
+						x: getX(7),
+						y: getY(4),
+						label: '上货计划'
+					}, {
+						id: 'node75',
+						type: '1',
+						x: getX(7),
+						y: getY(5),
+						label: '香港\n出库单'
+					}, { // 第八列
+						id: 'node81',
+						type: '1',
+						x: getX(8),
+						y: getY(1),
+						label: '报关计划'
+					}, {
+						id: 'node82',
+						type: '1',
+						x: getX(8),
+						y: getY(2),
+						label: '待报关\n列表'
+					}, {
+						id: 'node83',
+						type: '1',
+						x: getX(8),
+						y: getY(3),
+						label: '报关单'
+					}, { // 第九列
+						id: 'node91',
+						type: '1',
+						x: getX(9),
+						y: getY(1),
+						label: '深圳\n收货单'
+					}, {
+						id: 'node92',
+						type: '1',
+						x: getX(9),
+						y: getY(2),
+						label: '深圳\n入库单'
+					}, {
+						id: 'node93',
+						type: '1',
+						x: getX(9),
+						y: getY(3),
+						label: '发货\n通知单'
+					}, {
+						id: 'node94',
+						type: '1',
+						x: getX(9),
+						y: getY(4),
+						label: '配送车次'
+					}, {
+						id: 'node95',
+						type: '1',
+						x: getX(9),
+						y: getY(4.66),
+						label: '集中\n调度单'
+					}, {
+						id: 'node96',
+						type: '1',
+						x: getX(9),
+						y: getY(5.33),
+						label: '调度单'
+					}, {
+						id: 'node97',
+						type: '1',
+						x: getX(9),
+						y: getY(6),
+						label: '发运单'
+					}, {
+						id: 'node98',
+						type: '1',
+						x: getX(9),
+						y: getY(7),
+						label: '深圳\n出库单'
+					}, {
+						id: 'node99',
+						shape: 'ellipse',
+						type: '1',
+						x: getX(9),
+						y: getY(8),
+						label: '结束'
+					}],
+					edges: [{
+						id: 'edge1',
+						type: '2',
+						color: '#409eff',
+						source: 'node11',
+						target: 'node12',
+					}, {
+						id: 'edge2',
+						type: '2',
+						color: '#409eff',
+						source: 'node12',
+						target: 'node13'
+					}, {
+						id: 'edge3',
+						type: '1',
+						color: '#409eff',
+						source: 'node13',
+						target: 'node21',
+						label: {
+							text: '垫资'
+						},
+					}, {
+						id: 'edge4',
+						type: '1',
+						source: 'node21',
+						target: 'node35',
+						controlPoints: [{
+							x: getX(2.6),
+							y: getY(3)
+						}, {
+							x: getX(2.6),
+							y: getY(4)
+						}]
+					}, {
+						id: 'edge5',
+						type: '1',
+						source: 'node34',
+						target: 'node35'
+					}, {
+						id: 'edge6',
+						type: '1',
+						source: 'node13',
+						target: 'node14'
+					}, {
+						id: 'edge7',
+						type: '1',
+						source: 'node14',
+						target: 'node15'
+					}, {
+						id: 'edge8',
+						type: '1',
+						source: 'node16',
+						target: 'node41',
+						controlPoints: [{
+							x: getX(3.4),
+							y: getY(5.66)
+						}, {
+							x: getX(3.4),
+							y: getY(1)
+						}]
+					}, {
+						id: 'edge9',
+						type: '1',
+						source: 'node41',
+						target: 'node51',
+						label: {
+							text: '垫资'
+						},
+					}, {
+						id: 'edge10',
+						type: '1',
+						source: 'node51',
+						target: 'node61'
+					}, {
+						id: 'edge11',
+						type: '1',
+						source: 'node61',
+						target: 'node62'
+					}, {
+						id: 'edge12',
+						type: '1',
+						source: 'node62',
+						target: 'node63'
+					}, {
+						id: 'edge13',
+						type: '1',
+						source: 'node41',
+						target: 'node42'
+					}, {
+						id: 'edge14',
+						type: '1',
+						source: 'node43',
+						target: 'node71',
+						controlPoints: [{
+							x: getX(5.5),
+							y: getY(2.66)
+						}, {
+							x: getX(5.5),
+							y: getY(3.5)
+						}, {
+							x: getX(6.6),
+							y: getY(3.5)
+						}, {
+							x: getX(6.6),
+							y: getY(1)
+						}]
+					}, {
+						id: 'edge15',
+						type: '1',
+						source: 'node71',
+						target: 'node72'
+					}, {
+						id: 'edge16',
+						type: '1',
+						source: 'node72',
+						target: 'node73'
+					}, {
+						id: 'edge17',
+						type: '1',
+						source: 'node73',
+						target: 'node74'
+					}, {
+						id: 'edge18',
+						type: '1',
+						source: 'node74',
+						target: 'node81',
+						controlPoints: [{
+							x: getX(7.6),
+							y: getY(4)
+						}, {
+							x: getX(7.6),
+							y: getY(1)
+						}]
+					}, {
+						id: 'edge19',
+						type: '1',
+						source: 'node81',
+						target: 'node82'
+					}, {
+						id: 'edge20',
+						type: '1',
+						source: 'node82',
+						target: 'node83'
+					}, {
+						id: 'edge21',
+						type: '1',
+						source: 'node74',
+						target: 'node75'
+					}, {
+						id: 'edge23',
+						type: '1',
+						source: 'node75',
+						target: 'node91',
+						controlPoints: [{
+							x: getX(8.4),
+							y: getY(5)
+						}, {
+							x: getX(8.4),
+							y: getY(1)
+						}]
+					}, {
+						id: 'edge24',
+						type: '1',
+						source: 'node91',
+						target: 'node92'
+					}, {
+						id: 'edge25',
+						type: '1',
+						source: 'node92',
+						target: 'node53',
+						controlPoints: [{
+							x: getX(8.5),
+							y: getY(2)
+						}, {
+							x: getX(8.5),
+							y: getY(5.5)
+						}, {
+							x: getX(5.4),
+							y: getY(5.5)
+						}, {
+							x: getX(5.4),
+							y: getY(4)
+						}]
+					}, {
+						id: 'edge26',
+						type: '1',
+						source: 'node53',
+						target: 'node54'
+					}, {
+						id: 'edge27',
+						type: '1',
+						source: 'node54',
+						target: 'node55'
+					}, {
+						id: 'edge28',
+						type: '1',
+						source: 'node55',
+						target: 'node56'
+					}, {
+						id: 'edge29',
+						type: '1',
+						source: 'node56',
+						target: 'node53',
+						controlPoints: [{
+							x: getX(4.6),
+							y: getY(7)
+						}, {
+							x: getX(4.6),
+							y: getY(4)
+						}]
+					}, {
+						id: 'edge30',
+						type: '1',
+						source: 'node56',
+						target: 'node57'
+					}, {
+						id: 'edge31',
+						type: '1',
+						source: 'node57',
+						target: 'node64',
+						controlPoints: [{
+							x: getX(5.5),
+							y: getY(8)
+						}, {
+							x: getX(5.5),
+							y: getY(6)
+						}]
+					}, {
+						id: 'edge32',
+						type: '1',
+						source: 'node64',
+						target: 'node65'
+					}, {
+						id: 'edge33',
+						type: '1',
+						source: 'node92',
+						target: 'node93'
+					}, {
+						id: 'edge34',
+						type: '1',
+						source: 'node44',
+						target: 'node93',
+						controlPoints: [{
+							x: getX(4),
+							y: getY(8.4)
+						}, {
+							x: getX(8.6),
+							y: getY(8.4)
+						}, {
+							x: getX(8.6),
+							y: getY(3)
+						}]
+					}, {
+						id: 'edge35',
+						type: '1',
+						source: 'node93',
+						target: 'node94'
+					}, {
+						id: 'edge36',
+						type: '1',
+						source: 'node97',
+						target: 'node98'
+					}, {
+						id: 'edge37',
+						type: '1',
+						source: 'node98',
+						target: 'node99'
+					}]
+				};
+
+				graph.read(data);
+
+			}
+
+			down();
+
+			// 重绘
+			window.onresize = function() {
+				down();
+			}
+
+			var vnode, vedge, flog;
+
+			setInterval(function() {
+				if (!flog) {
+					return
+				}
+				if (flog == 1) {
+					graph.update(vnode, {
+						color: '#46D4ba'
+					});
+					flog = 2
+				} else {
+					graph.update(vnode, {
+						color: '#409EFF'
+					});
+					flog = 1
+				}
+			}, 500);
+
+			// 加入执行到node12这一步，这里从后台拿到数据
+			vnode = 'node21'
+			vedge = 'edge3'
+			flog = 1
+		</script>
+	</body>
+
+</html>

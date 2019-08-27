@@ -1,0 +1,21 @@
+export default [
+  { prop: '', name: '委托单号' },
+  { prop: '', name: '条码' },
+  { prop: '', name: 'SKUID(商品代码)' },
+  { prop: '', name: '商品名称' },
+  { prop: '', name: '规格型号' },
+  { prop: '', name: '单位' },
+  { prop: '', name: '货主' },
+  { prop: '', name: '收货地点' },
+  { prop: '', name: '应入库数量' },
+  { prop: '', name: '入库仓库' },
+  { prop: '', name: '品质' },
+  { prop: '', name: '入库日期' },
+  { prop: '', name: '实际入库数量' },
+  { prop: '', name: '批次' },
+  { prop: '', name: '现有库存' },
+  { prop: '', name: '箱规' },
+  { prop: '', name: '体积' },
+  { prop: '', name: '净重' },
+  { prop: '', name: '毛重' }
+]

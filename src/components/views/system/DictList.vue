@@ -1,0 +1,320 @@
+<template>
+  <div class="table">
+    <breadcrumb-navigation />
+    <div class="container pd-10">
+      <!-- 查询栏 -->
+      <div class="handle-box">
+        <el-form
+          :inline="true"
+          :model="queryDict"
+          ref="queryDict"
+        >
+          <!-- <el-form-item label="字典编码" prop="remark">
+            <el-input v-model="queryDict.item" style="width: 150px"></el-input>
+          </el-form-item>-->
+          <el-form-item
+            label="字典项名称"
+            prop="remark"
+          >
+            <el-input
+              v-model="queryDict.remark"
+              style="width: 150px"
+            ></el-input>
+          </el-form-item>
+          <el-button
+            type="primary"
+            @click="queryPage"
+          >查询</el-button>
+          <!-- <el-button type="primary" @click="goCreate">新增</el-button>
+          <el-button type="primary" @click="goUpdate">修改</el-button>
+          <el-button type="danger" @click="goDelete">删除</el-button>
+          <el-button type="danger" @click="resetForm('queryDict')">重置</el-button>-->
+        </el-form>
+      </div>
+      <div class="tables">
+        <!-- 表格 -->
+        <el-table
+          :data="tableData"
+          border
+          :highlight-current-row="true"
+          @row-click="clickRow"
+          ref="moviesTable"
+        >
+          <el-table-column
+            prop="item"
+            label="字典项编码"
+            width="200px"
+          ></el-table-column>
+          <el-table-column
+            prop="remark"
+            label="字典项名称"
+            width="200px"
+          ></el-table-column>
+          <el-table-column label="查看字典详情">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="查看字典详情"
+                placement="right"
+              >
+                <i
+                  @click="openRoleName(scope.$index, scope.row)"
+                  class="el-icon-view"
+                ></i>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <el-pagination
+            ref="pager"
+            @size-change="handleSizeChange"
+            background
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size.sync="queryDict.pageSize"
+            :current-page.sync="queryDict.pageIndex"
+            layout="sizes, total, prev, pager, next"
+            :total="queryDict.total"
+            @current-change="goPage"
+          ></el-pagination>
+        </div>
+        <!-- 表格 -->
+        <label
+          v-if="dictlist.length>0"
+          class="titilelable"
+        >{{rtlab}}:</label>
+        <el-table
+          v-if="dictlist.length>0"
+          :data="dictlist"
+          class="rtable"
+        >
+          <el-table-column
+            prop="itemKey"
+            label="键"
+          ></el-table-column>
+          <el-table-column
+            prop="itemValue"
+            label="值"
+          ></el-table-column>
+        </el-table>
+      </div>
+    </div>
+
+    <dict-form
+      :show="popForm"
+      @closeform="closeForm"
+      @newTableData="getTableData"
+    ></dict-form>
+    <!-- 删除提示框 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="delVisible"
+      width="300px"
+      center
+    >
+      <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="deleteRow"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import api from "@/assets/js/appHelper.js";
+import DictForm from "./DictForm";
+
+export default {
+  components: {
+    DictForm
+  },
+  data () {
+    return {
+      // 查询条件
+      queryDict: {
+        pageIndex: 1,
+        pageSize: 10,
+        total: 0
+      },
+      rtlab: "",
+      // 表格数据
+      tableData: [],
+      dictlist: [],
+      // 确认删除弹窗
+      delVisible: false,
+      // 弹窗是否关闭
+      popForm: false
+    };
+  },
+  computed: {},
+  watch: {},
+  methods: {
+    openRoleName (index, row) {
+      var _this = this;
+      this.rtlab = row.remark;
+      api.getEnum(row.item).then(result => {
+        _this.dictlist = result.data;
+      });
+    },
+    // 查询数据
+    queryPage () {
+      api.querySearch("/dict", this.queryDict).then(result => {
+        this.tableData = result.data.list;
+        this.queryDict.total = result.data.count;
+        this.$store.state.other.curRowData = {}; // 清空当前行数据
+      });
+    },
+    // 翻页处理
+    goPage (val) {
+      this.queryDict.pageIndex = val;
+      let vmTblData = this.tableData; //把第一页的数据重新赋值进行修改
+      api.querySearch("/dict", this.queryDict).then(result => {
+        // // 替换数据
+        vmTblData.splice(0, vmTblData.length, ...result.data.list); //用result.data.list来代替vmTblData
+      });
+    },
+    // 改变每页行数
+    handleSizeChange (val) {
+      this.queryDict.pageSize = val;
+      this.queryPage();
+    },
+    // 新增
+    goCreate () {
+      this.$store.commit("btnType", "create"); //判断是否新增修改删除
+      this.formEvents.$emit("openform"); // 子组件向父组件传参=>打开弹窗
+    },
+    // 新增
+    getTableData (newData) {
+      if (newData) {
+        //如果有新编号，就再查询一遍
+        this.queryPage();
+      }
+    },
+    // 修改
+    goUpdate () {
+      if (this.$store.state.other.curRowData) {
+        this.$store.commit("btnType", "update"); //判断是否新增修改删除
+        this.formEvents.$emit("openform"); // 子组件向父组件传参=>打开弹窗
+      } else {
+        this.$message.error("请选择要修改的数据");
+      }
+    },
+    // 删除
+    goDelete () {
+      if (this.$store.state.other.curRowData) {
+        this.delVisible = true;
+      } else {
+        this.$message.error("请选择要删除的数据");
+      }
+    },
+    // 确定删除
+    deleteRow () {
+      // 删除
+      let self = this;
+      console.log(this.$store.state.other.curRowData);
+      api.deleteData("/dict", this.$store.state.other.curRowData).then(function (res) {
+        if (res.status == 200) {
+          // 提交成功后...
+          self.$alert("删除成功", "删除", {
+            confirmButtonText: "确定",
+            callback: action => {
+              self.queryPage(); //数据刷新
+              self.delVisible = false;
+            }
+          });
+        }
+      });
+    },
+    // 选中当前行
+    clickRow (row) {
+      // 获取修改内容
+      let self = this;
+      api.searchOneData("/dict", row.item).then(result => {
+        self.$store.commit("curRowData", row);
+      });
+      this.$refs.moviesTable.toggleRowSelection(row);
+    },
+    // 关闭弹窗
+    closeForm () {
+      this.popForm = false;
+    }
+  },
+  provide () {
+    return {
+      formEvents: this.formEvents
+    };
+  },
+  created () {
+    // 加载列表数据
+    this.queryPage();
+  }
+};
+</script>
+
+<style scoped>
+.handle-select {
+  width: 120px;
+}
+
+.handle-input {
+  width: 300px;
+  display: inline-block;
+}
+
+.del-dialog-cnt {
+  font-size: 16px;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+.tables {
+  width: 100%;
+  min-height: 600px;
+  position: relative;
+}
+.el-table {
+  width: 50%;
+}
+.pagination {
+  width: 50%;
+}
+.rtable {
+  position: absolute;
+  left: 55%;
+  top: 50px;
+  width: 40%;
+  bottom: 0;
+  overflow: auto;
+}
+.el-table .warning-row {
+  background: oldlace;
+}
+.titilelable {
+  position: absolute;
+  left: 55%;
+  top: 0;
+  height: 50px;
+  line-height: 50px;
+  color: gray;
+  font-size: 18px;
+}
+</style>

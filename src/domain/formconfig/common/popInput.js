@@ -1,0 +1,19 @@
+export default {
+    city:{
+        api:"/areainfo/city",
+        table:[
+            {
+                text:"编码",
+                key:""
+            },
+            {
+                text:"名称",
+                key:""
+            },
+            {
+                text:"所属省份",
+                key:""
+            },
+        ]
+    }
+}

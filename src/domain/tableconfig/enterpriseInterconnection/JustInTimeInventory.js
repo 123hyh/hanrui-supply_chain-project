@@ -1,0 +1,22 @@
+export default [
+  { prop: '', name: '委托订单编码' },
+  { prop: '', name: '商品编码' },
+  { prop: '', name: '条码' },
+  { prop: '', name: 'SKUID(商品代码)' },
+  { prop: '', name: '商品名称' },
+  { prop: '', name: '规格型号' },
+  { prop: '', name: '单位' },
+  { prop: '', name: '仓库' },
+  { prop: '', name: '货主' },
+  { prop: '', name: '品质' },
+  { prop: '', name: '入库日期' },
+  { prop: '', name: '库存日期' },
+  { prop: '', name: '总库存' },
+  { prop: '', name: '批次编码' },
+  { prop: '', name: '批次' },
+  { prop: '', name: '在仓天数' },
+  { prop: '', name: '箱规' },
+  { prop: '', name: '体积' },
+  { prop: '', name: '净重' },
+  { prop: '', name: '毛重' }
+]
