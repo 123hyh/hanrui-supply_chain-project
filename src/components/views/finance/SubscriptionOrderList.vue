@@ -15,6 +15,7 @@
         :tableData='tableData'
         :tableDataKey='tableconfig'
         :activeRow.sync='clickRow'
+        @handleDbclickTable='handleDbclickTable'
       ></table-component>
       <!-- 分页 -->
       <div class="pagination">
@@ -85,6 +86,9 @@ export default {
   },
   methods: {
     ...mapMutations(['addbreadCrumbsList']),
+    handleDbclickTable(){
+      this.clickTypeAsync.update()
+    },
     // 跳转到编辑页
     goEditPage (type) {
       if (type === 'update' && isNull(this.clickRow)) {
