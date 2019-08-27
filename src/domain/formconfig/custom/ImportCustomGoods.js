@@ -198,19 +198,22 @@ export default [
     type: 'string',
     key: 'transportFee',
     name: '运费',
-    prop: 'transportFee'
+    prop: 'transportFee',
+    disabled: true,
   },
   {
     type: 'string',
     key: 'insuranceFee',
     name: '保费',
-    prop: 'insuranceFee'
+    prop: 'insuranceFee',
+    disabled: true,
   },
   {
     type: 'string',
     key: 'otherFee',
     name: '杂费',
     prop: 'otherFee',
+    disabled: true,
     rules: [
       {
         required: true,

@@ -14,16 +14,25 @@ export default {
       data
     })
   },
-  // 查询汇率  分页
+  
+  // 查询银行汇率
   getExchangerate(data) {
     return this._getData({
-      url: `/exchangerate/search/settting`,
+      url: `/exchangerate/search/settting/`,
       method: 'POST',
       data:{...data,source:'system'}
     })
   },
 
-  // 今日汇率
+  // 查询指定日期银行汇率
+  gettimeExchangerate(time) {
+      return this._getData({
+        url: `exchangerate/${time}`,
+        method: 'GET'
+      })
+  },
+
+  // 今日银行汇率
   getexchangerate() {
     return this._getData({
       url: `exchangerate/setting/today`,
@@ -32,13 +41,13 @@ export default {
   },
 
   // 获取所有汇率
-  getexchangerateall() {
-    return this._getData({
-      url: `/exchangerate/search/settting`,
-      method: 'POST',
-      data: {source:'system'}
-    })
-  },
+  // getexchangerateall() {
+  //   return this._getData({
+  //     url: `/exchangerate/search/settting`,
+  //     method: 'POST',
+  //     data: {source:'custom'}
+  //   })
+  // },
   // 获取海关汇率
   getCustomsExchangeData(data) {
     return this._getData({

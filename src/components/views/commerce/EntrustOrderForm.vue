@@ -2455,24 +2455,40 @@ export default {
         return "1.0000";
       }
       try {
-        const {
-          data: { list }
-        } = await api.getexchangerateall();
+        const vdata = await api.gettimeExchangerate(data);
+        var list = vdata.data
         for (let i = 0; i < list.length; i++) {
-          if (data == list[i].date.slice(0, 10)) {
-            var exchangerate = "";
-            list[i].rate.forEach(b => {
+          var exchangerate = "";
+          list.forEach(b => {
               if (currency == b.currency) {
                 exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
               }
             });
             return exchangerate;
-          }
         }
         this.$message.warning("请录入系统汇率");
       } catch (e) {
         console.log(e);
       }
+      // try {
+      //   const {
+      //     data: { list }
+      //   } = await api.getExchangerate({});
+      //   for (let i = 0; i < list.length; i++) {
+      //     if (data == list[i].date.slice(0, 10)) {
+      //       var exchangerate = "";
+      //       list[i].rate.forEach(b => {
+      //         if (currency == b.currency) {
+      //           exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+      //         }
+      //       });
+      //       return exchangerate;
+      //     }
+      //   }
+      //   this.$message.warning("请录入系统汇率");
+      // } catch (e) {
+      //   console.log(e);
+      // }
     }
   },
   async created() {
