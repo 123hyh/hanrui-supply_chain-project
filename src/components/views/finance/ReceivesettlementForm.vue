@@ -313,39 +313,12 @@ export default {
         );
         this.tableTwo.data.alllist = JSON.parse(JSON.stringify(list));
         this.tableTwo.data.count = count;
-        // 如果来源是报关计划，按照委托订单的协议方案的受托方计费项目来显示项目明细
-        let IS_BGJH = list.some(item => item.sourceBill.slice(0, 4) === 'BGJH');
-        IS_BGJH && this.handleFilterProject()
       };
       try {
         await Promise.all([getListTow(), getListOne()]);
         this.table.data = { ...this.table.data };
       } catch (e) {
         this.$message.error("查询失败");
-      }
-    },
-
-    // 过滤 计费项目 显示项目明细表格数据
-    async handleFilterProject () {
-      try {
-        const { data: { agreementSolutionCode, agreementCode } } = await api.searchOneentrustorderData(this.form.data.delegeteBillNo);
-        if (!(agreementSolutionCode && agreementCode)) return;
-
-        var params = { solutionNo: agreementSolutionCode, agreementNo: agreementCode, pageSize: Infinity }
-        const { data: { list, count } } = await api.getAgreementclinetPage(params);
-    
-       /*  const code = list.map(item=> item.chargeItemCode);
-        this.tableTwo.data.alllist = this.tableTwo.data.alllist.filter(item => {
-          if(item.sourceBill.slice(0, 4) === 'BGJH'){
-            if(code[0] === item.feeProject){
-              debugger
-            }
-          }else{
-            return item
-          }
-        }) */
-      } catch (error) {
-        console.log(error)
       }
     },
 
