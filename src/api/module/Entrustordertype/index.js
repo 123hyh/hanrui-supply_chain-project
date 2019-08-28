@@ -7,22 +7,15 @@ export default {
       data: this._handlePage(data)
     })
   },
-  // 委托单类型-新增
-  addentrustordertypeData(data) {
+  // 委托单类型-新增 || 修改
+  changeEntrustordertypeData({ data = {}, method = 'POST' } = {}) {
     return this._getData({
       url: '/entrustordertype/',
-      method: 'POST',
+      method,
       data
     })
   },
-  // 委托单类型-修改
-  editentrustordertypeData(data) {
-    return this._getData({
-      url: '/entrustordertype/',
-      method: 'PUT',
-      data
-    })
-  },
+
   // 委托单类型-删除
   deleteentrustordertypeData(codeNo) {
     return this._getData({

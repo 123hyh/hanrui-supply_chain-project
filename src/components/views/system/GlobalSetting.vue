@@ -713,13 +713,12 @@ export default {
     // 切换页卡
     handlerTabClick (tab, event) {
       this.curRowData = "";
-      let obj = {
+      this.tabpag = {
         setting: 1,
         trial: 2,
         exchangeRate: 3,
         customsExchange: 4
       }[tab.name]
-      this.tabpag = obj;
       this.goStartPage();
     },
     // 搜索
@@ -729,11 +728,8 @@ export default {
     },
     // 查询
     handleBtnClickpop () {
-      if (this.sectuor == 1) {
-        this.setRole();
-      } else {
-        this.setUser();
-      }
+      this.sectuor === 1 ? this.setRole() : this.setUser()
+
     },
     // 修改翻页条数
     handleChange (paper) {
@@ -775,7 +771,14 @@ export default {
     async getExchangerate () {
       try {
         const { data } = await api.getExchangerate({ ...this.ruleForm, source: 'system' });
-        this.tableData = data.list;
+        const list = (data.list || []).reduce((pre, cur, i) => {
+          const { date, rate = [] } = cur;
+          for (let item of rate) {
+            item.cenPrice = ((+item.cenPrice) / 100).toFixed(4)
+          }
+          return pre = [...pre, cur]
+        }, [])
+        this.tableData = list;
         this.ruleForm.total = data.count;
         this.curRowData = {};
       } catch (e) {
@@ -1280,7 +1283,6 @@ export default {
               )
             }
           })
-
         } else {
           this.formConfig3.validate(valid => {
             if (valid) {

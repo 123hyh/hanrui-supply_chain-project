@@ -19,11 +19,11 @@ export default [
     label: '规则名称',
   },
   {
-    prop: 'group',
+    prop: 'org',
     label: '组织',
   },
   {
-    prop: 'enable',
+    prop: 'enabled',
     label: '启用',
   },
   {

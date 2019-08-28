@@ -7,22 +7,15 @@ export default {
       data: this._handlePage(data)
     })
   },
-  // 凭证摘要-新增
-  addvouchersummaryData(data) {
+  // 凭证摘要-新增||修改
+  changeChersummaryData({ data = {}, method = 'POST' } = {}) {
     return this._getData({
       url: '/vouchersummary/',
-      method: 'POST',
+      method,
       data
     })
   },
-  // 凭证摘要-修改
-  editvouchersummaryData(data) {
-    return this._getData({
-      url: '/vouchersummary/',
-      method: 'PUT',
-      data
-    })
-  },
+
   // 凭证摘要-删除
   deletevouchersummaryData(codeNo) {
     return this._getData({

@@ -18,16 +18,16 @@ export default [
 	},
 	{
 		type: "string",
-		key: "group",
+		key: "org",
 		name: "组织",
-		prop: "group",
+		prop: "org",
         rules,
 	},
 	{
 		type: "checkbox",
-		key: "enable",
+		key: "enabled",
 		name: "启用",
-		prop: "enable"
+		prop: "enabled"
 	},
 	{
 		type: "string",

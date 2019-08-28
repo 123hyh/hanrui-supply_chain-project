@@ -8,21 +8,14 @@ export default {
     })
   },
   // 批次规则定义-新增
-  addbatchruleData(data) {
+  changeBatchruleData({ data = {}, method = 'POST' } = {}) {
     return this._getData({
       url: '/batchrule/',
-      method: 'POST',
+      method,
       data
     })
   },
-  // 批次规则定义-修改
-  editbatchruleData(data) {
-    return this._getData({
-      url: '/batchrule/',
-      method: 'PUT',
-      data
-    })
-  },
+ 
   // 批次规则定义-删除
   deletebatchruleData(codeNo) {
     return this._getData({
