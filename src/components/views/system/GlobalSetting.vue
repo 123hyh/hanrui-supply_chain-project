@@ -695,21 +695,26 @@ export default {
       return value == ondate ? "今日" : value;
     }
   },
+
   methods: {
+
     // 验证规则
     handlerFormVerify ({ formModel: { resetFields, validate } } = {}) {
       this.formConfig3.validate = validate;
       this.formConfig3.resetFields = resetFields
     },
+
     // 选中行
     clickRow (row) {
       this.curRowData = row;
       this.$refs.moviesTable.toggleRowSelection(row);
     },
+
     dblclickTableRow (row) {
       this.clickRow(row)
       this.handleBtnClick('setting');
     },
+
     // 切换页卡
     handlerTabClick (tab, event) {
       this.curRowData = "";
@@ -721,16 +726,18 @@ export default {
       }[tab.name]
       this.goStartPage();
     },
+
     // 搜索
     goStartPage () {
       this.ruleForm.pageIndex = 1;
       this.handleChange(this.ruleForm);
     },
+
     // 查询
     handleBtnClickpop () {
       this.sectuor === 1 ? this.setRole() : this.setUser()
-
     },
+
     // 修改翻页条数
     handleChange (paper) {
       this.ruleForm.pageIndex = paper.pageIndex;
@@ -745,7 +752,8 @@ export default {
         this.getExchangerate();
       }
     },
-    // 数据1
+
+    // 获取全局设置 列表
     async queryData () {
       try {
         const { data } = await api.getGlobalSetting(this.ruleForm);
@@ -756,7 +764,8 @@ export default {
         console.log(e);
       }
     },
-    // 数据2
+
+    // 获取审核设定列表
     async getVerifysetting () {
       try {
         const { data } = await api.getVerifysetting(this.ruleForm);
@@ -767,7 +776,8 @@ export default {
         console.log(e);
       }
     },
-    // 数据3
+
+    // 获取银行汇率 列表
     async getExchangerate () {
       try {
         const { data } = await api.getExchangerate({ ...this.ruleForm, source: 'system' });
@@ -782,11 +792,12 @@ export default {
         this.ruleForm.total = data.count;
         this.curRowData = {};
       } catch (e) {
+        this.$message.error('获取银行汇率数据失败，请重试！')
         console.log(e);
       }
     },
 
-    // 获取 海关汇率
+    // 获取 海关汇率 列表
     async getCustomsExchangeData (data = {}) {
       try {
         this.tableData = [];
@@ -795,9 +806,11 @@ export default {
           this.ruleForm.total = count,
           this.curRowData = {};
       } catch (error) {
+        this.$message.error('获取海关汇率数据失败，请重试！')
         console.log(error)
       }
     },
+
     // 击查询栏按钮事件
     handleBtnClick: (() => {
       var obj = null;
@@ -810,6 +823,7 @@ export default {
         }
       };
     })(),
+
     handleBtnClickObj () {
       return {
         search () {
@@ -864,6 +878,7 @@ export default {
         }
       };
     },
+
     formattercellValue (row, column, cellValue, index) {
       if (cellValue) {
         let vals = [];
@@ -881,11 +896,13 @@ export default {
         return "";
       }
     },
+
     //---------------------------------------级数窗体操作
     // 设置级数
     setPer (index) {
       this.onselepros = index + 1;
     },
+
     // 角色转数组
     ArrRoles (index) {
       if (!this.formEntity.verifyRole) {
@@ -906,6 +923,7 @@ export default {
       const roles = code.split(";");
       return roles;
     },
+
     ArrRolesname (index) {
       if (!this.formEntity.verifyRoleName) {
         return [];
@@ -925,6 +943,7 @@ export default {
       const roles = code.split(";");
       return roles;
     },
+
     // 人员转数组
     ArrUsers (index) {
       if (!this.formEntity.verifyUser) {
@@ -945,6 +964,7 @@ export default {
       const users = code.split(";");
       return users;
     },
+
     ArrUsersname (index) {
       if (!this.formEntity.verifyUserName) {
         return [];
@@ -964,13 +984,16 @@ export default {
       const users = code.split(";");
       return users;
     },
+
     // 转中文
     cRoles (index) {
       return this.ArrRolesname(index);
     },
+
     cUsers (index) {
       return this.ArrUsersname(index);
     },
+
     // 展示角色
     async setRole (index) {
       this.sectuor = 1;
@@ -1003,6 +1026,7 @@ export default {
       this.roleanduser.index = index;
       this.popover.isShowPopover = true;
     },
+
     // 展示人员
     async setUser (index) {
       if (!this.ArrRoles(index).length > 0) {
@@ -1040,6 +1064,7 @@ export default {
       this.roleanduser.index = index;
       this.popover.isShowPopover = true;
     },
+
     // 转字符串
     StrRoleanduser () {
       if (this.sectuor == 1) {
@@ -1097,6 +1122,7 @@ export default {
       }
       this.popover.isShowPopover = false;
     },
+
     // 选中行
     clrow (row) {
       if (!row) {
@@ -1136,6 +1162,7 @@ export default {
         }
       }
     },
+
     // 删除
     handleClose (i) {
       if (this.sectuor == 1) {
@@ -1410,6 +1437,7 @@ export default {
       )
       )
     },
+
     handleChangepop (paper) {
       this.popover.ruleForm.pageIndex = paper.pageIndex;
       this.popover.ruleForm.pageSize = paper.pageSize;
@@ -1420,8 +1448,7 @@ export default {
       }
     }
   },
-  // computed: {
-  // },
+
   watch: {
     popup3 (val) {
       if (!val) this.formConfig3.resetFields()
@@ -1434,6 +1461,7 @@ export default {
         deep: true
       } */
   },
+
   created () {
     api.initSelect(this.queryConfig2);
     this.goStartPage();

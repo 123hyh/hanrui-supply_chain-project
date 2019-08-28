@@ -75,7 +75,6 @@ export default {
       resetFields: eval,
       btnKey: '',
       clickRow: {},
-      validate: new Function, //表单验证回调
       itemName: '凭证摘要'
     },
   }),

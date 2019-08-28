@@ -1,28 +1,28 @@
 <template>
-  <div class="table">
+  <div class="tax-category-list table">
     <breadcrumb-navigation />
     <div class="container pd-10">
+
       <!-- 查询栏 -->
       <query-bar
-        :btnObj="btnObj"
         :formConfig="queryBarFormConfig"
         :ruleForm="queryBar.data"
         @handleBtnClickType="handleBtnClickType"
       ></query-bar>
+
       <!-- 表格 -->
       <table-component
-        :tableData="table.tableData"
-        :tableDataKey="table.tableConfig"
-        :isShowTabTable="true"
-        @TableClickRowData="TableClickRowData"
-        @handleDbclickTable="handleDbclickTable"
-      ></table-component>
-      <!-- 分页 -->
-      <pagination-component
+        :dialog="false"
+        :queryBarVisible='false'
+        :popoverList="table.tableData"
+        :popoverListKey='table.tableConfig'
         :count="pageCount"
+        @dblclickTableRow='dblclickTableRow'
+        :activeRow.sync="tableClickRow"
         @handlePageChange="initTableList"
-      ></pagination-component>
+      ></table-component>
     </div>
+
     <!-- 表单弹窗 -->
     <popover-component
       :itemName='formDialog.itemName'
@@ -30,30 +30,21 @@
       popoverType="form"
       :billsStatus='formDialog.ruleForm.status'
       :formData="formDialog"
-      @changeisShowPopover="closeFormDialog"
       @formClickPreservation="handlerTableFormPreservation"
-      @handlerFormConfigClickSearch='handlerFormConfigClickSearch'
-    ></popover-component>
-    <!-- 表格弹窗选择 -->
-    <popover-component
-      :isShowPopover="tableDialog.isshow"
-      :popoverList='tableDialog.data'
-      :popoverListKey='tableDialog.tableConfig'
-      @changeisShowPopover="closeTableDialog"
-      @handlerSubPreservation="tableDialogPreservation"
+      @handlerFormVerify="handlerFormVerify"
     ></popover-component>
   </div>
 </template>
 
 <script>
+
 // 接口 工具
 import api from "@/assets/js/appHelper";
 import utools from "@/domain/common/utools.js";
 
 // 组件
 import QueryBar from "@/components/common/QueryBar.vue";
-import TableComponent from "@/components/common/TabTable.vue";
-import PaginationComponent from "@/components/common/Pagination.vue";
+import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
 import PopoverComponent from "@/components/common/Table.Form.Dialog/DialogComponent.vue";
 
 // 注册表
@@ -63,16 +54,16 @@ import { mapGetters } from 'vuex'
 
 
 export default {
+
   created () {
     this.initTableList();
     api.initSelect(this.formDialog.formConfig)
   },
+
   data: () => ({
     queryBar: {
-
       data: {}
     },
-    tableDialogTarget: '',
     table: {
       tableData: [],
       tableConfig
@@ -81,18 +72,25 @@ export default {
       isshow: false,
       ruleForm: {},
       formConfig,
-      itemName: '税种'
-    },
-    tableDialog: {
-      isshow: false,
-      data: [],
-      tableConfig: [] /* tableDialogConfig */
+      itemName: '税种',
+      validate: eval,
+      resetFields: eval
     },
     pageCount: 0,
     tableClickRow: {},
     status: ''
   }),
+
   methods: {
+    handlerFormVerify ({ formModel: { validate, resetFields } } = {}) {
+      this.formDialog.validate = validate,
+        this.formDialog.resetFields = resetFields;
+    },
+
+    dblclickTableRow () {
+      this.handleBtnClickType('update')
+    },
+
     async initTableList (params = {}) {
       try {
         const {
@@ -100,6 +98,7 @@ export default {
         } = await api.getTaxCategoryList({ ...this.queryBar.data, ...params });
         (this.table.tableData = list), (this.pageCount = count);
       } catch (error) {
+        this.$message.error('获取列表数据失败，请重试！')
         console.log(error);
       }
     },
@@ -113,110 +112,80 @@ export default {
             try {
               const { data } = await this.queryBarRequest[type]();
               this.formDialog.ruleForm = {};
-              this.formDialog.ruleForm.billCode = data;
+              this.$set(this.formDialog.ruleForm, 'billCode', data)
               this.formDialog.isshow = true;
               this.status = 'add'
             } catch (error) {
+              this.$message.error('获取单据编号失败，请重试！')
               console.log(error)
             }
           }
           break;
         case "update":
           {
-
-            if (!this.tableClickRow.billCode) {
-              utools.alertMessage.bind(this)("", "请选择一条数据");
-              return;
-            };
-            this.formDialog.ruleForm = this.tableClickRow;
-            this.formDialog.isshow = true;
-            this.status = 'update'
+            utools.titleCallBack.call(
+              this,
+              this.tableClickRow,
+              () => {
+                this.formDialog.ruleForm = utools.cloneObj(this.tableClickRow);
+                this.formDialog.isshow = true;
+                this.status = 'update'
+              }
+            )
           }
           break;
         case "delete":
           {
-            if (!this.tableClickRow.billCode) {
-              utools.alertMessage.bind(this)("", "请选择一条数据");
-              return;
-            }
-            try {
-              const { status } = await this.queryBarRequest[type]();
-              this.initTableList();
-              this.tableClickRow = {};
-              utools.alertMessage.bind(this)(status);
-            } catch (error) {
-              console.log(error);
-            }
+            utools.titleCallBack.call(
+              this,
+              this.tableClickRow,
+              utools.removeReceiptsTips.bind(
+                this,
+                async () => {
+                  await this.queryBarRequest[type]();
+                  this.initTableList();
+                  this.tableClickRow = {};
+                }
+              )
+            )
           }
           break;
       }
     },
-    TableClickRowData (data) {
-      this.tableClickRow = data;
-    },
-    handleDbclickTable (data) {
-      this.handleBtnClickType('update');
-    },
-    closeFormDialog () {
-      if (!this.formDialog.isshow) return;
-      this.formDialog.isshow = !this.formDialog.isshow
-    },
+
     async handlerTableFormPreservation () {
       this.saveForm()
     },
 
     // 保存单据
     async saveForm () {
-      let s = 0;
-      try {
-        const { data, status } = await this.queryBarRequest['change'](this.status == 'add' ? 'POST' : 'PUT');
-        s = status;
-        this.formDialog.ruleForm.status = data.status;
-        this.initTableList()
-      } catch (error) {
-        console.log(error)
-      }
-      utools.alertMessage.bind(this)(s);
-    },
-    closeTableDialog () {
-      if (!this.tableDialog.isshow) return;
-      this.tableDialog.isshow = !this.tableDialog.isshow;
-      this.formDialog.isshow = true
-    },
-    tableDialogPreservation (clickrow) {
-      switch (this.tableDialogTarget) {
-        // case 'supplierName':
-        //   this.formDialog.ruleForm = {...this.formDialog.ruleForm, supplierName: clickrow.supplierName, supplierCode: clickrow.supplierCode };
-        //   break;
-      }
-    },
-    async handlerFormConfigClickSearch (params) {
-      try {
-        const { data: { list, count } } = await this.tableDialogRequest[params]();
-        this.tableDialog.data = list;
-      } catch (error) {
-        console.log(error)
-      }
-      this.tableDialogTarget = params;
-      this.tableDialog.tableConfig = this.tableDialogConfig[params]();
-      this.tableDialog.isshow = true;
+      this.formDialog.validate(valid => {
+        if (valid) {
+          utools.saveReceiptsTips.call(
+            this,
+            async () => {
+              const { data, status } = await this.queryBarRequest['change'](this.status == 'add' ? 'POST' : 'PUT');
+              this.formDialog.ruleForm.status = data.status;
+              this.initTableList()
+            }
+          )
+        }
+      })
     }
-
   },
+
   computed: {
+
     ...mapGetters(['orderStatus']),
+
     queryBarFormConfig () {
       return [
-        { label: "单据编码", moduleBind: "taxCategoryCode", isInput: true },
+        { label: "单据编码", moduleBind: "billCode", isInput: true },
         { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus }
       ]
     },
-    btnObj: () => [
-      { label: "查询", type: "search" },
-      { label: "新增", type: "add" },
-      { label: "修改", type: "update" },
-      { label: "删除", type: "delete" }
-    ],
+
+
     queryBarRequest () {
       return {
         delete: _ => api.deleteTaxCategoryData(this.tableClickRow.billCode),
@@ -224,45 +193,39 @@ export default {
         change: method => api.changeTaxCategoryData(this.formDialog.ruleForm, method)
       };
     },
-    tableDialogRequest () {
-      return {
-        // supplierName: (data={}) => api.querysupplierbaseSearch(data)
-      }
-    },
-    tableDialogConfig: () => ({
-      // supplierName: _ => require('@/domain/tableconfig/basicdata/SupplierBase.js').default
-    })
   },
+
   components: {
     QueryBar,
     TableComponent,
-    PaginationComponent,
     PopoverComponent
   }
 };
 </script>
 
-<style scoped>
-.handle-select {
-  width: 120px;
-}
+<style  lang='less'>
+.tax-category-list {
+  .handle-select {
+    width: 120px;
+  }
 
-.handle-input {
-  width: 300px;
-  display: inline-block;
-}
-.del-dialog-cnt {
-  font-size: 16px;
-  text-align: center;
-}
-.table {
-  width: 100%;
-  font-size: 14px;
-}
-.red {
-  color: #ff0000;
-}
-.mr10 {
-  margin-right: 10px;
+  .handle-input {
+    width: 300px;
+    display: inline-block;
+  }
+  .del-dialog-cnt {
+    font-size: 16px;
+    text-align: center;
+  }
+  .table {
+    width: 100%;
+    font-size: 14px;
+  }
+  .red {
+    color: #ff0000;
+  }
+  .mr10 {
+    margin-right: 10px;
+  }
 }
 </style>

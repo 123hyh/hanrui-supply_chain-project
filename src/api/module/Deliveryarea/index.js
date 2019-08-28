@@ -11,22 +11,15 @@ export default {
   querydeliveryareaSearch(data) {
     return this.getAreaData(data)
   },
-  // 交货区域-新增
-  adddeliveryareaData(data) {
+  // 交货区域-新增 || 修改
+  changEdeliveryareaData({ data = {}, method = 'POST' } = {}) {
     return this._getData({
       url: '/deliveryarea/',
-      method: 'POST',
+      method,
       data
     })
   },
-  // 交货区域-修改
-  editdeliveryareaData(data) {
-    return this._getData({
-      url: '/deliveryarea/',
-      method: 'PUT',
-      data
-    })
-  },
+  
   // 交货区域-删除
   deletedeliveryareaData(codeNo) {
     return this._getData({

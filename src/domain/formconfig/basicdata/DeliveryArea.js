@@ -27,6 +27,7 @@ export default [
 		type: "textarea",
 		key: "description",
 		name: "描述",
-		prop: "description"
+    prop: "description",
+    layout: `flex-basis:100%; height: auto !important`
 	},
 ]
