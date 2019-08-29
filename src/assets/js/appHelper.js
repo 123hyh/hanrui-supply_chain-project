@@ -286,7 +286,29 @@ let api = {
       method: 'GET'
     })
   },
-
+  // 特殊的 下拉列表 处理
+  handleFn() {
+    return new Map([
+      [
+        /* 口岸 */
+        'entryPort',
+        () =>
+          this.getEnterOutPort()
+            .then(data => {
+              return {
+                data: utools.setSelectOption({
+                  data: data.data,
+                  fields: {
+                    itemKey: 'entryportCode',
+                    itemValue: 'entryportName'
+                  }
+                })
+              }
+            })
+            .catch(err => err)
+      ]
+    ])
+  },
   // 表单 中 下拉选项的初始化
   async initSelect(formObject) {
     let requestArr = [],
@@ -306,31 +328,12 @@ let api = {
           requestArr.push(item.selectKey)
       }
     }
-    // 特殊的 下拉列表 处理
-    let handleFn = new Map([
-      [
-        /* 口岸 */
-        'entryPort',
-        this.getEnterOutPort()
-          .then(data => {
-            return {
-              data: utools.setSelectOption({
-                data: data.data,
-                fields: {
-                  itemKey: 'entryportCode',
-                  itemValue: 'entryportName'
-                }
-              })
-            }
-          })
-          .catch(err => err)
-      ]
-    ])
+
     try {
       const [...response] = await Promise.all(
         requestArr.map(item =>
-          handleFn.get(item)
-            ? handleFn.get(item)
+          this.handleFn().get(item)
+            ? this.handleFn().get(item)()
             : this.getEnum(item).catch(err => err)
         )
       )

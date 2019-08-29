@@ -57,7 +57,7 @@ export default [
   {
     prop: 'contactInfo',
     label: '员工联系方式',
-    width: '100',
+    width: '150',
   },
   {
     prop: 'degree',

@@ -58,10 +58,20 @@
           :tabName=" form.data.status<=1 ? subActiveName:''"
           @handlerTableBtnClick="handlerTableBtnClick"
         >
-        <template v-slot="slotProps">
-          <el-button size="mini" v-if="slotProps.default.status == 4" type="text" style="padding: 3px;">已审核</el-button>
-          <el-button size="mini" v-else @click="tablebtn(slotProps.default)" style="padding: 3px;">审核</el-button>
-        </template>
+          <template v-slot="slotProps">
+            <el-button
+              size="mini"
+              v-if="slotProps.default.status == 4"
+              type="text"
+              style="padding: 3px;"
+            >已审核</el-button>
+            <el-button
+              size="mini"
+              v-else
+              @click="tablebtn(slotProps.default)"
+              style="padding: 3px;"
+            >审核</el-button>
+          </template>
         </tab-table>
       </section>
     </section>
@@ -224,7 +234,7 @@ export default {
   },
   data () {
     return {
-      initTabList:[
+      initTabList: [
         {
           label: "基础资料",
           name: "base"
@@ -275,18 +285,18 @@ export default {
   },
   methods: {
     ...mapMutations(["addbreadCrumbsList"]),
-    async tablebtn(row){
+    async tablebtn (row) {
       try {
         const { data } = await api.opcodeBankData(row);
         this.getSubActiveNameTableData(this.subActiveName);
-            this.$message({
-              type: 'success',
-              message: '审核成功！'
-            })
+        this.$message({
+          type: 'success',
+          message: '审核成功！'
+        })
       } catch (error) {
         console.log(error)
       } finally {
-          }
+      }
     },
     // 加入黑名单时间
     async hanldeBlacklist () {
@@ -483,6 +493,7 @@ export default {
       }
     },
     async handlePreserve () {
+      if (this.activeName === 'client') return this.$message.success('保存成功！');
       this.isLoading = true;
       this.utools.saveReceiptsTips.call(
         this,
@@ -766,12 +777,12 @@ export default {
       return {
         bank: method =>
           api.changeAllBankData({
-            data:{
+            data: {
               billNo: this.form.data.customerNo,
               ...this.Tabledialog.ruleForm
             },
             method
-            }
+          }
           ),
         contact: method =>
           api.changeCustomerContact(

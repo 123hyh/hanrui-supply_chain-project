@@ -68,14 +68,8 @@ export default [
 	},
 	{
 		type: "select",
-		selectOption:[{
-			itemKey: '1',
-			itemValue: '应收'
-		},{
-			itemKey: '2',
-			itemValue: '应付'
-		}],
-		selectKey: "",
+		selectOption: [],
+		selectKey: "receiptPaymentType",
 		key: "paymentType",
 		name: "收付类型",
 		prop: "paymentType"

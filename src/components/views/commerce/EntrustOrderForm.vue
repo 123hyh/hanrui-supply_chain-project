@@ -513,7 +513,7 @@ export default {
         "clientContactName",
         "supplierName",
         "customerName",
-        "orderModel",
+        // "orderModel",
         "sellerUnitName",
         "superviseModeName",
         "exciseTaxRate",
@@ -2402,21 +2402,27 @@ export default {
         rowData["measurementUnitName"]; //成交单位
       this.formPopover.formData.ruleForm["arrivalGoodsCode"] =
         rowData["materielCode"];
-      api.getMaterielCustomAll().then(res => {
-        res.data.list.forEach(element => {
-          if (element.materielCode == rowData["materielCode"]) {
-            this.formPopover.formData.ruleForm["taxNo"] = element.taxNo; // 税号
-            this.formPopover.formData.ruleForm["attachNo"] = element.attachNo; // 附号
-            this.formPopover.formData.ruleForm["customTaxRate"] =
-              element.customsRate; // 关税税率
-            this.formPopover.formData.ruleForm["increaseTaxRate"] =
-              element.levyRate; // 关税加征
-              // 监管条件
-              this.formPopover.formData.ruleForm["superviseMode"] = superCondition
-              this.formPopover.formData.ruleForm["superviseModeName"] = {...this.formPopover.formData.ruleForm, ['superviseModeName']: superConditionName}
-          }
-        });
-      });
+        this.formPopover.formData.ruleForm["taxNo"] = rowData["taxNo"]; // 税号
+            this.formPopover.formData.ruleForm["attachNo"] = rowData["attachNo"]; // 附号
+            this.formPopover.formData.ruleForm["customTaxRate"] = rowData["customsRate"]; // 关税税率
+            this.formPopover.formData.ruleForm["increaseTaxRate"] = rowData["levyRate"]// 关税加征
+              this.formPopover.formData.ruleForm["superviseMode"] = rowData["superCondition"] // 监管条件
+              this.formPopover.formData.ruleForm["superviseModeName"] = rowData["superConditionName"] //监管条件
+      // api.getMaterielCustomAll().then(res => {
+      //   res.data.list.forEach(element => {
+      //     if (element.materielCode == rowData["materielCode"]) {
+      //       this.formPopover.formData.ruleForm["taxNo"] = element.taxNo; // 税号
+      //       this.formPopover.formData.ruleForm["attachNo"] = element.attachNo; // 附号
+      //       this.formPopover.formData.ruleForm["customTaxRate"] =
+      //         element.customsRate; // 关税税率
+      //       this.formPopover.formData.ruleForm["increaseTaxRate"] =
+      //         element.levyRate; // 关税加征
+      //         // 监管条件
+      //         this.formPopover.formData.ruleForm["superviseMode"] = superCondition
+      //         this.formPopover.formData.ruleForm["superviseModeName"] = {...this.formPopover.formData.ruleForm, ['superviseModeName']: superConditionName}
+      //     }
+      //   });
+      // });
     },
     // 规格型号 清空
     toArrivalGoodsModel() {

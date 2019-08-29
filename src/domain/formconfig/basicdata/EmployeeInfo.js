@@ -53,7 +53,7 @@ export default [
 		prop: "leader",
 		btn: true,
 		readonly: true,
-        rules,
+        // rules,
 	},
 	{
 		type : "string",
@@ -126,14 +126,14 @@ export default [
 		key: "emergencyContact",
 		name: "员工紧急联系人",
 		prop: "emergencyContact",
-        rules,
+        // rules,
 	},
 	{
 		type : "string",
 		key: "emergencyContactPhone",
 		name: "员工紧急联系人电话",
 		prop: "emergencyContactPhone",
-        rules,
+        // rules,
 	},
 	{
 		type : "string",

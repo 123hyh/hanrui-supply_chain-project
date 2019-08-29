@@ -71,7 +71,7 @@
             :activeRow.sync='curRowData'
             @handlePageChange='handleTabPageChange'
           ></table-component>
-          
+
         </div>
       </el-tabs>
     </div>
@@ -79,7 +79,7 @@
     <!--弹出层： 业务员列表form -->
 
     <el-dialog
-     v-dialogDrag
+      v-dialogDrag
       :visible.sync="popFormTab"
       :close-on-click-modal="false"
       width="1100px"
@@ -144,6 +144,7 @@ export default {
   },
   data () {
     return {
+      targetSet: {},
       popover: {
         //弹出框组件参数
         isShowPopover: false, // 弹窗显示
@@ -166,7 +167,7 @@ export default {
       // 主form
       verify: {}, // 表单验证
       jumpType: "",
-      curRowData: "",
+      curRowData: {},
       isLoading: false,
       businessForm: new Business(),
       businessKey: BusinessFormConfig,
@@ -174,7 +175,7 @@ export default {
       // table
       dataTab: [],
       // table - 列
-      columnDataTable: "",
+      columnDataTable: [],
       // 查询条件 form
       queryTableData: {},
       // 新增form
@@ -199,7 +200,7 @@ export default {
     }
   },
   methods: {
-    
+
     /************************** 弹窗methods start *******************/
     /**
      * @method handleBtnClick 点击查询栏按钮事件
@@ -243,75 +244,79 @@ export default {
     },
     //table
     handlerSubPreservation (rowData, key) {
+      debugger
       console.log(rowData, key);
-      if (this.businessForm[key] !== undefined || this.columnData[key] !== undefined) {
-        if (key.includes("customerName")) {
-          this.businessForm = {
-            ...this.businessForm,
-            [key]: rowData["clientName"],
-            customerCode: rowData["clientNo"],
-            customerShortName: rowData["clientShortName"]
-          };
-        } else if (key.includes("salesmanName")) {
-          if (this.popover.isShowPopover) {
-            this.columnData = {
-              ...this.columnData,
-              [key]: rowData["employeeInfoName"],
-              salesmanId: rowData["employeeInfoCode"]
-            };
-            return;
-          }
-          this.businessForm = {
-            ...this.businessForm,
-            [key]: rowData["employeeInfoName"],
-            salesmanId: rowData["employeeInfoCode"]
-          };
-        } else if (key.includes("deptName")) {
-          this.columnData = {
-            ...this.columnData,
-            [key]: rowData["departmentName"],
-            deptId: rowData["departmentCode"]
-          };
-        } else if (key.includes("deliveryNo")) {
-          this.businessForm[key] = rowData["scheduleBaseCode"];
+      // if (this.businessForm[key] !== undefined || this.columnData[key] !== undefined) {
+      if (key.includes("customerName")) {
+        this.businessForm = {
+          ...this.businessForm,
+          [key]: rowData["clientName"],
+          customerCode: rowData["clientNo"],
+          customerShortName: rowData["clientShortName"]
+        };
+      } else if (key.includes("salesmanName")) {
+        const h = (data, rowData) => ({
+          ...data, [key]: rowData["employeeInfoName"],
+          salesmanId: rowData["employeeInfoCode"]
+        })
+        if (this.popover.isShowPopover) {
+          /接单人/.test(this.targetSet.name) ?
+            this.businessForm = h(this.businessForm, rowData) :
+            this.columnData = h(this.columnData, rowData);
+          return;
         }
+        this.businessForm = {
+          ...this.businessForm,
+          [key]: rowData["employeeInfoName"],
+          salesmanId: rowData["employeeInfoCode"]
+        };
+      } else if (key.includes("deptName")) {
+        this.columnData = {
+          ...this.columnData,
+          [key]: rowData["departmentName"],
+          deptId: rowData["departmentCode"]
+        };
+      } else if (key.includes("deliveryNo")) {
+        this.businessForm[key] = rowData["scheduleBaseCode"];
       }
+      // }
     },
     popoverParamsFn (pop) {
       this.popover = { ...this.popover, ...pop };
     },
-    rousePopover (key) {
-      if (this.businessForm[key] !== undefined || this.columnData[key] !== undefined) {
-        let popover = {
-          customerName: {
-            queryCode: "clientNo",
-            apiKey: "/client",
-            itemName: "委托方列表",
-            configUrl: "business/Client"
-          },
-          salesmanName: {
-            queryCode: "employeeInfoCode",
-            apiKey: "/employeeinfo",
-            itemName: "员工资料",
-            configUrl: "basicdata/EmployeeInfo"
-          },
-          deptName: {
-            queryCode: "departmentCode",
-            apiKey: "/department",
-            itemName: "部门资料",
-            configUrl: "system/Department"
-          },
-          deliveryNo: {
-            queryCode: "busEntrustNo",
-            apiKey: "/hkschedulebase",
-            itemName: "上货计划",
-            configUrl: "logistics/HkscheduleBase"
-          }
-        };
-        let allKey = ["customerName", "salesmanName", "deptName"];
-        let thisKey = allKey.includes(key) ? key : "deliveryNo";
-        this.popoverParamsFn(popover[thisKey]);
-      }
+    rousePopover (key, targetSet) {
+      this.targetSet = targetSet;
+      // if (this.businessForm[key] !== undefined || this.columnData[key] !== undefined) {
+      let popover = {
+        customerName: {
+          queryCode: "clientNo",
+          apiKey: "/client",
+          itemName: "委托方列表",
+          configUrl: "business/Client"
+        },
+        salesmanName: {
+          queryCode: "employeeInfoCode",
+          apiKey: "/employeeinfo",
+          itemName: "员工资料",
+          configUrl: "basicdata/EmployeeInfo"
+        },
+        deptName: {
+          queryCode: "departmentCode",
+          apiKey: "/department",
+          itemName: "部门资料",
+          configUrl: "system/Department"
+        },
+        deliveryNo: {
+          queryCode: "busEntrustNo",
+          apiKey: "/hkschedulebase",
+          itemName: "上货计划",
+          configUrl: "logistics/HkscheduleBase"
+        }
+      };
+      let allKey = ["customerName", "salesmanName", "deptName"];
+      let thisKey = allKey.includes(key) ? key : "deliveryNo";
+      this.popoverParamsFn(popover[thisKey]);
+      // }
       let currencyObj = {
         // 配置当前点击请求对象
         [key]: async () => {
