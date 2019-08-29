@@ -472,6 +472,7 @@
 
 <script>
 import validate from "@/domain/common/validate";
+import utools from '@/domain/common/utools.js'
 import formModuleHead from "@/components/common/FormModuleHead.vue";
 import Popover from "@/components/common/Popover";
 import FormConfig from "@/components/common/FormConfig";
@@ -490,6 +491,7 @@ export default {
     formModuleHead,
     Popover,
     Pagination,
+
     FormConfig
   },
   data: () => ({
@@ -1314,7 +1316,7 @@ export default {
                   this.ruleForm.pageIndex = 1,
                     this.ruleForm.pageSize = 10;
                   this.popup3 = false;
-                  this.formConfig3.resetFields()
+                  this.formConfig3.resetFields();
                 }
               )
             }
@@ -1401,9 +1403,11 @@ export default {
 
                   const { status } = await api.addExchangerate(Ratedata.map(item => {
                     item.source = 'system';
+                    item.cenPrice = (+(item.cenPrice)) * 100
                     return item
                   }));
                   this.popup3 = false;
+                  this.handleChange({ pageIndex: 1, pageSize: 10 })
                   /* if (status == "200") {
                     this.popup3 = false;
                     this.$message.success("汇率设置成功");

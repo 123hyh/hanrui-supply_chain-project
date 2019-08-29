@@ -261,7 +261,7 @@ export default {
             }
           }
         }
-      }else{
+      } else {
         if (item.selectKey) {
           let { key, selectOption } = item
           if (params === key) {
@@ -791,7 +791,7 @@ export default {
       if (item.list) {
         for (let con of item.list) {
           if (con.type == 'calc') {
-            console.log(con.name + con.key+":     "+con.solutionFormula)
+            console.log(con.name + con.key + ':     ' + con.solutionFormula)
             data[con.key] = this.calcConfig(
               data,
               con.solutionFormula,
@@ -803,7 +803,7 @@ export default {
         }
       } else {
         if (item.type == 'calc') {
-          console.log(item.name + item.key+":     "+item.solutionFormula)
+          console.log(item.name + item.key + ':     ' + item.solutionFormula)
           data[item.key] = this.calcConfig(
             data,
             item.solutionFormula,
@@ -813,7 +813,6 @@ export default {
           )
         }
       }
-      
     }
   },
 
@@ -833,7 +832,8 @@ export default {
       var key = gs[f].trim()
       if (key) {
         if (data[key]) {
-          if (key == 'vatTaxRate') { //  //进口增值税率%
+          if (key == 'vatTaxRate') {
+            //  //进口增值税率%
             var da = 0
             if (data[key] == '1') {
               da = 0.13
@@ -876,8 +876,10 @@ export default {
         }
       }
     }
-    console.log(solutionFormula +"    =     "+eval(solutionFormula).toFixed(4))
-    console.log(" ")
+    console.log(
+      solutionFormula + '    =     ' + eval(solutionFormula).toFixed(4)
+    )
+    console.log(' ')
     return eval(solutionFormula).toFixed(4)
   },
 
@@ -967,7 +969,7 @@ export default {
         }
       }
     }
-  }) 
+  }),
   /*  // (修改 | 保存) 表单 带状态提示语
   saveReceiptsTips: (msgFn => {
     return async function(fn) {
@@ -1006,4 +1008,12 @@ export default {
       message: `删除${scode ? '成功！' : '失败，请重试！'}`
     })
   }) */
+  // 改成下拉的值
+  setSelectOption({ data = [], fields: { itemKey, itemValue } } = {}) {
+    for (let item of data) {
+      item.itemKey = item[itemKey]
+      item.itemValue = item[itemValue]
+    }
+    return data
+  }
 }

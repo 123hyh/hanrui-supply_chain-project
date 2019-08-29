@@ -1,6 +1,7 @@
 import { instance as service, isProd } from '@/assets/js/initApi.js'
 import qs from 'qs'
 import apiPort from '@/api/index.js'
+import utools from '@/domain/common/utools.js'
 
 // 创建 web api 地址
 function createApiPath(path) {
@@ -234,7 +235,7 @@ let api = {
       method: 'GET'
     })
   },
- 
+
   // 登陆 login
   goLogin(data) {
     return this._getData({
@@ -285,6 +286,7 @@ let api = {
       method: 'GET'
     })
   },
+
   // 表单 中 下拉选项的初始化
   async initSelect(formObject) {
     let requestArr = [],
@@ -304,9 +306,33 @@ let api = {
           requestArr.push(item.selectKey)
       }
     }
+    // 特殊的 下拉列表 处理
+    let handleFn = new Map([
+      [
+        /* 口岸 */
+        'entryPort',
+        this.getEnterOutPort()
+          .then(data => {
+            return {
+              data: utools.setSelectOption({
+                data: data.data,
+                fields: {
+                  itemKey: 'entryportCode',
+                  itemValue: 'entryportName'
+                }
+              })
+            }
+          })
+          .catch(err => err)
+      ]
+    ])
     try {
       const [...response] = await Promise.all(
-        requestArr.map(item => this.getEnum(item).catch(err => err))
+        requestArr.map(item =>
+          handleFn.get(item)
+            ? handleFn.get(item)
+            : this.getEnum(item).catch(err => err)
+        )
       )
       let index = 0
       if (isPartitioning) {
@@ -914,8 +940,6 @@ let api = {
     })
   },
 
- 
-
   getOneentrustpaybillData(billNo) {
     return this._getData({
       url: `/entrustpaybill/${billNo}`,
@@ -946,7 +970,6 @@ let api = {
       data: this._handlePage(rule)
     })
   },
-
 
   // 商机管理预警提醒
   getwarningbusiness() {
@@ -994,6 +1017,26 @@ let api = {
     return this._getData({
       url: `/bankinfo/${code}`,
       method: 'DELETE'
+    })
+  },
+  // 请求口岸下拉的列表
+  async getEnterOutPort() {
+    /* try {
+      const { data = [] } = await this._getData({
+        url: `/entryport/`,
+        method: 'GET'
+      })
+      return data.forEach(item => {
+        item.itemKey = item.entryportCode
+        item.itemValue = item.entryportName
+      })
+    } catch (error) {
+      console.log(error)
+      return []
+    } */
+    return this._getData({
+      url: `/entryport/`,
+      method: 'GET'
     })
   }
 }

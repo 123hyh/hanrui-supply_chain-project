@@ -164,7 +164,8 @@ export default [
     rules
   },
   {
-    type: 'string',
+    type: 'calc',
+    solutionFormula:"sellerQuantity*sellerPrice",
     key: 'sellerGoodsValue',
     name: '报关(货值)金额', //货价（货值）
     prop: 'sellerGoodsValue',
@@ -271,9 +272,8 @@ export default [
     key: 'customsExchangeRate',
     name: '原币别到人民币', //海关汇率
     prop: 'customsExchangeRate',
-    rules,
-    readonly: true,
     disabled: true,
+    rules,
   },
   {
     type: 'calculate',
@@ -369,10 +369,13 @@ export default [
     rules
   },
   {
-    type: 'string',
-    key: 'priceTax',
-    name: '价税合计',
-    prop: 'priceTax',
+    type:"calc",
+    key: "priceTax",
+    name: "价税合计",
+    prop: "priceTax",
+    solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxRate",
+    decimal:2,
+    symbol:'￥',
     disabled: true,
     rules
   },
@@ -421,6 +424,7 @@ export default [
     type: 'string',
     key: 'buyerRate',
     name: '买方汇率',
+    isShow:true,
     prop: 'buyerRate',
     disabled: true,
   },
@@ -434,14 +438,18 @@ export default [
     disabled: true
   },
   {
-    type: 'string',
+    type: 'calc',
+    solutionFormula:"buyerGoodsValue/sellerQuantity",
+    divisor:'sellerQuantity',
     key: 'buyerPrice',
     name: '买方单价',
     prop: 'buyerPrice',
     disabled: true,
   },
   {
-    type: 'string',
+    type: 'calc',
+    solutionFormula:"(priceTax+serviceFee)/buyerRate",
+    divisor:'buyerRate',
     key: 'buyerGoodsValue',
     name: '买方货值',
     prop: 'buyerGoodsValue',
