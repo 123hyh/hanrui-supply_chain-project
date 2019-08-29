@@ -275,14 +275,14 @@ export default [
     disabled: true,
     rules,
   },
-  {
-    type: 'calculate',
-    key: 'targetCurrencyToRmb',
-    name: '目标币到人民币',
-    prop: 'targetCurrencyToRmb',
-    disabled: true,
-    rules
-  },
+  // {
+  //   type: 'calculate',
+  //   key: 'targetCurrencyToRmb',
+  //   name: '目标币到人民币',
+  //   prop: 'targetCurrencyToRmb',
+  //   disabled: true,
+  //   rules
+  // },
   {
     type: 'string',
     ratio:true,
@@ -373,7 +373,7 @@ export default [
     key: "priceTax",
     name: "价税合计",
     prop: "priceTax",
-    solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxRate",
+    solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxAmount",
     decimal:2,
     symbol:'￥',
     disabled: true,
@@ -472,14 +472,14 @@ export default [
     disabled: true,
     rules
   },
-  {
-    type: 'string',
-    key: 'superviseMode',
-    name: '监管方式',
-    prop: 'superviseMode',
-    disabled: true,
-    rules
-  },
+  // {
+  //   type: 'string',
+  //   key: 'superviseMode',
+  //   name: '监管方式',
+  //   prop: 'superviseMode',
+  //   disabled: true,
+  //   rules
+  // },
   {
     type: 'string',
     key: 'superviseTerm',

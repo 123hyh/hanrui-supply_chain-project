@@ -103,7 +103,7 @@ export default {
     {
       type: 'select',
       selectOption: [],
-      selectKey: 'transferOutCurrency',
+      selectKey: 'currencyName',
       key: 'payMontyType',
       name: '付款币别',
       prop: 'payMontyType',

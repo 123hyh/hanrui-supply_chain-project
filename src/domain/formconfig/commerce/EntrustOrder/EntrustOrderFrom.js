@@ -81,7 +81,7 @@ export default [{
 		name: 'supplierCurrency',
 		type: 'select',
 		label: '销售币别',
-		selectapi: 'transferOutCurrency',
+		selectapi: 'currencyName',
 	}, {
 		name: 'switchobj',
 		type: 'switch',

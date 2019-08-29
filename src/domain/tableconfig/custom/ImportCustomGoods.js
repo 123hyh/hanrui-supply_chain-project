@@ -10,30 +10,35 @@ export default [
     width: '200'
   },
   {
-    prop: 'goodsName',
-    label: '商品名称',
-    width: '100'
-  },
-  {
     prop: 'goodsCode',
     label: '商品编码',
-    width: '100'
+    width: '200'
   },
   {
     prop: 'goodsModel',
     label: '规格型号',
-    width: '100'
+    width: '200'
+  },
+  {
+    prop: 'brand',
+    label: '品牌',
+    width: '200'
+  },
+  {
+    prop: 'sourceArea',
+    label: '原产地',
+    width: '200'
   },
   {
     prop: 'goodsNameCustom',
     label: '报关商品名称',
+    width: '200'
+  },
+  {
+    prop: 'goodsName',
+    label: '商品名称',
     width: '100'
   },
-  // {
-  // 	prop: 'goodsName_Custom',
-  // 	label: '报关规格型号',
-  // 	width: '100',
-  // },
   {
     prop: 'taxNo',
     label: '税号',
@@ -45,113 +50,8 @@ export default [
     width: '100'
   },
   {
-    prop: 'parameter',
-    label: '参数',
-    width: '100'
-  },
-  {
-    prop: 'mark',
-    label: '唛头',
-    width: '100'
-  },
-  {
-    prop: 'startNo',
-    label: '起号',
-    width: '100'
-  },
-  {
-    prop: 'endNo',
-    label: '止号',
-    width: '100'
-  },
-  /* {
-		prop: 'boxPlusNo',
-		label: '箱附号',
-		width: '100',
-	}, */
-  {
-    prop: 'netWeight',
-    label: '净重',
-    width: '100'
-  },
-  {
-    prop: 'grossWeight',
-    label: '毛重',
-    width: '100'
-  },
-  {
-    prop: 'brandName',
-    label: '品牌',
-    width: '100'
-  },
-  {
-    prop: 'sourceAreaName',
-    label: '原产地',
-    width: '100'
-  },
-  {
-    prop: 'orderPrice',
-    label: '订单单价',
-    width: '100'
-  },
-  {
-    prop: 'orderCurrencyName',
-    label: '订单币种',
-    width: '100'
-  },
-  {
-    prop: 'customPrice',
-    label: '报关单价',
-    width: '100'
-  },
-  {
-    prop: 'quantity',
-    label: '数量',
-    width: '100'
-  },
-  {
-    prop: 'unitName',
-    label: '单位',
-    width: '100'
-  },
-  {
-    prop: 'customAmount',
-    label: '报关金额',
-    width: '100'
-  },
-  {
-    prop: 'piece',
-    label: '件数',
-    width: '100'
-  },
-  {
-    prop: 'superviseTermName',
-    label: '监管条件',
-    width: '100'
-  },
-  {
-    prop: 'exemptionName',
-    label: '征免',
-    width: '100'
-  },
-  {
-    prop: 'remark',
-    label: '备注',
-    width: '100'
-  },
-  {
-    prop: 'originalCurrencyToRmb',
-    label: '原币别到人民币',
-    width: '100'
-  },
-  {
-    prop: 'rmbPrice',
-    label: '人民币单价',
-    width: '100'
-  },
-  {
-    prop: 'targetCurrencyToRmb',
-    label: '目标币到人民币',
+    prop: 'sellerQuantity',
+    label: '成交数量',
     width: '100'
   },
   {
@@ -170,56 +70,231 @@ export default [
     width: '100'
   },
   {
-    prop: 'tariff',
-    label: '关税',
+    prop: 'notCargoQuantity',
+    label: '未放货数量',
+    width: '100'
+  }, 
+  {
+    prop: 'unitName',
+    label: '成交单位',
     width: '100'
   },
   {
-    prop: 'vat',
-    label: '增值税',
+    prop: 'orderPrice',
+    label: '订单单价',
     width: '100'
   },
   {
-    prop: 'transportFee',
+    prop: 'sellerPrice',
+    label: '报关订单单价',
+    width: '100'
+  },
+  {
+    prop: 'sellerCurrencyName',
+    label: '订单币种',
+    width: '100'
+  },
+  {
+    prop: 'rmbPrice',
+    label: '人民币单价',
+    width: '100'
+  },
+  {
+    prop: 'sellerGoodsValue',
+    label: '报关(货值)金额',
+    width: '100'
+  },
+  {
+    prop: 'piece',
+    label: '件数',
+    width: '100'
+  },
+  {
+    prop: 'grossWeight',
+    label: '毛重',
+    width: '100'
+  },
+  {
+    prop: 'netWeight',
+    label: '净重',
+    width: '100'
+  },
+  {
+		prop: 'freightRate',
+		label: '运费费率',
+		width: '100',
+	},
+  {
+    prop: 'freight',
     label: '运费',
     width: '100'
   },
   {
-    prop: 'insuranceFee',
+		prop: 'premiumRate',
+		label: '保费费率',
+		width: '100',
+	},
+  {
+    prop: 'premium',
     label: '保费',
     width: '100'
   },
   {
-    prop: 'otherFee',
+		prop: 'extrasRate',
+		label: '杂费费率',
+		width: '100',
+	},
+  {
+    prop: 'extras',
     label: '杂费',
     width: '100'
   },
   {
-    prop: 'totalAmount',
+    prop: 'costAmount',
     label: '运保杂总计',
     width: '100'
   },
   {
-    prop: 'serviceCurrencyName',
-    label: '服务费币别'
+    prop: 'customsExchangeRate',
+    label: '原币别到人民币',
+    width: '100'
+  },
+  {
+    prop: 'customTaxRate',
+    label: '关税税率',
+    width: '100'
+  },
+  {
+    prop: 'increaseTaxRate',
+    label: '加征税率',
+    width: '100'
+  },
+  {
+    prop: 'customTaxAmount',
+    label: '关税',
+    width: '100'
+  },
+  {
+    prop: 'exciseTaxRate',
+    label: '消费税率',
+    width: '100'
+  },
+  {
+    prop: 'exciseTax',
+    label: '消费税额',
+    width: '100'
+  },
+  {
+    prop: 'vatTaxRate',
+    label: '进口增值税率',
+    width: '100'
+  },
+  {
+    prop: 'vatTaxAmount',
+    label: '增值税',
+    width: '100'
+  },
+  {
+    prop: 'taxTypeName',
+    label: '其他税种',
+    width: '100'
+  },
+  {
+    prop: 'otherTaxRate',
+    label: '其他税率',
+    width: '100'
+  },
+  {
+    prop: 'otherTaxAmount',
+    label: '其他税金',
+    width: '100'
+  },
+  {
+    prop: 'priceTax',
+    label: '价税合计',
+    width: '100'
+  },
+  {
+    prop: 'serviceExchangeRate',
+    label: '服务费费率',
+    width: '100'
   },
   {
     prop: 'serviceFee',
-    label: '服务费金额'
+    label: '服务费金额',
+    width: '100'
+  },
+  {
+    prop: 'buyerExchangeRate',
+    label: '买方货款汇率',
+    width: '100'
+  },
+  {
+    prop: 'buyerRate',
+    label: '买方汇率',
+    width: '100'
+  },
+  {
+    prop: 'buyerCurrency',
+    label: '买方币别',
+    width: '100'
+  },
+  {
+    prop: 'buyerPrice',
+    label: '买方单价',
+    width: '100'
+  },
+  {
+    prop: 'buyerGoodsValue',
+    label: '买方货值',
+    width: '100'
+  },
+  {
+    prop: 'drawbackRate',
+    label: '退税率',
+    width: '100'
+  },
+  {
+    prop: 'drawback',
+    label: '退税金额',
+    width: '100'
+  },
+  {
+    prop: 'superviseTerm',
+    label: '监管条件',
+    width: '100'
+  },
+  {
+    prop: 'exemption',
+    label: '征免性质',
+    width: '100'
+  },
+  {
+    prop: 'parameter',
+    label: '参数',
+    width: '100'
+  },
+  {
+    prop: 'mark',
+    label: '唛头'
+  },
+  {
+    prop: 'startNo',
+    label: '起号'
+  },
+  {
+    prop: 'endNo',
+    label: '止号',
+    width: '100'
+  },
+  {
+    prop: 'remark',
+    label: '备注',
+    width: '100'
   },
   {
     prop: 'storageLocation',
     label: '库位',
-    width: '100'
-  },
-  {
-    prop: 'lineNo',
-    label: '行号',
-    width: '100'
-  },
-  {
-    prop: 'notCargoQuantity',
-    label: '未放货数量',
     width: '100'
   },
   {
@@ -238,11 +313,6 @@ export default [
     width: '100'
   },
   {
-    prop: 'superviseMode',
-    label: '监管方式',
-    width: '100'
-  },
-  {
     prop: 'customsCheck',
     label: '关务查看',
     width: '100'
@@ -251,7 +321,7 @@ export default [
     prop: 'attachmentQuantity',
     label: '附件数',
     width: '100'
-  }
+  },
   // {
   // 	prop: 'creator',
   // 	label: '创建人',

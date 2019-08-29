@@ -306,6 +306,47 @@ let api = {
               }
             })
             .catch(err => err)
+      ],
+      [
+        // 币别必须排序 否则委托订单报错
+        'currencyName',
+        () =>
+          this.getEnum('currencyName')
+            .then(data => {
+              const x = {
+                data: data.data.sort((x, y) => {
+                  if (+x.itemKey > +y.itemKey) {
+                    return 1
+                  } else if (+x.itemKey < +y.itemKey) {
+                    return -1
+                  } else {
+                    return 0
+                  }
+                })
+              }
+              return x
+            })
+            .catch(e => e)
+      ],
+      [
+        'currencyname',
+        () =>
+          this.getEnum('currencyName')
+            .then(data => {
+              const x = {
+                data: data.data.sort((x, y) => {
+                  if (+x.itemKey > +y.itemKey) {
+                    return 1
+                  } else if (+x.itemKey < +y.itemKey) {
+                    return -1
+                  } else {
+                    return 0
+                  }
+                })
+              }
+              return x
+            })
+            .catch(e => e)
       ]
     ])
   },

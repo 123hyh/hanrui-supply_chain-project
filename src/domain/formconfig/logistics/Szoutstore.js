@@ -158,7 +158,7 @@ export default [
   },
   {
     selectOption: [],
-    selectKey: 'transferInCurrency',
+    selectKey: 'currencyName',
     key: 'currency',
     name: '币别',
     prop: 'currency',

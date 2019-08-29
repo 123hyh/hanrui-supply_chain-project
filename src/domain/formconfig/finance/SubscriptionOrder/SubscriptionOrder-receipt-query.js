@@ -23,7 +23,7 @@ export default [
     key: 'moneyType',
     name: '收款币别',
     prop: 'moneyType',
-    selectKey: 'transferOutCurrency',
+    selectKey: 'currencyName',
     selectOption: []
   },
   {

@@ -2609,6 +2609,7 @@ export default {
           // 订单汇率 = 卖方汇率
           if (!this.signDate) return;
           let data = this.signDate.slice(0, 10);
+          debugger
           let currency = this.utools.gecongfig(
             this.entrustOrderKey,
             "supplierCurrency",

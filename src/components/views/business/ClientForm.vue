@@ -45,7 +45,8 @@
             @handlerFormConfigClickSearch="rousePopover"
           ></form-config>
         </el-tab-pane>
-        <el-tab-pane v-if="isJurisdiction"
+        <el-tab-pane
+          v-if="isJurisdiction"
           label="财务资料"
           name="bank"
         >
@@ -178,7 +179,7 @@ export default {
   },
   data () {
     return {
-      isJurisdiction:true,
+      isJurisdiction: true,
       popover: {
         //弹出框组件参数
         isShowPopover: false, // 弹窗显示
@@ -761,6 +762,7 @@ export default {
               this.$message.success("修改成功");
             }
           } catch (e) {
+            this.$message.error('修改失败，请重试！')
             console.log(e);
           } finally {
             this.isLoading = false;
@@ -784,6 +786,7 @@ export default {
             }
           } catch (e) {
             console.log(e);
+            this.$message.error("保存失败，请重试！");
           } finally {
             this.isLoading = false;
           }
