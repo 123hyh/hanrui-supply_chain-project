@@ -47,7 +47,7 @@ import formConfig from '@/domain/formconfig/basicdata/VoucherSummary'
 import { mapGetters } from 'vuex'
 
 export default {
-  
+
   watch: {
     'formDialog.isShowPopover' (val) {
       if (!val) this.formDialog.resetFields()
@@ -80,7 +80,9 @@ export default {
   }),
 
   computed: {
+    
     ...mapGetters(['orderStatus']),
+    
     queryBarFormConfig () {
       return [
         { label: "编码", moduleBind: "voucherSummaryCode", isInput: true },

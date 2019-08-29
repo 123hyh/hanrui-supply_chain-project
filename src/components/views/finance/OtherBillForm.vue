@@ -191,7 +191,7 @@ export default {
       let start = (pageIndex - 1) * pageSize;
       let end = pageIndex * pageSize;
       return this.table.data.alllist.slice(start, end) || [];
-    }
+    },
   },
   methods: {
     ...mapMutations(["addbreadCrumbsList"]),
@@ -240,6 +240,51 @@ export default {
         this.table.data.alllist = JSON.parse(JSON.stringify(data.list));
         this.table.data.count = data.count;
         this.table.data = { ...this.table.data };
+        var zdata = {
+          billNo: "",
+          bizDate: "",
+          company: "",
+          companyName: "",
+          department: "",
+          departmentName: "",
+          handler: "",
+          handlerName: "",
+          id: "",
+          status: "",
+          tenantId: "",
+        }
+        for(let key  in zdata){
+          zdata[key] = this.form.data[key]
+        }
+        zdata.id =''
+        this.form.data = zdata;
+        var otherBillBranchList = {
+          billNo: "",
+          clientCode: "",
+          clientName: "",
+          currency: "",
+          entrustOrderNo: "",
+          entrustOrderType: "",
+          feeProject: "",
+          feeProjectName: "",
+          itemCode: "",
+          makePrice: "",
+          occurrenceDate: "",
+          payableUnit: "",
+          payableUnitName: "",
+          payableUnitType: "",
+          paymentType: "",
+          receiveAmount: '',
+          receiveUnit: "",
+          receiveUnitName: "",
+          receiveUnitType: "",
+          settleRate: '',
+          settlementMethod: "",
+        }
+        for(let key  in otherBillBranchList){
+          otherBillBranchList[key] = this.table.data.alllist[0][key]
+        }
+        this.form.data.otherBillBranchList = [otherBillBranchList];
       } catch (e) {
         this.$message.error("查询失败");
       }
@@ -806,6 +851,34 @@ export default {
       if (!this.tableDialog.isshow) return;
       this.tableDialog.isshow = !this.tableDialog.isshow;
       this.tableDialog.ruleForm = {};
+    },
+    // 给定日期 查询银行汇率
+    async getexchangeratetodata() {
+          let data = this.formDialog.ruleForm.occurrenceDate.slice(0, 10);
+          let currency = this.utools.gecongfig(
+            this.formDialog.formConfig,
+            "currency",
+            this.formDialog.ruleForm.currency
+          );
+      if (currency == "人民币") {
+        return this.$set(this.formDialog.ruleForm, "settleRate", "1.0000");
+      }
+      try {
+        const vdata = await api.gettimeExchangerate(data);
+        var list = vdata.data
+        for (let i = 0; i < list.length; i++) {
+          var exchangerate = "";
+          list.forEach(b => {
+              if (currency == b.currency) {
+                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+              }
+            });
+            return this.$set(this.formDialog.ruleForm, "settleRate", exchangerate)
+        }
+        this.$message.warning("请录入系统汇率");
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   watch: {
@@ -868,6 +941,24 @@ export default {
       }
       this.formDialog.formConfig = [...this.formDialog.formConfig];
     },
+    "formDialog.ruleForm.currency" (newVal, oldVal) {
+      if (this.writeback) return;
+      if(newVal && this.formDialog.ruleForm.occurrenceDate){
+        this.getexchangeratetodata()
+      }else{
+        this.$set(this.formDialog.ruleForm, "settleRate", '')
+      }
+    },
+    "formDialog.ruleForm.occurrenceDate" (newVal, oldVal) {
+      if (this.writeback) return;
+      if(newVal && this.formDialog.ruleForm.currency){
+        this.getexchangeratetodata()
+      }else{
+        this.$set(this.formDialog.ruleForm, "settleRate", '')
+      }
+    },
+
+     
   },
   async created () {
     api.initSelect(this.form.config);

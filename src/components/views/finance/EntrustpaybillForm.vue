@@ -561,6 +561,12 @@ export default {
 
     // 代收款明细删除
     handlerRemoveItemTable () {
+      if(this.table.data.length<=1){
+        return this.$message({
+          type: 'warning',
+          message: '至少保留一条代收款明细！'
+        });
+      }
       utools.deleteMessage.call(this, async () => {
         let sCode = 200;
         try {

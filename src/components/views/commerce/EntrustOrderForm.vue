@@ -2521,6 +2521,14 @@ export default {
       Object.assign(this.entrustOrder, formData);
     }
     if (sessionStorage.getItem("btnType") == "create") {
+        // 默认
+        this.$set(this.entrustOrder, "vatTotalAmountcurrency", '3');
+        this.$set(this.entrustOrder, "totalServiceChargecurrency", '3');
+        this.$set(this.entrustOrder, "customTotalAmountcurrency", '3');
+        this.$set(this.entrustOrder, "trusteePayGoodsAmountcurrency", '3');
+        this.$set(this.entrustOrder, "invoiceAmountcurrency", '3');
+        this.$set(this.entrustOrder, "advanceActualAmountcurrency", '3');
+
       this.loadCodeNo(); //加载编号
       // 默认讯宇
       this.entrustOrder.trusteeCode = "GSXX2019072300015";
@@ -2605,14 +2613,13 @@ export default {
             currency
           );
           //
-          this.entrustOrder.goodsValuecurrency = newVal;
-          this.entrustOrder.trusteePayGoodsAmountcurrency = newVal;
-          this.entrustOrder.refundCustomerAmountcurrency = newVal;
-          this.entrustOrder.paidGoodsAmountcurrency = newVal;
+          this.$set(this.entrustOrder, "goodsValuecurrency", newVal);
+          this.$set(this.entrustOrder, "refundCustomerAmountcurrency", newVal);
+          this.$set(this.entrustOrder, "paidGoodsAmountcurrency", newVal);
         } else {
           this.entrustOrder.orderExchangeRate = "";
+          //
           this.entrustOrder.goodsValuecurrency = "";
-          this.entrustOrder.trusteePayGoodsAmountcurrency = "";
           this.entrustOrder.refundCustomerAmountcurrency = "";
           this.entrustOrder.paidGoodsAmountcurrency = "";
         }
@@ -2636,17 +2643,8 @@ export default {
             currency
           );
           //
-          this.$set(this.entrustOrder, "vatTotalAmountcurrency", newVal);
-          this.$set(this.entrustOrder, "totalServiceChargecurrency", newVal);
-          this.$set(this.entrustOrder, "customTotalAmountcurrency", newVal);
-          this.$set(this.entrustOrder, "invoiceAmountcurrency", newVal);
-          this.$set(this.entrustOrder, "advanceActualAmountcurrency", newVal);
         } else {
-          this.$set(this.entrustOrder, "vatTotalAmountcurrency", "");
-          this.$set(this.entrustOrder, "totalServiceChargecurrency", "");
-          this.$set(this.entrustOrder, "customTotalAmountcurrency", "");
-          this.$set(this.entrustOrder, "invoiceAmountcurrency", "");
-          this.$set(this.entrustOrder, "advanceActualAmountcurrency", "");
+          //
         }
       },
       deep: true

@@ -1,16 +1,4 @@
 export default [
-	// {
-	// 	text: true,
-	// 	key: "itemCode",
-	// 	name: "子表主键",
-	// 	prop: "itemCode"
-	// },
-	// {
-	// 	text: true,
-	// 	key: "billNo",
-	// 	name: "其他计费单编码",
-	// 	prop: "billNo"
-	// },
 	{
 		btn: true,
 		type: "string",
@@ -101,10 +89,17 @@ export default [
 	{
 		type: "select",
 		selectOption: [],
-		selectKey: "currencyName",
+		selectKey: "transferOutCurrency",
 		key: "currency",
 		name: "币别",
 		prop: "currency"
+	},
+	{
+	  type: 'string',
+	  key: "settleRate",
+	  name: "汇率",
+	  prop: "settleRate",
+	  disabled: true
 	},
 	{
 		type: "money",
@@ -120,12 +115,6 @@ export default [
 		prop: "payableAmount",
 		disabled: true,
 	},
-	// {
-	// 	type: "string",
-	// 	key: "inSettlementPrice",
-	// 	name: "内部结算价",
-	// 	prop: "inSettlementPrice"
-	// },
 	{
 		type: "select",
 		selectOption: [],
@@ -134,16 +123,4 @@ export default [
 		name: "结算方式",
 		prop: "settlementMethod"
 	},
-	// {
-	// 	type: "date",
-	// 	key: "paymentTime",
-	// 	name: "付款时间",
-	// 	prop: "paymentTime"
-	// },
-	// {
-	// 	text: true,
-	// 	key: "paymenter",
-	// 	name: "付款勾选人",
-	// 	prop: "paymenter"
-	// }
 ]

@@ -261,6 +261,13 @@ export default {
             }
           }
         }
+      }else{
+        if (item.selectKey) {
+          let { key, selectOption } = item
+          if (params === key) {
+            return selectOption[index - 1].itemValue || ''
+          }
+        }
       }
     }
   },
@@ -776,7 +783,7 @@ export default {
         }
       } else {
         if (item.ratio == true) {
-          ratios.push(con.key)
+          ratios.push(item.key)
         }
       }
     }

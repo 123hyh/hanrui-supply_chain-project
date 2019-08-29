@@ -24,10 +24,11 @@
       <strong>We're sorry but vms doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <script src="<%= BASE_URL %>tinymce4.7.5/tinymce.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script src="<%= BASE_URL %>static/accounting@0.4.1.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
     <script src="<%= BASE_URL %>echarts-liquidfill/echarts-liquidfill.min.js"></script> -->
     <div id="app"></div>
+    
     <!-- built files will be auto injected -->
     
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>

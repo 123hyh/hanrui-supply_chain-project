@@ -533,12 +533,10 @@ export default {
       {
         prop: "verifyRoleName",
         label: "所选角色",
-        width: "400"
       },
       {
         prop: "verifyUserName",
         label: "所选用户",
-        width: "400"
       }
     ],
     tableData: [],
@@ -718,18 +716,22 @@ export default {
     // 切换页卡
     handlerTabClick (tab, event) {
       this.curRowData = "";
-      this.tabpag = {
+      let index = {
         setting: 1,
         trial: 2,
         exchangeRate: 3,
         customsExchange: 4
       }[tab.name]
+      if (this.tabpag == index) return;
+      this.tabpag = index;
       this.goStartPage();
     },
 
     // 搜索
     goStartPage () {
       this.ruleForm.pageIndex = 1;
+      this.tableData = [];
+      this.ruleForm.total = 0;
       this.handleChange(this.ruleForm);
     },
 
@@ -739,19 +741,27 @@ export default {
     },
 
     // 修改翻页条数
-    handleChange (paper) {
-      this.ruleForm.pageIndex = paper.pageIndex;
-      this.ruleForm.pageSize = paper.pageSize;
-      if (this.tabpag == 1) {
-        this.queryData();
-      } else if (this.tabpag == 2) {
-        this.getVerifysetting();
-      } else if (this.tabpag == 4) {
-        this.getCustomsExchangeData()
-      } else {
-        this.getExchangerate();
+    handleChange: (() => {
+      let fn = null;
+      return function (paper) {
+        // 节流 防止频繁触发
+        fn = setTimeout(() => {
+          this.ruleForm.pageIndex = paper.pageIndex;
+          this.ruleForm.pageSize = paper.pageSize;
+
+          if (this.tabpag == 1) {
+            this.queryData();
+          } else if (this.tabpag == 2) {
+            this.getVerifysetting();
+          } else if (this.tabpag == 4) {
+            this.getCustomsExchangeData()
+          } else {
+            this.getExchangerate();
+          }
+          clearTimeout(fn)
+        }, 100);
       }
-    },
+    })(),
 
     // 获取全局设置 列表
     async queryData () {
@@ -800,7 +810,6 @@ export default {
     // 获取 海关汇率 列表
     async getCustomsExchangeData (data = {}) {
       try {
-        this.tableData = [];
         const { data: { list, count } } = await api.getCustomsExchangeData({ ...this.ruleForm, source: 'custom' });
         this.tableData = list,
           this.ruleForm.total = count,
@@ -1431,7 +1440,7 @@ export default {
         {
           currency: currencyCn[item],
           cenPrice: data[item],
-          realeasemonth: data.date,
+          releasemonth: data.date,
           source: 'custom'
         }
       )

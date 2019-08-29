@@ -78,10 +78,9 @@ export default [
   },
   {
     type: 'number',
-    key: 'quantity',
+    key: 'sellerQuantity',
     name: '成交数量', // 卖方
-    prop: 'quantity',
-    // disabled: true,
+    prop: 'sellerQuantity',
     rules: [
       {
         required: true,
@@ -135,10 +134,26 @@ export default [
   {
     type: 'string',
     key: 'orderPrice',
-    name: '订单单价', // 卖方
+    name: '订单单价',
     prop: 'orderPrice',
     isShow: true,
     disabled: true,
+  },
+  {
+    name: '报关订单单价',
+    type: 'string',
+    key: 'sellerPrice',
+    prop: 'sellerPrice',
+    disabled: true
+  },
+  {
+    type: 'select',
+    selectOption: [],
+    selectKey: 'currencyName',
+    key: 'sellerCurrency',
+    name: '订单币种', // 卖方
+    prop: 'sellerCurrency',
+    disabled: true
   },
   {
     type: 'string',
@@ -149,26 +164,10 @@ export default [
     rules
   },
   {
-    name: '报关订单单价',
     type: 'string',
-    key: 'customPrice',
-    prop: 'customPrice',
-    disabled: true
-  },
-  {
-    type: 'select',
-    selectOption: [],
-    selectKey: 'currencyName',
-    key: 'orderCurrency',
-    name: '订单币种', // 卖方
-    prop: 'orderCurrency',
-    disabled: true
-  },
-  {
-    type: 'string',
-    key: 'customAmount',
-    name: '报关(货值)金额',
-    prop: 'customAmount',
+    key: 'sellerGoodsValue',
+    name: '报关(货值)金额', //货价（货值）
+    prop: 'sellerGoodsValue',
     disabled: true,
   },
   {
@@ -196,23 +195,50 @@ export default [
   },
   {
     type: 'string',
-    key: 'transportFee',
+    ratio:true,
+    key: "freightRate",
+    name: "运费费率%",
+    prop: "freightRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'freight',
     name: '运费',
-    prop: 'transportFee',
+    prop: 'freight',
     disabled: true,
   },
   {
     type: 'string',
-    key: 'insuranceFee',
+    ratio:true,
+    key: "premiumRate",
+    name: "保费费率%",
+    prop: "premiumRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'premium',
     name: '保费',
-    prop: 'insuranceFee',
+    prop: 'premium',
     disabled: true,
   },
   {
     type: 'string',
-    key: 'otherFee',
+    ratio:true,
+    key: "extrasRate",
+    name: "杂费费率%",
+    prop: "extrasRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'extras',
     name: '杂费',
-    prop: 'otherFee',
+    prop: 'extras',
     disabled: true,
     rules: [
       {
@@ -226,9 +252,10 @@ export default [
   },
   {
     type: 'string',
-    key: 'totalAmount',
+    key: 'costAmount',
     name: '运保杂总计',
-    prop: 'totalAmount',
+    prop: 'costAmount',
+    disabled: true,
     rules: [
       {
         required: true,
@@ -241,19 +268,131 @@ export default [
   },
   {
     type: 'string',
-    key: 'tariff',
-    name: '关税', // 海关税额
-    prop: 'tariff',
+    key: 'customsExchangeRate',
+    name: '原币别到人民币', //海关汇率
+    prop: 'customsExchangeRate',
+    rules,
+    readonly: true,
+    disabled: true,
+  },
+  {
+    type: 'calculate',
+    key: 'targetCurrencyToRmb',
+    name: '目标币到人民币',
+    prop: 'targetCurrencyToRmb',
     disabled: true,
     rules
   },
   {
     type: 'string',
-    key: 'vat',
-    name: '增值税', // 增值税税额
-    prop: 'vat',
+    ratio:true,
+    key: "customTaxRate",
+    name: "关税税率(%)",
+    prop: "customTaxRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    ratio:true,
+    key: "increaseTaxRate",
+    name: "加征税率(%)",
+    prop: "increaseTaxRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'customTaxAmount',
+    name: '关税', // 海关税额
+    prop: 'customTaxAmount',
     disabled: true,
     rules
+  },
+  {
+    type: 'string',
+    ratio:true,
+    key: "exciseTaxRate",
+    name: "消费税率(%)",
+    prop: "exciseTaxRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'exciseTax',
+    name: '消费税额',
+    prop: 'exciseTax',
+    disabled: true,
+    rules
+  },
+  {
+    selectOption: [],
+    type: 'select',
+    key: "vatTaxRate",
+    selectKey: "valueAddedTax",
+    name: "进口增值税率%",
+    disabled: true,
+    prop: "vatTaxRate",
+  },
+  {
+    type: 'string',
+    key: 'vatTaxAmount',
+    name: '增值税', // 增值税税额
+    prop: 'vatTaxAmount',
+    disabled: true,
+    rules
+  },
+  {
+    type: 'string',
+    key: 'taxTypeName',
+    name: '其他税种',
+    prop: 'taxTypeName',
+    disabled: true,
+    rules
+  },
+  {
+    type: 'string',
+    ratio:true,
+    key: "otherTaxRate",
+    name: "其他税率(%)",
+    prop: "otherTaxRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'otherTaxAmount',
+    name: '其他税金',
+    prop: 'otherTaxAmount',
+    disabled: true,
+    rules
+  },
+  {
+    type: 'string',
+    key: 'priceTax',
+    name: '价税合计',
+    prop: 'priceTax',
+    disabled: true,
+    rules
+  },
+  {
+    type: 'string',
+    key: 'dutiablePrice',
+    name: '完税价格',
+    prop: 'dutiablePrice',
+    disabled: true,
+    isShow: true,
+    rules
+  },
+  {
+    type: 'string',
+    ratio:true,
+    key: "serviceExchangeRate",
+    name: "服务费费率(%)",
+    prop: "serviceExchangeRate",
+    disabled: true,
+    decimal: 2
   },
   {
     type: 'select',
@@ -261,27 +400,76 @@ export default [
     selectOption: [],
     key: 'serviceCurrency',
     prop: 'serviceCurrency',
-    name: '服务费币别'
+    name: '服务费币别',
+    disabled: true,
   },
   {
     type: 'number',
     key: 'serviceFee',
     prop: 'serviceFee',
-    name: '服务费金额'
+    name: '服务费金额',
+    disabled: true,
   },
   {
     type: 'string',
-    key: 'originalCurrencyToRmb',
-    name: '原币别到人民币',
-    prop: 'originalCurrencyToRmb',
-    rules,
-    readonly: true
+    key: 'buyerExchangeRate',
+    name: '买方货款汇率',
+    prop: 'buyerExchangeRate',
+    disabled: true,
   },
   {
-    type: 'calculate',
-    key: 'targetCurrencyToRmb',
-    name: '目标币到人民币',
-    prop: 'targetCurrencyToRmb',
+    type: 'string',
+    key: 'buyerRate',
+    name: '买方汇率',
+    prop: 'buyerRate',
+    disabled: true,
+  },
+  {
+    type: 'select',
+    selectOption: [],
+    selectKey: 'currencyName',
+    key: 'buyerCurrency',
+    name: '买方币别',
+    prop: 'buyerCurrency',
+    disabled: true
+  },
+  {
+    type: 'string',
+    key: 'buyerPrice',
+    name: '买方单价',
+    prop: 'buyerPrice',
+    disabled: true,
+  },
+  {
+    type: 'string',
+    key: 'buyerGoodsValue',
+    name: '买方货值',
+    prop: 'buyerGoodsValue',
+    disabled: true,
+  },
+  {
+    type: 'string',
+    ratio:true,
+    key: "drawbackRate",
+    name: "退税率(%)",
+    prop: "drawbackRate",
+    disabled: true,
+    decimal: 2
+  },
+  {
+    type: 'string',
+    key: 'drawback',
+    name: '退税金额',
+    prop: 'drawback',
+    disabled: true,
+    rules
+  },
+  {
+    type: 'string',
+    key: 'superviseMode',
+    name: '监管方式',
+    prop: 'superviseMode',
+    disabled: true,
     rules
   },
   {
@@ -289,6 +477,7 @@ export default [
     key: 'superviseTerm',
     name: '监管条件',
     prop: 'superviseTerm',
+    disabled: true,
     btn: true,
     readonly: true,
     rules
@@ -364,14 +553,6 @@ export default [
     name: '批号',
     prop: 'batchNo',
     disabled: true
-  },
-  {
-    type: 'string',
-    key: 'superviseMode',
-    name: '监管方式',
-    prop: 'superviseMode',
-    disabled: true,
-    rules
   },
   {
     type: 'string',

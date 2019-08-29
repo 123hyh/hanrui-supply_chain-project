@@ -323,7 +323,7 @@ export default {
           this.utools.resCalcConfig(
             this.formDialog.ruleForm,
             this.formDialog.formConfig,
-            {}
+            this.formDialog.ruleForm
           );
       },
       deep: true
