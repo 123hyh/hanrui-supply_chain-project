@@ -1852,7 +1852,7 @@ export default new VueRouter({
     {
       path: '*',
       redirect: '/404'
-    },
+    }
     /* {
       path: '/export',
       component: () => import('@/test/Export.vue')

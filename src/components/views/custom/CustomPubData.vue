@@ -101,6 +101,12 @@ export default {
     PackageType: _ => import('@/components/views/basicdata/PackageTypeList.vue'), // 包装种类
     Institution: _ => import('@/components/views/basicdata/InstitutionList.vue'), // 检验检疫机关信息
     InspectionPurpose: _ => import('@/components/views/basicdata/InspectionPurposeList.vue'), // 报检用途
+    Customhouse: _ => import('@/components/views/basicdata/Customhouse.vue'), // 关区代码
+    Reasons: _ => import('@/components/views/basicdata/Reasons.vue'), // 关联理由代码
+    Credentials: _ => import('@/components/views/basicdata/Credentials.vue'), // 监管证件代码
+    EnterpriseQualification: _ => import('@/components/views/basicdata/EnterpriseQualification.vue'), // 企业资质代码
+    OriginArea: _ => import('@/components/views/basicdata/OriginArea.vue'), // 原产地区代码
+    GoodsAttribute: _ => import('@/components/views/basicdata/GoodsAttribute.vue'), // 货物属性代码
   },
   data () {
     return {
@@ -177,7 +183,13 @@ export default {
         'M060128': 'DeliveredGoodsPlace',
         'M060129': 'PackageType',
         'M060130': 'Institution',
-        'M060131': 'InspectionPurpose'
+        'M060131': 'InspectionPurpose',
+        'M060135': 'Customhouse',
+        'M060136': 'Reasons',
+        'M060137': 'Credentials',
+        'M060138': 'EnterpriseQualification',
+        'M060139': 'OriginArea',
+        'M060140': 'GoodsAttribute'
       };
       this.childName = obj[menuCode];
       this.route['location'] = menuCode;

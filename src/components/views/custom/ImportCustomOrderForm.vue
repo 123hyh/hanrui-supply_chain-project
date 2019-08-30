@@ -423,7 +423,8 @@ export default {
           this.form.data = { ...this.form.data, carNumber: data.trainNumberCode };
           break;
         case 'packageKind':
-          this.form.data = { ...this.form.data, packageKind: data.packageTypeName, packageKindCode: data.packageTypeCode };
+          // this.form.data = { ...this.form.data, packageKind: data.packageTypeName, packageKindCode: data.packageTypeCode };
+          this.form.data = { ...this.form.data, packageKind: data.packageTypeCode };
           break;
         case 'entrustOrderNo':
           this.form.data = { ...this.form.data, dealMode: data.dealMode, customType: data.reportGateType };
