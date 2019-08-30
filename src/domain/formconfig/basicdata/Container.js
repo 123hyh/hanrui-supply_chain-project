@@ -21,7 +21,6 @@ export default [
     key: 'containerAbb',
     name: '简称',
     prop: 'containerAbb',
-    rules
   },
   {
     type: 'string',
@@ -35,7 +34,6 @@ export default [
     key: 'containerSpecification',
     name: '集装箱规格',
     prop: 'containerSpecification',
-    rules
   },
   {
     type: 'string',

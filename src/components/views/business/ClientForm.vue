@@ -20,10 +20,10 @@
     ></popover>
     <!-- 保存 返回 按钮 -->
     <preserve-btn
-      :form='clientForm'
+      :form="clientForm"
       @handlePreserve="tabActiveName!='bank'? handlePreserve(): handlePreserve('finance')"
       @handleRollback="handleRollback"
-      @hanldeBlacklist='hanldeBlacklist'
+      @hanldeBlacklist="hanldeBlacklist"
       :isLoading="isLoading"
     ></preserve-btn>
     <!-- tab -->
@@ -34,10 +34,7 @@
         @tab-click="handlerTabClick"
         class="tabs-defined"
       >
-        <el-tab-pane
-          label="基本资料"
-          name="contact"
-        >
+        <el-tab-pane label="基本资料" name="contact">
           <form-config
             :inputKey="clientKey"
             :formModel="clientForm"
@@ -46,6 +43,7 @@
           ></form-config>
         </el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           v-if="isJurisdiction"
           label="财务资料"
           name="bank"
@@ -58,47 +56,45 @@
           ></form-config>
         </el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           label="收货资料"
           name="receive"
         ></el-tab-pane>
+        <el-tab-pane label="开票资料" name="invoice" :disabled="jumpType=='add'"></el-tab-pane>
         <el-tab-pane
-          label="开票资料"
-          name="invoice"
-        ></el-tab-pane>
-        <el-tab-pane
+          :disabled="jumpType=='add'"
           label="供应商委托收款协议"
           name="gatherAgreement"
         ></el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           label="协议明细"
           name="agreement"
         ></el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           label="业务员"
           name="salesman"
         ></el-tab-pane>
+        <el-tab-pane label="商务员"  :disabled="jumpType=='add'"name="businessPart"></el-tab-pane>
         <el-tab-pane
-          label="商务员"
-          name="businessPart"
-        ></el-tab-pane>
-        <el-tab-pane
+          :disabled="jumpType=='add'"
           label="客户拜访记录"
           name="visit"
         ></el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           label="其他信息"
           name="other"
         ></el-tab-pane>
         <el-tab-pane
+          :disabled="jumpType=='add'"
           label="流失原因"
           name="lost"
         ></el-tab-pane>
         <!-- 表格 -->
         <el-row :gutter="10">
-          <el-col
-            :span="24"
-            class="handleTableHeight"
-          >
+          <el-col :span="24" class="handleTableHeight">
             <div
               class="mb-10"
               v-if="tabActiveName != 'agreement' && (clientForm.status == '1' || !clientForm.status)"
@@ -109,15 +105,14 @@
             </div>
 
             <table-component
-              :isSubTable='true'
-              :dialog='false'
-              :popoverList='dataTab'
-              :popoverListKey='columnDataTable'
-              :count='queryTableData.count'
-              :activeRow.sync='curRowData'
-              @handlePageChange='handleTabPageChange'
+              :isSubTable="true"
+              :dialog="false"
+              :popoverList="dataTab"
+              :popoverListKey="columnDataTable"
+              :count="queryTableData.count"
+              :activeRow.sync="curRowData"
+              @handlePageChange="handleTabPageChange"
             ></table-component>
-
           </el-col>
         </el-row>
       </el-tabs>
@@ -139,14 +134,8 @@
       ></form-config>
       <!-- 按钮行 -->
       <div slot="footer">
-        <el-button
-          type="primary"
-          @click="saveTab"
-        >保存</el-button>
-        <el-button
-          type="cancel"
-          @click="closeTabForm"
-        >取消</el-button>
+        <el-button type="primary" @click="saveTab">保存</el-button>
+        <el-button type="cancel" @click="closeTabForm">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -156,8 +145,7 @@
 import Popover from "@/components/common/Popover.vue";
 import FormConfig from "@/components/common/FormConfig.vue";
 import Pagination from "@/components/common/Pagination.vue";
-import TableComponent from '@/components/common/Table.Form.Dialog/TableComponent.vue'
-
+import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
 
 import Client from "@/domain/entities/business/Client";
 import ClientFormConfig from "@/domain/formconfig/business/Client";
@@ -170,14 +158,14 @@ import utools from "@/domain/common/utools";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 let ColumnData = "";
 export default {
-  name: 'ClientForm',
+  name: "ClientForm",
   components: {
     Popover,
     FormConfig,
     Pagination,
     TableComponent
   },
-  data () {
+  data() {
     return {
       isJurisdiction: true,
       popover: {
@@ -227,7 +215,7 @@ export default {
     };
   },
   computed: {
-    requestAddress () {
+    requestAddress() {
       return {
         province: () => api.getProvince(),
         city: code => api.getCity(code),
@@ -238,7 +226,7 @@ export default {
   },
   watch: {
     "clientForm.province": {
-      handler (cur, pre) {
+      handler(cur, pre) {
         if (!cur || cur == pre) return;
         pre && (delete this.clientForm.city, delete this.clientForm.county);
         this.getAddress("city", cur);
@@ -246,7 +234,7 @@ export default {
       deep: true
     },
     "clientForm.city": {
-      handler (cur, pre) {
+      handler(cur, pre) {
         if (!cur || cur == pre) return;
         pre && delete this.clientForm.county;
         this.getAddress("county", cur);
@@ -257,10 +245,16 @@ export default {
   methods: {
     ...mapMutations(["addBtnType", "addbreadCrumbsList"]),
     // 融资授信额度的处理
-    setCredit ({ data: { list } } = {}) {
-
+    setCredit({ data: { list } } = {}) {
       // 优化后
-      const [{ creditLimitAmount = '', creditLimit = '', exportMaxTaxLimit = '', exportAmountLimit = '' } = {}] = list;
+      const [
+        {
+          creditLimitAmount = "",
+          creditLimit = "",
+          exportMaxTaxLimit = "",
+          exportAmountLimit = ""
+        } = {}
+      ] = list;
       let obj = {
         customerLimit: creditLimitAmount,
         noExportLimit: creditLimit,
@@ -269,11 +263,11 @@ export default {
       };
 
       for (let key of Object.keys(obj)) {
-        this.$set(this.clientForm, key, obj[key])
-      };
+        this.$set(this.clientForm, key, obj[key]);
+      }
     },
 
-    async getAddress (type, code) {
+    async getAddress(type, code) {
       try {
         const { data } = await this.requestAddress[type](code);
         this.handleSelectOption(data, type);
@@ -281,7 +275,7 @@ export default {
         console.log(e);
       }
     },
-    handleSelectOption (data, type) {
+    handleSelectOption(data, type) {
       for (let item of this.clientKey) {
         if (item.key === type) {
           item.selectOption = data.map(item => ({
@@ -292,14 +286,11 @@ export default {
         }
       }
     },
-    async hanldeBlacklist () {
-      utools.blacklist.call(
-        this,
-        async () => {
-          await api.addClientBlacklist(this.clientForm.clientNo);
-          this.$set(this.clientForm, 'hasBlack', true)
-        }
-      )
+    async hanldeBlacklist() {
+      utools.blacklist.call(this, async () => {
+        await api.addClientBlacklist(this.clientForm.clientNo);
+        this.$set(this.clientForm, "hasBlack", true);
+      });
     },
     /************************** 弹窗methods start *******************/
     /**
@@ -307,7 +298,7 @@ export default {
      */
     handleBtnClick: (() => {
       var obj = null;
-      return function (type, clear) {
+      return function(type, clear) {
         if (clear) {
           obj = null;
         } else {
@@ -316,7 +307,7 @@ export default {
         }
       };
     })(),
-    handleBtnClickObj () {
+    handleBtnClickObj() {
       return {
         search: async () => {
           try {
@@ -340,7 +331,7 @@ export default {
       };
     },
     //table
-    handlerSubPreservation (rowData, key) {
+    handlerSubPreservation(rowData, key) {
       console.log(rowData, key);
       if (this.clientForm[key] !== undefined) {
         if (
@@ -354,8 +345,8 @@ export default {
             key == "outcomeOwner"
               ? "outcomeOwnerCode"
               : key == "orderReceiverName"
-                ? "orderReceiverCode"
-                : "orderFollowerCode";
+              ? "orderReceiverCode"
+              : "orderFollowerCode";
           this.clientForm[personCode] = rowData["employeeInfoCode"];
         } else if (key.includes("inlandDestination")) {
           this.clientForm[key] = rowData["domesticDestinationName"];
@@ -433,8 +424,8 @@ export default {
             key == "leader"
               ? "leaderCode"
               : key == "salesman"
-                ? "salesmanCode"
-                : "businessPartCode";
+              ? "salesmanCode"
+              : "businessPartCode";
           this.clientForm[personCode] = rowData["employeeInfoCode"];
           this.columnDataFinance["department"] = rowData["department"];
           this.columnData["department"] = rowData["department"];
@@ -450,7 +441,7 @@ export default {
       }
     },
     // 员工资料
-    employeeInfo () {
+    employeeInfo() {
       this.popover.formConfig = [
         { label: "职员编码", moduleBind: "employeeInfoCode", isInput: true }
       ];
@@ -465,8 +456,8 @@ export default {
         { key: "leader", name: "上级领导" }
       ];
     },
-    rousePopover (type) {
-      console.log(type)
+    rousePopover(type) {
+      console.log(type);
       if (this.clientForm[type] !== undefined) {
         if (
           type == "outcomeOwner" ||
@@ -612,12 +603,21 @@ export default {
             { key: "organizationName", name: "财务组织名称" }
           ];
         }
-      };
+      }
 
       // 基础资料 请求提交状态的白名单
       const WHITE_LIST = [
-        'orderReceiverName', 'orderFollowerName', 'outcomeOwner', 'inlandDestination', 'organizationName', 'leader', 'department', 'salesman', 'businessPart', 'followPerson'
-      ]
+        "orderReceiverName",
+        "orderFollowerName",
+        "outcomeOwner",
+        "inlandDestination",
+        "organizationName",
+        "leader",
+        "department",
+        "salesman",
+        "businessPart",
+        "followPerson"
+      ];
 
       let currencyObj = {
         // 配置当前点击请求对象
@@ -625,10 +625,10 @@ export default {
           try {
             let {
               data: { count, list }
-            } = await api.querySearch(
-              this.popover.apiKey,
-              { ...this.popover.ruleForm, status: WHITE_LIST.includes(type) ? '2' : '' }
-            );
+            } = await api.querySearch(this.popover.apiKey, {
+              ...this.popover.ruleForm,
+              status: WHITE_LIST.includes(type) ? "2" : ""
+            });
             this.popover.count = count;
             this.popover.popoverList = list;
           } catch (error) {
@@ -641,19 +641,19 @@ export default {
       this.popover.isShowPopover = !this.popover.isShowPopover;
     },
     //分页
-    handlePageChange (paper) {
+    handlePageChange(paper) {
       this.popover.ruleForm.pageIndex = paper.pageIndex;
       this.popover.ruleForm.pageSize = paper.pageSize;
       this.handleBtnClick("search"); //翻页查询
     },
     /************************** 弹窗methods end *******************/
-    handlerFormVerify ($refs) {
+    handlerFormVerify($refs) {
       this.verify = $refs;
     },
-    handlerFormVerify_finance ($refs) {
+    handlerFormVerify_finance($refs) {
       this.verify_finance = $refs;
     },
-    isVerify (tabType) {
+    isVerify(tabType) {
       let isVerify = false;
       // 不同的页签不同的验证规则
       let fun = tabType ? "verify_finance" : "verify";
@@ -664,52 +664,48 @@ export default {
     },
 
     //分页
-    async handleTabPageChange (paper = {}) {
+    async handleTabPageChange(paper = {}) {
       const bankParams = this.utools.cloneObj(paper);
       delete bankParams.clientNo;
       const {
         data: { list, count }
-      } = await (
-        this.tabActiveName == 'bank' ?
-          api.getClientBlankData({ billNo: paper.clientNo, ...bankParams }) :
-          api.querySearch(
-            "/client" + this.tabActiveName.toLowerCase(),
-            paper
-          ));
+      } = await (this.tabActiveName == "bank"
+        ? api.getClientBlankData({ billNo: paper.clientNo, ...bankParams })
+        : api.querySearch("/client" + this.tabActiveName.toLowerCase(), paper));
       this.dataTab = list;
       utools.turnCodeBoolean(this.dataTab);
       this.queryTableData.count = count;
     },
-    handleRollback () {
+    handleRollback() {
       this.$router.push("/M0204");
     },
     // 第一个字母转大写
-    capitalize ([first, ...rest]) {
+    capitalize([first, ...rest]) {
       return first ? first.toUpperCase() + rest.join("") : "";
     },
-    async handlerTabClick ({ name } = tab, event) {
+    async handlerTabClick({ name } = tab, event) {
       this.title =
         name == "contact"
           ? "联系人"
           : name == "bank"
-            ? "银行信息"
-            : name == "receive"
-              ? "收货资料"
-              : name == "invoice"
-                ? "开票资料"
-                : name == "gatherAgreement"
-                  ? "供应商委托收款协议"
-                  : name == "agreement"
-                    ? "协议明细"
-                    : name == "salesman"
-                      ? "业务员"
-                      : name == "businessPart"
-                        ? "商务员"
-                        : name == "visit"
-                          ? "客户拜访记录"
-                          : name == "other"
-                            ? "其他信息"
-                            : "流失原因";
+          ? "银行信息"
+          : name == "receive"
+          ? "收货资料"
+          : name == "invoice"
+          ? "开票资料"
+          : name == "gatherAgreement"
+          ? "供应商委托收款协议"
+          : name == "agreement"
+          ? "协议明细"
+          : name == "salesman"
+          ? "业务员"
+          : name == "businessPart"
+          ? "商务员"
+          : name == "visit"
+          ? "客户拜访记录"
+          : name == "other"
+          ? "其他信息"
+          : "流失原因";
       ColumnData = require("@/domain/entities/business/Client" +
         this.capitalize(name)).default;
       this.columnData = new ColumnData();
@@ -730,21 +726,21 @@ export default {
     },
     /*************** 供应链供应商methods start******************/
     //保存主表单
-    async handlePreserve (tabName) {
+    async handlePreserve(tabName) {
       let formData = "",
         editApiKey = "",
         addApiKey = "";
       tabName == "finance"
         ? (() => {
-          (formData = this.columnDataFinance),
-            (editApiKey = "editclientfinanceData"),
-            (addApiKey = "addclientfinanceData");
-        })()
+            (formData = this.columnDataFinance),
+              (editApiKey = "editclientfinanceData"),
+              (addApiKey = "addclientfinanceData");
+          })()
         : (() => {
-          (formData = this.clientForm),
-            (editApiKey = "editclientData"),
-            (addApiKey = "addclientData");
-        })();
+            (formData = this.clientForm),
+              (editApiKey = "editclientData"),
+              (addApiKey = "addclientData");
+          })();
       if (
         (this.jumpType == "update" && tabName != "finance") ||
         (this.jumpType == "update" && tabName == "finance" && formData.itemCode)
@@ -762,7 +758,7 @@ export default {
               this.$message.success("修改成功");
             }
           } catch (e) {
-            this.$message.error('修改失败，请重试！')
+            this.$message.error("修改失败，请重试！");
             console.log(e);
           } finally {
             this.isLoading = false;
@@ -777,9 +773,11 @@ export default {
               ...this.clientForm,
               status: data.status || "1"
             };
-            this.setCredit(await api.getCredit({
-              customerCode: this.clientForm.clientNo
-            }))
+            this.setCredit(
+              await api.getCredit({
+                customerCode: this.clientForm.clientNo
+              })
+            );
             if (data) {
               // 提交成功后...
               this.$message.success("保存成功");
@@ -794,49 +792,61 @@ export default {
       }
     },
     // 新增修改子form
-    async saveTab () {
+    async saveTab() {
       if (this.isVerify()) {
-        utools.saveReceiptsTips.call(
-          this,
-          async () => {
-            // 验证成功
-            if (this.btnType == "update") {
-              const { data: editData } = await this.tabActiveName === 'bank' ? api.changeClientBlankData({ method: 'PUT', data: this.columnData, }) : api.editData(
-                "/client" + this.tabActiveName.toLowerCase(),
-                this.columnData
-              );
-              if (editData) {
-                // 提交成功后...
-                this.$message.success("修改成功");
-                this.popFormTab = false; //关闭弹窗
-                this.handlerTabClick({ name: this.tabActiveName }); //数据刷新
-              }
-            } else {
-              const { data: addData } = await this.tabActiveName === 'bank' ?
-                api.changeClientBlankData({ method: 'POST', data: { ...this.columnData, billNo: this.columnData.clientNo }, }) :
-                api.addData(
-                  "/client" + this.tabActiveName.toLowerCase(),
-                  this.columnData
-                );
-              if (addData) {
-                // 提交成功后...
-                this.$message.success("保存成功");
-                this.popFormTab = false; //关闭弹窗
-                this.handlerTabClick({ name: this.tabActiveName }); //数据刷新
-              }
+        utools.saveReceiptsTips.call(this, async () => {
+          // 验证成功
+          if (this.btnType == "update") {
+            const { data: editData } =
+              (await this.tabActiveName) === "bank"
+                ? api.changeClientBlankData({
+                    method: "PUT",
+                    data: this.columnData
+                  })
+                : api.editData(
+                    "/client" + this.tabActiveName.toLowerCase(),
+                    this.columnData
+                  );
+            if (editData) {
+              // 提交成功后...
+              this.$message.success("修改成功");
+              this.popFormTab = false; //关闭弹窗
+              this.handlerTabClick({ name: this.tabActiveName }); //数据刷新
             }
-            this.popFormTab = false;
-            this.handleTabPageChange({ [this.tabActiveName !== 'bank' ? 'clientNo' : 'clientNo']: this.columnData.clientNo })
+          } else {
+            const { data: addData } =
+              (await this.tabActiveName) === "bank"
+                ? api.changeClientBlankData({
+                    method: "POST",
+                    data: {
+                      ...this.columnData,
+                      billNo: this.columnData.clientNo
+                    }
+                  })
+                : api.addData(
+                    "/client" + this.tabActiveName.toLowerCase(),
+                    this.columnData
+                  );
+            if (addData) {
+              // 提交成功后...
+              this.$message.success("保存成功");
+              this.popFormTab = false; //关闭弹窗
+              this.handlerTabClick({ name: this.tabActiveName }); //数据刷新
+            }
           }
-        )
+          this.popFormTab = false;
+          this.handleTabPageChange({
+            [this.tabActiveName !== "bank" ? "clientNo" : "clientNo"]: this
+              .columnData.clientNo
+          });
+        });
       }
     },
     // 是否新增修改
-    async openTabForm (btnType) {
+    async openTabForm(btnType) {
       if (btnType != "create" && JSON.stringify(this.curRowData) != "{}") {
         try {
-          if (this.tabActiveName === 'bank') {
-
+          if (this.tabActiveName === "bank") {
           } else {
             const { data: searchOneData } = await api.searchOneData(
               "/client" + this.tabActiveName.toLowerCase(),
@@ -844,7 +854,6 @@ export default {
             );
             this.curRowData = searchOneData;
           }
-
         } catch (e) {
           console.log(e);
         }
@@ -864,23 +873,24 @@ export default {
       if (btnType == "delete" && JSON.stringify(this.curRowData) != "{}") {
         utools.deleteMessage.call(
           this,
-          utools.removeReceiptsTips.bind(
-            this,
-            async () => {
-              const { data, status } = await this.tabActiveName === 'bank' ?
-                api.deleteClientBlankData(this.curRowData.itemCode) :
-                api.deleteData(
-                  "/client" + this.tabActiveName.toLowerCase(),
-                  this.curRowData.itemCode
-                );
-              this.handleTabPageChange({ [this.tabActiveName !== 'bank' ? 'clientNo' : 'clientNo']: this.columnData.clientNo })
-              this.handlerTabClick({ name: this.tabActiveName });
-            }
-          )
+          utools.removeReceiptsTips.bind(this, async () => {
+            const { data, status } =
+              (await this.tabActiveName) === "bank"
+                ? api.deleteClientBlankData(this.curRowData.itemCode)
+                : api.deleteData(
+                    "/client" + this.tabActiveName.toLowerCase(),
+                    this.curRowData.itemCode
+                  );
+            this.handleTabPageChange({
+              [this.tabActiveName !== "bank" ? "clientNo" : "clientNo"]: this
+                .columnData.clientNo
+            });
+            this.handlerTabClick({ name: this.tabActiveName });
+          })
         );
       }
     },
-    async loadCodeNo () {
+    async loadCodeNo() {
       //加载编号
       try {
         let { data } = await api.getclientCode();
@@ -891,16 +901,16 @@ export default {
       }
     },
     // 取消弹窗
-    closeTabForm () {
+    closeTabForm() {
       this.popFormTab = false;
     },
     // 选中当前行
-    clickTabRow (row) {
+    clickTabRow(row) {
       // 获取修改内容
       this.curRowData = row;
       this.$refs.moviesTable.toggleRowSelection(row);
     },
-    async getClickRowFinance () {
+    async getClickRowFinance() {
       const {
         data: { list, count }
       } = await api.searchclientfinanceData({
@@ -910,7 +920,7 @@ export default {
     }
     /*************************** 供应链供应商methods end *******************/
   },
-  async created () {
+  async created() {
     // let jurisdiction = this.$store.state.authorityControl.listBtn['M0204']
     // if(jurisdiction.indexOf('finance')>-1){
     //   this.isJurisdiction=true
@@ -925,9 +935,11 @@ export default {
       this.clientForm = JSON.parse(sessionStorage.ClientForm);
       sessionStorage.clientNo = this.clientForm.clientNo;
       try {
-        this.setCredit(await api.getCredit({
-          customerCode: this.clientForm.clientNo
-        }))
+        this.setCredit(
+          await api.getCredit({
+            customerCode: this.clientForm.clientNo
+          })
+        );
         /*  const { data: creditData } = await api.getCredit({
            customerCode: this.clientForm.clientNo
          }); */
@@ -966,7 +978,7 @@ export default {
     }
   },
   // 切换路由数据保存
-  beforeRouteLeave (to, form, next) {
+  beforeRouteLeave(to, form, next) {
     this.addbreadCrumbsList({
       data: { formData: this.clientForm, status: this.jumpType },
       path: this.$route.path

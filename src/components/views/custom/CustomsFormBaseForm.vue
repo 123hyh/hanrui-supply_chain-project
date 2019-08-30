@@ -552,8 +552,8 @@ export default {
           this.tabForm[key] = rowData['companyName'];
           this.tabForm['storagePlaceCode'] = rowData['companyCode'];
         } else if (key === 'supervisionType') {
-          this.tabForm[key] = rowData['billName'];
-          this.tabForm['supervisionTypeCode'] = rowData['billCode'];
+          this.tabForm[key] = rowData['supervisionModeName'];
+          this.tabForm['supervisionTypeCode'] = rowData['supervisionModeCode'];
         } else if (key === 'exemption') {
           this.tabForm[key] = rowData['exemptionName'];
           this.tabForm['exemptionCode'] = rowData['exemptionCode'];
@@ -712,10 +712,10 @@ export default {
             configUrl: 'basicdata/CompanyInfo',
           },
           'supervisionType': {
-            queryCode: 'billCode',
-            apiKey: '/supervisioncondition',
+            queryCode: 'supervisionModeCode',
+            apiKey: '/supervisionmode',
             itemName: '监管方式',
-            configUrl: 'basicdata/SupervisionCondition',
+            configUrl: 'basicdata/SupervisionMode',
           },
           'exemption': {
             queryCode: 'exemptionCode',
