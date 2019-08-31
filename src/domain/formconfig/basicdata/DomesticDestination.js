@@ -22,7 +22,6 @@ export default [
     key: 'domesticDestinationAbb',
     name: '简称',
     prop: 'domesticDestinationAbb',
-    rules
   },
   {
     type: 'string',

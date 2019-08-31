@@ -21,7 +21,6 @@ export default [
 		key: "packageTypeAbb",
 		name: "简称",
 		prop: "packageTypeAbb",
-		rules
 	},
 	{
 		type: 'string',

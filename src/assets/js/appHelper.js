@@ -662,7 +662,7 @@ let api = {
       method: 'DELETE'
     })
   },
-  // 产地表分页查询
+  // 产地 原产国(地区)/启运国(地区）表分页查询
   getOriginList(data) {
     let options = {
       url: `/origin/search`,

@@ -91,7 +91,7 @@ export default {
     BrandList: _ => import('@/components/views/basicdata/BrandList.vue'),	//	品牌
     BrandOriginList: _ => import('@/components/views/basicdata/BrandOriginList.vue'),	//	物料品牌产地
     ControlledGoodsApplyList: _ => import('@/components/views/basicdata/ControlledGoodsApplyList.vue'),	//管制品申请表
-    OriginList: _ => import('@/components/views/basicdata/OriginList.vue'),	//	原产国
+    OriginList: _ => import('@/components/views/basicdata/OriginList.vue'),	//	原产国(地区)/启运国(地区)
     ArrivalCountryList: _ => import('@/components/views/basicdata/ArrivalCountryList.vue'),	//	运抵国
     SupervisionModeList: _ => import('@/components/views/basicdata/SupervisionModeList.vue'),	//	监管方式
     MaterialBrand: _ => import('@/components/views/basicdata/MaterialBrand.vue'), // 物料品牌

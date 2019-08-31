@@ -115,7 +115,7 @@
                   <div v-show="+agreementForm.status||0 <= 1">
                     <!-- 操作 -->
                     <el-button
-                      v-if="(tabActiveName_one == 'solution' && agreementSolutionNo)||tabActiveName != 'clinet'"
+                      v-if="tabActiveName != 'clinet'"
                       @click="openTabForm('create')"
                     >新增</el-button>
                     <el-button @click="openTabForm('update')">修改</el-button>
@@ -697,6 +697,7 @@ export default {
     },
 
     async handlerTabClick({ name } = tab, event) {
+      debugger
       this.title =
         {
           clinet: "受托方收款项目",
@@ -994,6 +995,7 @@ export default {
 
     // 选中当前行-列表一
     clickTabRow_one(row) {
+      
       // 获取修改内容
       if (
         row.itemCode &&
@@ -1007,7 +1009,7 @@ export default {
         this.agreementSolutionNo = "";
       }
       this.clickRowData_one = row;
-      this.$refs.moviesTable.toggleRowSelection(row);
+      // this.$refs.moviesTable.toggleRowSelection(row);
     },
 
     // 选中当前行-列表二

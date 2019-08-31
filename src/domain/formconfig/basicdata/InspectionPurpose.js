@@ -21,7 +21,6 @@ export default [
     key: 'inspectionPurposeAbb',
     name: '简称',
     prop: 'inspectionPurposeAbb',
-    rules
   },
   {
     type: 'string',

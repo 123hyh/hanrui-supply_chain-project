@@ -31,7 +31,7 @@
     </div>
     <!-- 表单弹窗 -->
     <popover-component
-      itemName='原产国'
+      itemName='原产国(地区)/启运国(地区)'
       :isShowPopover.sync="formDialog.isshow"
       popoverType="form"
       :billsStatus='formDialog.ruleForm.status'

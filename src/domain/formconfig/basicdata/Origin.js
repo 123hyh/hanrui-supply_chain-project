@@ -35,7 +35,6 @@ export default [
     key: 'engName',
     name: '全英文名',
     prop: 'engName',
-    rules
   },
   {
     type: 'string',

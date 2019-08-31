@@ -558,8 +558,8 @@ export default {
           this.tabForm[key] = rowData['exemptionName'];
           this.tabForm['exemptionCode'] = rowData['exemptionCode'];
         } else if (key === 'originCountry' || key === 'tradingCountry') {
-          this.tabForm[key] = rowData['arrivalCountryName'];
-          this.tabForm[`${key}Code`] = rowData['arrivalCountryCode'];
+          this.tabForm[key] = rowData['originName'];
+          this.tabForm[`${key}Code`] = rowData['originName'];
         } else if (key === 'licenseOffice' || key === 'destinationOffice' || key === 'portOffice' || key === 'iqOffice') {
           this.tabForm[key] = rowData['institutionName'];
           this.tabForm[`${key}Code`] = rowData['institutionCode'];
@@ -724,10 +724,10 @@ export default {
             configUrl: 'basicdata/Exemption',
           },
           'originCountry': {
-            queryCode: 'arrivalCountryCode',
-            apiKey: '/arrivalcountry',
-            itemName: '启运国',
-            configUrl: 'basicdata/ArrivalCountry',
+            queryCode: 'originCode',
+            apiKey: '/origin',
+            itemName: '国家',
+            configUrl: 'basicdata/Origin',
           },
           'iqOffice': {
             queryCode: 'institutionCode',
