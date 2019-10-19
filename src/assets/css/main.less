@@ -248,6 +248,7 @@ a {
 		height: 30px;
 	}
 }
+// 表格当前选中行颜色
 .current-row {
 	& > td {
 		background-color: #eaebec !important;
@@ -255,7 +256,10 @@ a {
 		font-size: 14px;
 	}
 }
-
+.el-menu--vertical>ul{
+  max-height: 100vh;
+  overflow: auto;
+}
 /* 主题相关 */
 .theme-color-warning {
 	color: #fff;

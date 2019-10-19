@@ -60,17 +60,14 @@ export default {
       {
         prop: 'itemCode',
         label: '公告编码',
-        width: '200',
       },
       {
         prop: 'title',
         label: '公告名称',
-        width: '200',
       },
       {
         prop: 'publicTime',
         label: '公告时间',
-        width: '200',
       }],
     tableData: [],
     ruleForm: {

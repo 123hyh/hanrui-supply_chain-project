@@ -138,16 +138,17 @@ export default {
 };
 </script>
 
-<style scoped lang='less'>
+<style  lang='less'>
 
 .sidebar {
+  
   height: 100%;
   height: 100%;
   overflow-y: hidden;
   box-sizing: border-box;
-}
+ 
 
-.sidebar > ul {
+ > ul {
   height: 100%;
   overflow: auto;
 }
@@ -251,6 +252,7 @@ export default {
 }
 .menu-icon-11-index-1 {
   .menu-icon(-201px, -143px);
+}
 }
 
 </style>

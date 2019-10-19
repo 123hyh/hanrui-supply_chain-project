@@ -70,10 +70,12 @@ export default {
     overflow: hidden;
   }
   .content-box {
+    -webkit-overflow-scrolling: touch;
     position: absolute;
     left: 250px;
     right: 0;
     top: 0px;
+    overflow: auto;
     -webkit-transition: left 0.3s ease-in-out;
     transition: left 0.3s ease-in-out;
     display: flex;
@@ -84,8 +86,8 @@ export default {
     width: 100%;
     min-width: 1300px;
     height: calc(100% - 30px);
-    padding: 10px 0 10px 10px;
-    overflow: auto;
+    padding: 5px 5px 5px 5px;
+    overflow-x: hidden;
     box-sizing: border-box;
   }
 

@@ -37,11 +37,7 @@ instance.interceptors.response.use(
 			headers
 		};
 	},
-	(err,x,y,z) => {
-debugger
-		const { response: { status, data } } = err;
-		const {fullPath,meta:{title}}  = router.app._route
-		console.log(`当前路由 --> ${fullPath}-${title} \n报错信息 ${err}`)
+	({ response: { status, data } } = err) => {
 		switch (status) {
 			case 403:
 				router.replace({

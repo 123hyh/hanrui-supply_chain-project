@@ -7,7 +7,7 @@ export default [
   {
     prop: 'statusName',
     label: '单据状态',
-    width: '70' 
+    width: '70'
   },
   {
     prop: 'updateTime',
