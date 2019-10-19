@@ -12,61 +12,42 @@
       <query-bar
         :ruleForm="ruleForm"
         :formConfig="queryBarFormConfig"
-        :btnObj="btnObj"
         @handleBtnClickType="handleBtnClick"
       ></query-bar>
       <!-- 表格 -->
-      <el-table
-        :data="tableData"
-        border
-        highlight-current-row
-        @row-click="clickRow"
-        @row-dblclick="dblclickTableRow"
-        ref="moviesTable"
-      >
-        <el-table-column
-          v-for='item in tableconfig'
-          :key="item.label"
-          :prop="item.prop"
-          :label="item.label"
-          :width="item.width"
-        ></el-table-column>
-      </el-table>
-      <div class="pagination">
-        <pagination
-          @handlePageChange="handleChange"
-          :count="ruleForm.total"
-        ></pagination>
-      </div>
+      <table-component
+        :dialog="false"
+        :queryBarVisible='false'
+        :popoverList="tableData"
+        :popoverListKey='tableconfig'
+        :count="ruleForm.total"
+        @dblclickTableRow='dblclickTableRow'
+        :activeRow.sync="curRowData"
+        @handlePageChange="handleChange"
+      ></table-component>
     </div>
   </div>
 </template>
 
 <script>
 import api from '@/assets/js/appHelper'
-import Pagination from '@/components/common/Pagination'
 import QueryBar from '@/components/common/QueryBar'
+import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
+
 
 import tableconfig from '@/domain/tableconfig/business/Agreement'
 import { mapMutations, mapGetters } from 'vuex'
 export default {
   components: {
     QueryBar,
-    Pagination
+    TableComponent
   },
   data: () => ({
     tableconfig,
     menuName: '协议管理',
     tableData: [],
-    curRowData: '',
+    curRowData: {},
     ruleForm: {},
-
-    btnObj: [
-      { type: "search", label: "查询" },
-      { type: "add", label: "新增" },
-      { type: "update", label: "操作", readonly: false },
-      { type: "delete", label: "删除" },
-    ]
   }),
   computed: {
     ...mapGetters(['orderStatus']),
@@ -84,14 +65,14 @@ export default {
   methods: {
     ...mapMutations(['addbreadCrumbsList']),
     //搜索列表数据
-    async queryData () {
+    async queryData (data) {
       try {
-        const { data } = await api.queryagreementSearch(this.ruleForm);
-        this.tableData = data.list;
-        this.ruleForm.total = data.count;
+        const { data: { list = [], count = 0 } } = await api.queryagreementSearch(data);
+        this.tableData = list;
+        this.ruleForm.total = count;
         this.curRowData = {}; // 清空当前行数据
-        this.$refs.moviesTable.setCurrentRow(this.tableData.filter(e => (e[this.$route.query.key] == this.$route.query.code))[0] || '');
       } catch (e) {
+        this.$message.error('获取列表数据失败，请重试！')
         console.log(e)
       }
     },
@@ -116,43 +97,37 @@ export default {
     handleBtnClickObj () {
       return {
         search () {
-          this.goStartPage();
+          this.queryData();
         },
         add () {
           this.jumpForm('add')
         },
         async update () {
-          if (JSON.stringify(this.curRowData) == '{}') {
-            this.$message.warning('请选择要修改的数据');
-          } else {
-            const { data } = await api.searchOneagreementData(this.curRowData.agreementNo);
-            sessionStorage.AgreementForm = JSON.stringify(data);
-            this.jumpForm('update')
-          }
+          this.utools.titleCallBack.call(
+            this,
+            this.curRowData,
+            async () => {
+              const { data } = await api.searchOneagreementData(this.curRowData.agreementNo);
+              sessionStorage.AgreementForm = JSON.stringify(data);
+              this.jumpForm('update')
+            }
+          )
         },
         delete () {
-          if (JSON.stringify(this.curRowData) == '{}') {
-            this.$message.warning('请选择要删除的数据')
-          } else {
-            this.utools.deleteMessage.bind(this)(async () => {
-              try {
-                const { data, status } = await api.deleteagreementData(this.curRowData.agreementNo)
-                this.utools.alertMessage.bind(this)(status, null, '删除')
+          this.utools.titleCallBack.call(
+            this,
+            this.curRowData,
+            this.utools.removeReceiptsTips.bind(
+              this,
+              async () => {
+                await api.deleteagreementData(this.curRowData.agreementNo)
                 this.goStartPage();
-              } catch (e) { console.log(e) }
-            })
-          }
+              }
+            )
+          )
         }
       };
     },
-    // length(){
-    //   return {
-    //     '0': {  token: 'token' },
-    //     '1': {  brandId: 'brandId' },
-    //     '2': {  familyId: 'familyId' },
-    //     '3': {  groupId: 'groupId' },
-    //   }
-    // },
     jumpForm (type) {
       let params = {
         path: '/AgreementForm',
@@ -169,15 +144,9 @@ export default {
     },
     handleChange (paper) {
       this.ruleForm = { ...this.ruleForm, ...paper };
-      this.queryData();
-    },
-    clickRow (row) {
-      this.curRowData = row;
-      this.$refs.moviesTable.toggleRowSelection(row);
-      this.btnObj[2].readonly = (row.statusName == '已审核');
+      this.queryData(paper);
     },
     dblclickTableRow (row) {
-      this.clickRow(row)
       this.handleBtnClick('update');
     },
   },

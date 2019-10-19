@@ -30,7 +30,7 @@ export default [
 		prop: "payOperation"
 	},
 	{
-		text: true,
+		// text: true,
 		key: "delegete",
 		name: "委托方",
 		prop: "delegete"

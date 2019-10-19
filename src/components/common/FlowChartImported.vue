@@ -57,8 +57,8 @@ export default {
   },
   data() {
     return {
-      data: {},
-      graph: "",
+      data: {}, // 节点数据
+      graph: "", // 视图实例
       timer: null,
       select: {
         vnode: "",

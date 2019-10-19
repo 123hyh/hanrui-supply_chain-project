@@ -273,7 +273,7 @@ export default [
 			type: 'select',
 			key: "vatTaxRate",
 			selectKey: "valueAddedTax",
-			name: "进口增值税率%",
+			name: "进口增值税率",
 			prop: "vatTaxRate",
 		},
 		{
@@ -315,7 +315,9 @@ export default [
 			key: "priceTax",
 			name: "价税合计",
 			prop: "priceTax",
-			solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxAmount",
+      // solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxAmount",  海关汇率 更改 为 订单汇率 201-9-6
+			solutionFormula:"sellerGoodsValue*data_orderExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxAmount",
+      
 			decimal:2,
 			symbol:'￥',
 			disabled: true,

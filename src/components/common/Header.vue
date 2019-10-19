@@ -70,7 +70,7 @@
           class="form-layout"
           style="flex-wrap:nowrap"
         >
-          <span class="el-dropdown-link hoverDialog"> {{username}} <i class="el-icon-caret-bottom"></i>
+          <span class="el-dropdown-link hoverDialog"> {{userName}} <i class="el-icon-caret-bottom"></i>
             <!-- hover显示 -->
             <el-card class="box-card user-message user-dialog">
               <div
@@ -198,11 +198,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTheme', 'systemName']),
-    username () {
-      let username = localStorage.getItem('ms_username');
-      return username ? username : this.name;
-    }
+    ...mapGetters(['getTheme', 'systemName','userName']),
+ 
   },
   created () {
     const { getLocal } = utools;

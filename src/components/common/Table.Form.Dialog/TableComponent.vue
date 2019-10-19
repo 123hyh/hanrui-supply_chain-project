@@ -3,6 +3,7 @@
   <div class="form-table-dialog">
     <!--弹出框组件 -->
     <el-dialog
+      ref="dialogform"
       v-if="dialog"
       v-dialogDrag
       :title="itemName"

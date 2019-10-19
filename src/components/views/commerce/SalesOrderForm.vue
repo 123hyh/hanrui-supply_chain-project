@@ -75,7 +75,7 @@ export default {
   data () {
     return {
       isLoading: false, //保存按钮loading状态
-      formConfig, //表单配置
+      formConfig: utools.cloneObj(formConfig), //表单配置
       ruleForm: new formBind(), //表单值
       jumpType: '',
       enterFromBtn: false

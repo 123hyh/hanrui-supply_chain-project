@@ -64,5 +64,16 @@ export default {
       method: 'PUT',
       data
     })
-  }
+  },
+
+  // 委托付款单校验委托付款金额是否超出
+  // checkEntrustpaybillAmount({ method = 'POST', data } = {}) {
+  //   return this._getData({
+  //     url: `/entrustpaybill/transfer`,
+  //     method,
+  //     data
+  //   })
+  // },
+
+
 }

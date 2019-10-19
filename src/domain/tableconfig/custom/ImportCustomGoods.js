@@ -20,12 +20,12 @@ export default [
     width: '200'
   },
   {
-    prop: 'brand',
+    prop: 'brandName',
     label: '品牌',
     width: '200'
   },
   {
-    prop: 'sourceArea',
+    prop: 'sourceAreaName',
     label: '原产地',
     width: '200'
   },

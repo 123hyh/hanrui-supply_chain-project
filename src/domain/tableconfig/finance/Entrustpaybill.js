@@ -14,7 +14,11 @@ export default [
     label: '系统时间',
     width: '155'
   },
-
+  {
+    prop: 'entrustOrderNo',
+    label: '委托订单',
+    width: '100'
+  },
   {
     prop: 'payBeyond',
     label: '是否超额付款',

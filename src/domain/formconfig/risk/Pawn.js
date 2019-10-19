@@ -147,7 +147,7 @@ export default [
     key: 'originalPrice',
     name: '原价',
     prop: 'originalPrice',
-    rules: [...rules, { validator: validate.validateNum }]
+    rules,
   },
   {
     type: 'number',
@@ -180,14 +180,14 @@ export default [
     key: 'appraisalValue',
     name: '评估价值',
     prop: 'appraisalValue',
-    rules: [...rules, { validator: validate.validateNum }]
+    rules,
   },
   {
     type: 'number',
     key: 'mortgageRate',
     name: '抵押率%',
     prop: 'mortgageRate',
-    rules: [rules[0], { validator: validate.validateNum }]
+    rules,
   },
   {
     type: 'number',
@@ -195,7 +195,7 @@ export default [
     name: '可抵押价值',
     prop: 'mortgageValue',
     readonly: true,
-    rules: [rules[0], { validator: validate.validateNum }]
+    rules,
   },
 
   {
@@ -209,7 +209,6 @@ export default [
     key: 'custodyFee',
     name: '保管费',
     prop: 'custodyFee',
-    rules: [{ validator: validate.validateNum }]
   },
   {
     type: 'date',

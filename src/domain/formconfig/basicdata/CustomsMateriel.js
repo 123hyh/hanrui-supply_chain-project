@@ -67,7 +67,8 @@ export default [
     key: 'inspectionNo',
     name: '检验检疫附加编号',
     prop: 'inspectionNo',
-    btn: true
+    btn: true,
+    readonly: true
   },
   {
     type: 'string',

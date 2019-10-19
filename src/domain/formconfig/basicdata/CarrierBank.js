@@ -1,15 +1,19 @@
+import validate from "@/domain/common/validate"
+const rules = validate.setRequired()
 export default [
   {
     type: 'string',
     key: 'bankName',
     prop: 'bankName',
-    name: '开户银行'
+    name: '开户银行',
+    rules
   },
   {
     type: 'string',
     key: 'bankNo',
     prop: 'bankNo',
-    name: '银行账号'
+    name: '银行账号',
+    rules
   },
   {
     type: 'string',
@@ -21,7 +25,8 @@ export default [
     type: 'string',
     key: 'userName',
     prop: 'userName',
-    name: '帐户名称'
+    name: '帐户名称',
+    rules
   },
   {
     type: 'select',
@@ -29,7 +34,8 @@ export default [
     selectOption: [],
     key: 'currency',
     prop: 'currency',
-    name: '币种'
+    name: '币种',
+    rules
   },
   {
     type: 'string',

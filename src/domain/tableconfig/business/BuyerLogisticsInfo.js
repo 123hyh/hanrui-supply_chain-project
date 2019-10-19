@@ -29,11 +29,11 @@ export default [
 		label: '计量单位',
 		width: '150',
 	},
-	{
-		prop: 'deliveryQuantityCount',
-		label: '累计发货数量',
-		width: '150',
-	},
+	// {
+	// 	prop: 'deliveryQuantityCount',
+	// 	label: '累计发货数量',
+	// 	width: '150',
+	// },
 	// {
 	// 	prop: 'quantity',
 	// 	label: '数量',

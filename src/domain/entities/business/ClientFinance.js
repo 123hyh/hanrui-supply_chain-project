@@ -5,7 +5,6 @@ export default function () {
     let defaults = {
 		"id": "",
 		"tenantId": "hfy",
-		"itemCode": "",
 		"clientNo": "",
 		"organizationCode": "",
 		"organizationName": "",
@@ -23,7 +22,6 @@ export default function () {
 		"fax": "",
 		"postcode": "",
 		"email": "",
-		"status": ""
 
       };
 

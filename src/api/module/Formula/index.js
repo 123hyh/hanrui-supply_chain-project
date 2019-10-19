@@ -27,8 +27,17 @@ export default {
   // 获取取值单据字段
   getComputedField(formulaBill) {
     return this._getData({
-      url: `/formula/selectFields/${formulaBill}`,
+      // url: `/formula/selectFields/${formulaBill}`,
+      url: `/calculationfactor/${formulaBill}`,
+      method: 'GET'
+    })
+  },
+  // 获取计算结果下拉字段
+  getCalculationfactorResult(formulaBill){
+    return this._getData({
+      url: `/calculationfactor/result/${formulaBill}`,
       method: 'GET'
     })
   }
+  
 }

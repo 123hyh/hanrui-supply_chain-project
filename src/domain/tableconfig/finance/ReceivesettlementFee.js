@@ -22,7 +22,7 @@ export default [
     label: '原始凭证名称',
   },
   {
-    prop: 'feeProjectName',
+    prop: 'feeProject',
     label: '款项明细',
   },
   {

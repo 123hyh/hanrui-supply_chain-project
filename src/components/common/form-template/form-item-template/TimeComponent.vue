@@ -5,12 +5,15 @@
     value-format="yyyy-MM-dd HH:mm:ss"
     v-model="formModel[config['key']]"
     type="datetime"
+    :disabled="formStatus ? true : config.disabled"
     placeholder="选择日期时间"
   ></el-date-picker>
 </template>
 <script>
 export default {
   props: {
+        formStatus:Boolean,
+
     // form 实体
     formModel: {
       type: Object,

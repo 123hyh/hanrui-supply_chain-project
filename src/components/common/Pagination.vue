@@ -73,7 +73,7 @@ const Pagination = {
   computed: {
     initPageSize () {
       let arr = [];
-      for (let i = 0; i <= parseInt(this.count / 10); i++) {
+      for (let i = 0; i < parseInt(this.count / 10); i++) {
         if (i < 4) arr.push((i + 1) * 10)
       }
       return arr;

@@ -7,6 +7,8 @@ const state = {
     }
   },
   getters = {
-    userInfo: state => state.userInfo
+    userInfo: state => state.userInfo,
+    userName: state =>
+      state.userInfo.userName || localStorage.getItem('ms_username')
   }
 export default { state, mutations, getters }

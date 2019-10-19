@@ -5,11 +5,6 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'payBeyond',
-		label: '仅供走账',
-		width: '100',
-	},
-	{
 		prop: 'booked',
 		label: '委托付贷款金额',
 		width: '100',
@@ -58,5 +53,10 @@ export default [
 		prop: 'checkNumber',
 		label: '汇率（杂费币）',
 		width: '100',
-	}
+	},
+	{
+		prop: 'payBeyond',
+		label: '仅供走账',
+		width: '100',
+	},
 ]

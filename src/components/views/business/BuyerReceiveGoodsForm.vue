@@ -163,16 +163,7 @@
                 prop="quantity"
                 label="数量"
               >
-                <!-- :max="maxBind(scope.row)" -->
                 <template slot-scope="scope">
-                  <!-- <el-input-number
-                    size="mini"
-                    v-model="scope.row.quantity"
-                    class="inputTB"
-                    :min="0"
-                    :controls="false"
-                    @blur.prevent="changeCount(scope.row)"
-                  ></el-input-number>-->
                   <el-input-number
                     size="mini"
                     v-model="scope.row.quantity"
@@ -180,11 +171,6 @@
                     :min="0"
                     :controls="false"
                   ></el-input-number>
-                  <!-- <i class="el-icon-circle-check" @click="changeCount(scope.row)"></i> -->
-                  <!-- <el-button
-                    type="primary"
-                    @click="addLogisticsInfo"
-                  >保存</el-button>-->
                 </template>
               </el-table-column>
               <el-table-column
@@ -192,14 +178,6 @@
                 label="件数"
               >
                 <template slot-scope="scope">
-                  <!-- <el-input
-                    size="mini"
-                    v-model="scope.row.piece"
-                    class="inputTB"
-                    :min="0"
-                    :controls="false"
-                    @blur.prevent="changeCount(scope.row)"
-                  ></el-input>-->
                   <el-input
                     size="mini"
                     v-model="scope.row.piece"
@@ -207,11 +185,6 @@
                     :min="0"
                     :controls="false"
                   ></el-input>
-                  <!-- <i class="el-icon-circle-check" @click="changeCount(scope.row)"></i> -->
-                  <!-- <el-button
-                    type="primary"
-                    @click="addLogisticsInfo"
-                  >保存</el-button>-->
                 </template>
               </el-table-column>
               <el-table-column
@@ -220,11 +193,14 @@
               >
                 <template slot-scope="scope">
                   <el-button
+                  v-if="!(ruleForm.status == '2' ||
+            ruleForm.status.charAt(0) == '3' ||
+            ruleForm.status == '4' ||
+            ruleForm.status.charAt(0) == '5')"
                     size="mini"
                     @click="changeCount(scope.row)"
                     style="padding: 3px;"
                   >确定</el-button>
-                  <!-- <i class="el-icon-circle-check" @click="changeCount(scope.row)"></i> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -276,10 +252,10 @@ export default {
       delegeteBillTablePager: { pageIndex: 1, pageSize: 10 },
       arrivalGoodsModel: "",
       ruleForm: new BuyerReceiveGoodsBind(),
-      formConfig,
+      formConfig: utools.cloneObj(formConfig),
       entrustGoodsTable: entrustGoodsTabConfig,
       tableColumn: buyerLogisticsInfoTable,
-      verify: {}, // 表单验证
+      verify: [], // 表单验证
       jumpType: "", //页面状态：新增/修改
       popover: {
         //弹出框组件参数
@@ -419,17 +395,6 @@ export default {
           "7": "客户",
         },
       };
-    },
-    maxBind () {
-      return function (value) {
-        if (value.temporary == null) {
-          value.temporary = value.quantity;
-        }
-        // 卖方数量 - 已提货数量 + 当前提货数量
-        return (
-          value.sellerQuantity - (value.shippedQuantity || 0) + value.temporary
-        );
-      };
     }
   },
   methods: {
@@ -449,18 +414,9 @@ export default {
       info.unit = bill.sellerUnit;
       info.unitName = bill.sellerUnitName;
       info.quantity = 0;
-      // info.sellerQuantity = bill.sellerQuantity;
-      // info.shippedQuantity = bill.deliveryQuantity;
-      // info.piece = bill.piece;
       return info;
     },
     async changeCount (row) {
-      // if (this.jumpType == "create") {
-      //     } else {
-      //     }
-      // if (!row.quantity >= 0) {
-      //   row.quantity = 0;
-      // }
       if (this.jumpType == "update") {
         const { data, status } = await api.editBuyerLogisticsInfo(
           JSON.stringify(row)
@@ -555,12 +511,12 @@ export default {
         );
         if (!isAdded) {
           if (this.jumpType == "create") {
-            // this.curLeftRow.quantity = 0
             this.logisticsTableData.push(this.formatTableData(this.curLeftRow));
           } else {
-            // this.curLeftRow.quantity = 0
+            let cur = this.formatTableData(this.curLeftRow)
+            cur.quantity = cur.sellerQuantity - (cur.deliveryQuantity || 0)
             await api.saveBuyerLogisticsInfo(
-              JSON.stringify([this.formatTableData(this.curLeftRow)])
+              JSON.stringify([cur])
             );
             this.serchLogisticsTable();
           }
@@ -568,26 +524,6 @@ export default {
           this.$message.warning("不能添加重复信息");
         }
       }
-      // //页面新增时
-      // if (this.jumpType == "create") {
-      //     const isAdded = this.logisticsTableData.find(
-      //         item => item.entryNo === this.curLeftRow.itemCode
-      //     );
-      //     if (!isAdded) {
-      //         // this.curLeftRow = {...this.curLeftRow,inventoryCode:this.curLeftRow.orderModel,inventoryName:this.curLeftRow.arrivalGoodsName}
-      //         this.logisticsTableData.push(
-      //             this.formatTableData(this.curLeftRow)
-      //         );
-      //     } else {
-      //         this.$message.warning("不能添加重复信息");
-      //     }
-      // } else {
-      //     //页面修改时
-      //     await api.saveBuyerLogisticsInfo(
-      //         JSON.stringify([this.formatTableData(this.curLeftRow)])
-      //     );
-      //     this.serchLogisticsTable();
-      // }
     },
 
     //全部增加物流信息
@@ -604,9 +540,10 @@ export default {
               // this.element.quantity = 0
               this.logisticsTableData.push(this.formatTableData(element));
             } else {
-              // this.element.quantity = 0
+              let cur = this.formatTableData(element)
+              cur.quantity = cur.sellerQuantity - (cur.deliveryQuantity || 0)
               await api.saveBuyerLogisticsInfo(
-                JSON.stringify([this.formatTableData(element)])
+                JSON.stringify([cur])
               );
               this.serchLogisticsTable();
             }
@@ -614,33 +551,6 @@ export default {
         });
         this.curLeftRow = {};
       }
-      // if (this.jumpType == "create") {
-      //     this.delegeteBillTableData.forEach(element => {
-      //       const isAdded = this.logisticsTableData.find(
-      //         item => item.entryNo === element.itemCode
-      //       );
-      //       if (!isAdded) {
-      //         this.logisticsTableData.push(
-      //           this.formatTableData(element)
-      //         );
-      //       }
-      //     });
-      //   } else {
-      //     let sendParams = [];
-      //     for (
-      //       let i = 0;
-      //       i < this.delegeteBillTableData.length;
-      //       i++
-      //     ) {
-      //       sendParams.push(
-      //         this.formatTableData(this.delegeteBillTableData[i])
-      //       );
-      //     }
-      //     await api.saveBuyerLogisticsInfo(
-      //       JSON.stringify(sendParams)
-      //     );
-      //     this.serchLogisticsTable();
-      //   }
     },
     //移除一条买方物流信息
     async removeLogisticsInfo () {
@@ -663,22 +573,6 @@ export default {
         } else {
           this.$message.warning("请选择要移除的信息");
         }
-        // //页面新增时
-        // if (this.jumpType == "create") {
-        //   const dataIndex = this.logisticsTableData.findIndex(
-        //     item => item.entryNo === this.curRightRow.entryNo
-        //   );
-        //   if (dataIndex != -1) {
-        //     this.logisticsTableData.splice(dataIndex, 1);
-        //   }
-        // } else {
-        //   await api.deleteBuyerLogisticsInfo(
-        //     JSON.stringify([
-        //       { itemCode: this.curRightRow.itemCode }
-        //     ])
-        //   );
-        //   this.serchLogisticsTable();
-        // }
       }
     },
     //全部移除物流信息
@@ -700,26 +594,6 @@ export default {
           this.getDelegeteBillList();
         }
         this.curRightRow = {};
-        // //页面新增时
-        // if (this.jumpType == "create") {
-        //   this.logisticsTableData = [];
-        //   this.curRightRow = {};
-        // } else {
-        //   let sendParams = [];
-        //   for (
-        //     let i = 0;
-        //     i < this.logisticsTableData.length;
-        //     i++
-        //   ) {
-        //     sendParams.push({
-        //       itemCode: this.logisticsTableData[i].itemCode
-        //     });
-        //   }
-        //   await api.deleteBuyerLogisticsInfo(
-        //     JSON.stringify(sendParams)
-        //   );
-        //   this.serchLogisticsTable();
-        // }
       }
     },
     seveAllLogisticsInfo () { },
@@ -754,6 +628,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      let con =  utools.getFromconfigObj(this.formConfig,'delegeteBillNo')
+      delete con['btn']
     },
     //返回
     goBack: function () {
@@ -788,28 +664,22 @@ export default {
           this.isLoading = false;
         }
       } else {
-        this.$message.error("单据编号、承运商、委托单号不能为空");
       }
     },
     //获取表单
     handlerFormVerify ($refs) {
-      this.verify = $refs;
+      this.verify.push($refs);
     },
-    //表单验证
-    isVerify () {
-      return (
-        this.ruleForm.carrierCode &&
-        this.ruleForm.delegeteBillNo &&
-        this.ruleForm.billNo
-      );
+    isVerify() {
+        var isVerify = true;
+        for(let item of this.verify){
+          item["formModel"].validate(valid => {
+              if(!valid) isVerify = false
+          });
+          
+        }
+        return isVerify;
     },
-    // isVerify() {
-    //     let isVerify = false;
-    //     this.verify["formModel"].validate(valid => {
-    //         isVerify = valid;
-    //     });
-    //     return isVerify;
-    // },
 
     /**
      * 弹窗
@@ -875,8 +745,12 @@ export default {
     async requestTable () {
       const obj = this.popover.element;
       const WHITE_LIST = ['dispatchOrganizationName', 'carrierName', 'receiveCompanyName', 'receiveContactName', 'dispatchLineName', 'areaName', 'underPartyName', 'premiumPartyName'];
+      const WHITE_newLIST = ['delegeteBillNo'];
       let status =
         WHITE_LIST.includes(this.searchTarget) ? '2' : '';
+        if(WHITE_newLIST.includes(this.searchTarget)){
+          status = '4'
+        }
       this.searchTarget == 'underPartyName' && this.ruleForm.underPartyType === '2' && (status = '');
       this.searchTarget == 'premiumPartyName' && this.ruleForm.premiumPartyType === '2' && (status = '');
       const { data } = await api[obj.api]({ ...this.popover.ruleForm, status });

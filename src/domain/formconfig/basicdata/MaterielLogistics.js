@@ -28,21 +28,18 @@ export default [
     key: "length",
     name: "长度",
     prop: "length",
-    rules
   },
   {
     type: 'string',
     key: "width",
     name: "宽度",
     prop: "width",
-    rules
   },
   {
     type: 'string',
     key: "height",
     name: "高度",
     prop: "height",
-    rules
   },
   {
     btn: true,
@@ -57,14 +54,12 @@ export default [
     key: "grossWeight",
     name: "毛重",
     prop: "grossWeight",
-    rules
   },
   {
     type: 'number',
     key: "netWeight",
     name: "净重",
     prop: "netWeight",
-    rules
   },
   {
     btn: true,
@@ -79,6 +74,5 @@ export default [
     key: "volume",
     name: "体积",
     prop: "volume",
-    rules
   }
 ]

@@ -101,6 +101,7 @@
  * @property /otherbillForm 其他计费单
  * @property /AccountingwriteoffForm 账务核销申请单
  * @property /MaterielBaseForm 物料基础
+ * @property /M060127 境内目的地
  */
 export default {
   //( key ==>router.path) ：( val ==> api)
@@ -156,6 +157,7 @@ export default {
   M071101: '/packagetype',
   M071102: '/trainnumber',
   M071103: '/carcheck',
+  M060127: '/domesticdestination',
   '/WarehouseQuotationForm': '/warehousequotation',
 
   '/BusinessForm': '/business',
@@ -197,5 +199,11 @@ export default {
   '/PaymentForm': '/payment',
   '/otherbillForm': '/otherbill',
   '/AccountingwriteoffForm': '/accountingwriteoff',
-  '/MaterielBaseForm': '/materielbase'
+  '/MaterielBaseForm': '/materielbase',
+  '/SeCompanyInfo':'/companyinfo',
+  '/SeClientForm':'/client',
+  '/SeCustomerform':'/customer',
+  '/SeSupplierBaseForm':'/supplierbase',
+  '/SeCarrierBaseForm':'/carrierbase',
+  
 }

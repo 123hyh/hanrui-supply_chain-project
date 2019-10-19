@@ -1,38 +1,62 @@
 <!DOCTYPE html>
-<html lang="cn">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-    <!-- 字体图标 -->
-		<link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.ico">
-    <link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.ico">
-      <!-- 使用CDN的CSS文件 -->
-    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
-      <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style">
-      <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet">
-    <% } %>
-      <!-- 使用CDN的JS文件 -->
-    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
-      <link href="<%= htmlWebpackPlugin.options.cdn.js[i] %>" rel="preload" as="script">
-    <% } %>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+		/>
+		<!-- 字体图标 -->
+		<link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.ico" />
+		<link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.ico" />
+		<!-- 使用CDN的CSS文件 -->
+		<% for (var i in htmlWebpackPlugin.options.cdn &&
+		htmlWebpackPlugin.options.cdn.css) { %>
+		<link
+			href="<%= htmlWebpackPlugin.options.cdn.css[i] %>"
+			rel="preload"
+			as="style"
+		/>
+		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+		<% } %>
+		<!-- 使用CDN的JS文件 -->
+		<% for (var i in htmlWebpackPlugin.options.cdn &&
+		htmlWebpackPlugin.options.cdn.js) { %>
+		<link
+			href="<%= htmlWebpackPlugin.options.cdn.js[i] %>"
+			rel="preload"
+			as="script"
+		/>
+		<% } %>
 
-    <title></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but vms doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <script src="<%= BASE_URL %>tinymce4.7.5/tinymce.min.js"></script>
-    <script src="<%= BASE_URL %>static/accounting@0.4.1.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
-    <script src="<%= BASE_URL %>echarts-liquidfill/echarts-liquidfill.min.js"></script> -->
-    <div id="app"></div>
-    
-    <!-- built files will be auto injected -->
-    
-    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
-      <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
-    <% } %>
-  </body>
+		<title></title>
+	</head>
+	<body>
+		<div class="transion-loading" id="transion-loading">
+			<div class="loading-container animation-2">
+				<div class="shape shape1"></div>
+				<div class="shape shape2"></div>
+				<div class="shape shape3"></div>
+				<div class="shape shape4"></div>
+			</div>
+		</div>
+		<noscript>
+			<strong
+				>We're sorry but vms doesn't work properly without JavaScript enabled.
+				Please enable it to continue.</strong
+			>
+		</noscript>
+		<script src="<%= BASE_URL %>tinymce4.7.5/tinymce.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+		<script src="<%= BASE_URL %>echarts-liquidfill/echarts-liquidfill.min.js"></script>
+		<div id="app"></div>
+		<!-- built files will be auto injected -->
+
+		<% for (var i in htmlWebpackPlugin.options.cdn &&
+		htmlWebpackPlugin.options.cdn.js) { %>
+		<script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+		<% } %>
+	</body>
 </html>

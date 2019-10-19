@@ -22,7 +22,7 @@ export default [
 	},
 	
 	{
-		prop: 'sourceBillType',
+		prop: 'sourceBillTypeName',
 		label: '来源单据类型',
 		width: '100',
 	},

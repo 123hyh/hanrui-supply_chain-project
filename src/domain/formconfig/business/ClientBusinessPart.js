@@ -37,7 +37,8 @@ export default [
     selectKey: "percentageBase",
     key: "percentageBase",
     name: "提成基数",
-    prop: "percentageBase"
+    prop: "percentageBase",
+    rules: setRequired()
   },
   {
     type: "string",

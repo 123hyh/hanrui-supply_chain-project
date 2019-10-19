@@ -60,7 +60,7 @@ export default [
 		key: "quantity",
 		name: "数量",
 		prop: "quantity",
-		rules: [...rules, {validator: validate.validateNum,}]
+		rules
 	},
 	{
 		type: 'string',
@@ -75,14 +75,14 @@ export default [
 		key: "netWeight",
 		name: "净重(KG)",
 		prop: "netWeight",
-		rules: [...rules, {validator: validate.validateNum,}]
+		rules
 	},
 	{
 		type: 'number',
 		key: "grossWeight",
 		name: "毛重(KG)",
 		prop: "grossWeight",
-		rules: [...rules, {validator: validate.validateNum,}]
+		rules
 	},
 	{
 		type: 'string',
@@ -95,21 +95,21 @@ export default [
 		key: "boxNoStart",
 		name: "起始箱号",
 		prop: "boxNoStart",
-		rules: [...rules, {validator: validate.validateNum}]
+		rules
 	},
 	{
 		type: 'number',
 		key: "boxNoEnd",
 		name: "结束箱号",
 		prop: "boxNoEnd",
-		rules: [...rules, {validator: validate.validateNum}]
+		rules
 	},
 	{
 		type: 'number',
 		key: "boxCount",
 		name: "总箱数",
 		prop: "boxCount",
-		rules: [...rules, {validator: validate.validateNum}]
+		rules
 	},
 	{
 		type: 'string',

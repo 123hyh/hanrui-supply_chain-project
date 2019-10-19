@@ -51,9 +51,10 @@ const mutations = {
 const actions = {
   // 获取 菜单 后 触发 intListBtnAndThreeMenu 处理 btn
   async getMenuList({ dispatch, commit }, callback) {
-    commit('setMenuList', await api.getIndexMenu())
-    await dispatch('intListBtnAndThreeMenu')
-    callback()
+    const data = await api.getIndexMenu();
+    commit('setMenuList', data)
+    await dispatch('intListBtnAndThreeMenu');
+    callback(data)
   },
 
   // 处理 list页面的btn按钮

@@ -3,7 +3,7 @@
     <currencyinput
       :style="styles"
       v-model="formModel[config['key']]"
-      :disabled="config.disabled"
+      :disabled="formStatus ? true : config.disabled"
       :readonly="config.readonly"
       :decimal="config.decimal"
       :symbol="config.symbol"
@@ -15,6 +15,8 @@ import Currencyinput from "@/components/common/Currencyinput.vue";
 
 export default {
   props: {
+        formStatus:Boolean,
+
       // form 实体
     formModel: {
       type: Object,

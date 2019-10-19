@@ -2,27 +2,22 @@ export default [
 	{
 		prop: 'driverName',
 		label: '姓名',
-		width: '100',
 	},
 	{
 		prop: 'phone',
 		label: '手机',
-		width: '100',
 	},
 	{
 		prop: 'telePhone',
 		label: '电话',
-		width: '100',
 	},
 	{
 		prop: 'idCard',
 		label: '身份证号码',
-		width: '100',
 	},
 	{
 		prop: 'driveNo',
 		label: '驾驶证号',
-		width: '100',
 	},
 // 	{
 // 		prop: 'creator',

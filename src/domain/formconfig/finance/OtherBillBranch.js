@@ -1,3 +1,5 @@
+import validate from '@/domain/common/validate.js'
+const rules = validate.setRequired()
 export default [
 	{
 		btn: true,
@@ -86,14 +88,16 @@ export default [
 		selectKey: "currencyName",
 		key: "currency",
 		name: "币别",
-		prop: "currency"
+		prop: "currency",
+		rules,
 	},
 	{
 	  type: 'string',
 	  key: "settleRate",
 	  name: "汇率",
 	  prop: "settleRate",
-	  disabled: true
+		disabled: true,
+		rules
 	},
 	{
 		type: "money",

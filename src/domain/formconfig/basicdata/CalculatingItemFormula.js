@@ -26,6 +26,14 @@ export default {
       name: '公式描述',
       layout,
       width: 10,
+      group: 1,rules
+    },
+   /*  {
+      type: 'textarea',
+      key: 'formulaDes',
+      name: '公式描述',
+      layout,
+      width: 10,
       group: 2,rules
     },
     {
@@ -35,16 +43,16 @@ export default {
       layout,
       width: 10,
       group: 2,rules
-    }
+    } */
   ],
   otherConfig: {
     title: {
       '1': {
         visible: false
       },
-      '2': {
+      /* '2': {
         visible: true
-      }
+      } */
     }
   }
 }

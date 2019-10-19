@@ -60,6 +60,10 @@ export default {
     getVal(num) {
       if (num) {
         this.data = accounting.formatMoney(num, this.symbol, this.decimal);
+        // if(accounting.unformat(this.data).toString().split(".").length > 1){
+        //   let length = accounting.unformat(this.data).toString().split(".")[1].length
+        //   this.data = accounting.formatMoney(num, this.symbol, this.length);
+        // }
       } else {
         this.data = "";
       }

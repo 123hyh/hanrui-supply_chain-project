@@ -14,7 +14,7 @@
       :formConfig="form.formConfig"
       :formModel="form.data"
       :calculate='calculate'
-      @handlerFormVerify='handlerFormVerify'
+      @handlerFormVerify='item => form.method = item'
       @handlerSearchClick='handlerSearchClick'
     ></form-component>
 
@@ -194,6 +194,7 @@ export default {
       isLoading: false
     },
     form: {
+      method: {},
       searchTarget: '',
       data: {},
       formConfig: utools.cloneObj(formConfig)
@@ -236,7 +237,7 @@ export default {
       formData && (this.form.data = { ...this.form.data, ...formData });
       (!code && !formData) && this.getCode();
       code && this.getFormData(code); /* 从列表页点击修改 到这个页面 有 code ; 点击新增则没有 */
-      status === 'update' && formData && this.getReceiptinformationPageData();
+      // status === 'update' && formData && this.getReceiptinformationPageData();
     },
     // 获取单据编号
     async getCode () {
@@ -253,15 +254,17 @@ export default {
         const { data } = await api.getOneReceiptData(code);
         !data.attachment && (data.attachment = false);
         !data.billReceive && (data.billReceive = false);
-        this.form.data = data;
-        this.getReceiptinformationPageData();
+        for (let key in data) {
+          if (data.hasOwnProperty(key)) {
+            this.$set(this.form.data, key, data[key])
+          }
+        }
+        // this.getReceiptinformationPageData();
       } catch (error) {
         console.log(error)
       }
     },
-    // 主表单验证规则
-    handlerFormVerify () {
-    },
+
 
     // 表单点击 search按钮事件
     handlerSearchClick (target) {
@@ -275,18 +278,20 @@ export default {
 
       // 付款账户 以来 付款类型
       if (target === 'payerName' && !this.form.data.payerType) {
-        fn('付款类型');
-        return;
+       return fn('付款类型');
+        ;
       };
 
       // 付款银行 依赖 付款账户
       if (target === 'paymentBank' && !this.form.data.paymentAccount) {
-        fn('付款账户');
-        return
-      };
+        return fn('付款账户');
+        
+      }; 
+      if(target === 'paymentAccountName' && !this.form.data.payerName){
+        return fn('付款人名称')
+      }
       if (target === 'receiverAccountName' && !this.form.data.actualReceiptCompany) {
-        fn('收款公司');
-        return;
+        return fn('收款公司');
       }
 
       this.setTableDialogConfig(target);
@@ -324,7 +329,7 @@ export default {
           '1': { ...blank, config: clientBank, queryBar: [] },
           '2': { ...blank, config: customerBank, queryBar: [] },
           '3': { ...blank, config: supplierBank, queryBar: [] },
-          '4': { ...blank, config: [], queryBar: [] } // 暂未配置
+          '4': { ...blank, config: supplierBank, queryBar: [] } // 暂未配置
         }
       };
       return function (target) {
@@ -395,10 +400,10 @@ export default {
 
         const WHITE_LIST = [
           'companyName', 'actualReceiptCompanyName', 'flowedInPlannedItemName', 'departmentName', 'flowedOutPlannedItemName', 'costCenterName',
-          'projectName', 'cashierName', 'accountingName'
+          'projectName', 'cashierName', 'accountingName','payerName'
         ];
         WHITE_LIST.includes(target) && (param.status = '2');
-        target === 'payerName' && this.form.data.payerType !== '1' && (param.status = '2');
+        // target === 'payerName' && this.form.data.payerType !== '1' && (param.status = '2');
 
         let { data: { list, count } } = await this.setRequestPort(target, config[target]).call(api, { ...this.tableDialog.queryBar.data, ...param });
         this.tableDialog.list = list, this.tableDialog.count = count;
@@ -468,9 +473,10 @@ export default {
           ['4', [companyCode, companyName, contact]]
         ]).get(this.form.data.payerType),
         paymentAccountName: new Map([
-          ['1', [itemCode, userName, bankName, bankCardNo]], /* 单号，账户名，银行名称，银行账号 */
+          ['1', [itemCode, userName, bankName, bankNo]], /* 单号，账户名，银行名称，银行账号 */
           ['2', [itemCode, userName, bankName, bankNo]],
           ['3', [itemCode, userName, bankName, bankNo]],
+          ['4', [itemCode, userName, bankName, bankNo]]
         ]).get(this.form.data.payerType)
       }
       this.form.data = { ...this.form.data, ...this.tableDialogTrantion(this.form.searchTarget, config[this.form.searchTarget]) }
@@ -488,15 +494,17 @@ export default {
 
     // 点击顶部 保存按钮事件
     async handlePreserve () {
-      utools.saveReceiptsTips.call(
-        this,
-        async () => {
-          // let param = { ...this.form.data, ...this.calculate };
-          let param = { ...this.form.data };
-          const { data } = await api.changeReceiptData({ data: param, method: this.status === 'add' ? 'POST' : 'PUT' });
-          this.status !== 'update' && (this.status = 'update', this.$set(this.form.data, 'status', '1'));
-        }
-      )
+      this.form.data = {...this.form.data, ...this.calculate};
+      if (utools.checkFormPass(this.form.method))
+        utools.saveReceiptsTips.call(
+          this,
+          async () => {
+            // let param = { ...this.form.data, ...this.calculate };
+            let param = { ...this.form.data };
+            const { data } = await api.changeReceiptData({ data: param, method: this.status === 'add' ? 'POST' : 'PUT' });
+            this.status !== 'update' && (this.status = 'update', this.$set(this.form.data, 'status', '1'));
+          }
+        )
     },
 
 
@@ -636,14 +644,14 @@ export default {
         for (let i = 0; i < list.length; i++) {
           var exchangerate = "";
           list.forEach(b => {
-              if (currency == b.currency) {
-                exchangerate = b.cenPrice;
-              }
-            });
-            this.form.data.exchangeRate = exchangerate
-            this.form.data.baseCurrency = eval(this.form.data.receiptsAmount * this.form.data.exchangerate || 0).toFixed(4)   //折本位币
-            this.form.data = { ...this.form.data }
-            return
+            if (currency == b.currency) {
+              exchangerate = b.cenPrice;
+            }
+          });
+          this.form.data.exchangeRate = exchangerate
+          this.form.data.baseCurrency = eval(this.form.data.receiptsAmount * this.form.data.exchangerate || 0).toFixed(4)   //折本位币
+          this.form.data = { ...this.form.data }
+          return
         }
         this.$message.warning("请录入系统汇率");
       } catch (e) {
@@ -681,18 +689,18 @@ export default {
         for (let i = 0; i < list.length; i++) {
           var exchangerate = "";
           list.forEach(b => {
-              if (currency == b.currency) {
-                exchangerate = b.cenPrice;
-              }
-            });
-            this.form.data.originalSettlementExchangeRate = exchangerate
-            if (this.form.data.originalSettlementExchangeRate) {
-              this.form.data.originalMoneyAmount = eval(this.form.data.baseCurrency / this.form.data.originalSettlementExchangeRate || 0).toFixed(4)   //原币金额
-            } else {
-              this.form.data.originalMoneyAmount = 0
+            if (currency == b.currency) {
+              exchangerate = b.cenPrice;
             }
-            this.form.data = { ...this.form.data }
-            return
+          });
+          this.form.data.originalSettlementExchangeRate = exchangerate
+          if (this.form.data.originalSettlementExchangeRate) {
+            this.form.data.originalMoneyAmount = eval(this.form.data.baseCurrency / this.form.data.originalSettlementExchangeRate || 0).toFixed(4)   //原币金额
+          } else {
+            this.form.data.originalMoneyAmount = 0
+          }
+          this.form.data = { ...this.form.data }
+          return
         }
         this.$message.warning("请录入系统汇率");
       } catch (e) {

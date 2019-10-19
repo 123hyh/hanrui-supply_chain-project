@@ -129,17 +129,15 @@ export default {
             this.jumpForm('update')
           }
         },
-        delete () {
+        async delete () {
           if (JSON.stringify(this.curRowData) == '{}') {
             this.$message.warning('请选择要删除的数据')
           } else {
-            this.utools.deleteMessage.bind(this)(async () => {
               try {
                 const { data, status } = await api.deleteclientData(this.curRowData.clientNo);
                 this.utools.alertMessage.bind(this)(status, null, '删除')
                 this.goStartPage();
               } catch (e) { console.log(e) }
-            })
           }
         }
       };

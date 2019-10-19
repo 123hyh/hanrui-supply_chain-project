@@ -5,7 +5,7 @@
     filterable
     v-model="formModel[config['key']]"
     placeholder="请选择选项"
-    :disabled="config.disabled"
+    :disabled=" formStatus ? true : config.disabled"
     :readonly="config.readonly"
     @change="$emit('selectChange',$event,config)"
   >
@@ -20,6 +20,8 @@
 <script>
 export default {
   props: {
+        formStatus:Boolean,
+
     // form 实体
     formModel: {
       type: Object,

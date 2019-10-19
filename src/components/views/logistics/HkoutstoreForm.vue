@@ -642,7 +642,7 @@ export default {
             ...data,
             inventoryCode: data.materielCode,
             inventoryName: data.tradeName,
-            customsTradeName: data.tradeName,
+            customsTradeName: data.customsAbbreviation,
             specificationType: data.specificationType,
           };
           break;

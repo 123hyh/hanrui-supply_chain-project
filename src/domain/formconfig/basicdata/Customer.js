@@ -4,7 +4,7 @@ export default [
 	{
 		type: 'string',
 		key: "customerNo",
-		name: "编码",
+		name: "客户编码",
 		prop: "customerNo",
 		readonly: true
 	},

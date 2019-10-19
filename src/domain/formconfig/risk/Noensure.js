@@ -54,14 +54,12 @@ export default [
     name: '汇率',
     readonly: true,
     prop: 'exchangeRate',
-    rules: [{ validator: validate.validateNum }]
   },
   {
     type: 'number',
     key: 'creditAmount',
     name: '授信金额',
     prop: 'creditAmount',
-    rules: [{ validator: validate.validateNum }]
   },
   {
     type: 'number',
@@ -69,14 +67,12 @@ export default [
     name: '授信人民币金额',
     readonly: true,
     prop: 'creditRmbAmount',
-    rules: [{ validator: validate.validateNum }]
   },
   {
     type: 'number',
     key: 'creditEnsureAmount',
     name: '授信保证金额',
     prop: 'creditEnsureAmount',
-    rules: [{ validator: validate.validateNum }]
   },
 
   {

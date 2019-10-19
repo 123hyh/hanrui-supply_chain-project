@@ -37,7 +37,7 @@ export default [
     type: 'number',
 
     key: "pledgedAmount",
-    name: "已认款金额",
+    name: "",
     prop: "pledgedAmount"
   },
   {

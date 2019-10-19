@@ -7,32 +7,26 @@ export default [
 	{
 		prop: 'deliveryCompanyName',
 		label: '提货公司名称',
-		width: '100',
 	},
 	{
 		prop: 'liaisonPerson',
 		label: '联络人',
-		width: '100',
 	},
 	{
 		prop: 'shippingCompany',
 		label: '送货公司',
-		width: '100',
 	},
 	{
 		prop: 'carrierLevel',
 		label: '承运商等级',
-		width: '100',
 	},
 	{
 		prop: 'cashDiscount',
 		label: '现金折扣',
-		width: '100',
 	},
 	{
 		prop: 'defaultPurchaseGroup',
 		label: '默认采购组',
-		width: '100',
 	},
 // 	{
 // 		prop: 'creator',

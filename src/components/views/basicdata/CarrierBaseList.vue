@@ -53,7 +53,7 @@ export default {
 
     queryBarFormConfig () {
       return [
-        { label: "供应商编码", moduleBind: "carrierCode", isInput: true },
+        { label: "名称", moduleBind: "carrierName", isInput: true },
         { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
         { label: "制单人", moduleBind: "creator", isInput: true },
         { label: "制单时间", moduleBind: "createTimeFrom", isDate: true },

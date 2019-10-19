@@ -3,7 +3,7 @@
   <el-input
     type="textarea"
     v-model="formModel[config['key']]"
-    :disabled="config.disabled"
+    :disabled="formStatus ? true : config.disabled"
     :readonly="config.readonly"
   ></el-input>
 </template>
@@ -13,6 +13,8 @@ export default {
     styles: 'width: 160px'
   }),
   props: {
+        formStatus:Boolean,
+
     // form 实体
     formModel: {
       type: Object,

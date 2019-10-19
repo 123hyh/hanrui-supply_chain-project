@@ -9,31 +9,30 @@
       @handleBtnClickType="handleBtnClickType"
     ></query-bar>
     <table-component
-      :queryBarVisible='false'
+      :activeRow.sync="table.activeRow"
+      :count="table.count"
       :dialog="false"
       :popoverList="table.list"
-      :popoverListKey='table.config'
-      :count="table.count"
-      :activeRow.sync="table.activeRow"
+      :popoverListKey="table.config"
+      :queryBarVisible="false"
       @handlePageChange="handlePageChange"
     ></table-component>
   </div>
 </template>
 <script>
 // 接口 工具
-import api from "@/assets/js/appHelper";
-import utools from "@/domain/common/utools.js";
-const { isNull } = utools;
+import api from '@/assets/js/appHelper'
+import utools from '@/domain/common/utools.js'
+const { isNull } = utools
 
 // 组件
-import QueryBar from "@/components/common/QueryBar.vue";
-import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
+import QueryBar from '@/components/common/QueryBar.vue'
+import TableComponent from '@/components/common/Table.Form.Dialog/TableComponent.vue'
 
 // 注册表
-import tableConfig from "@/domain/tableconfig/enterpriseInterconnection/JustInTimeInventory.js";
+import tableConfig from '@/domain/tableconfig/enterpriseInterconnection/JustInTimeInventory.js'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
-
   components: {
     QueryBar,
     TableComponent
@@ -53,80 +52,89 @@ export default {
 
   computed: {
     ...mapGetters(['orderStatus']),
-    queryBarFormConfig () {
+    queryBarFormConfig() {
       return [
-        { label: "委托单号", moduleBind: "tradeName", isInput: true },
-        { label: '商品名称', moduleBind: 'status', isInput: true },
-        { label: "入库日期", moduleBind: "materielType", isInput: true },
-
+        { label: '商品编码', moduleBind: 'materielCode', isInput: true },
+        { label: '商品名称', moduleBind: 'tradeName', isInput: true },
+        { label: '规格型号', moduleBind: 'specificationType', isInput: true }
       ]
-    },
+    }
   },
 
-  created () {
+  created() {
     this.getTablePageData()
   },
 
   methods: {
     ...mapMutations(['addbreadCrumbsList']),
 
-    async getTablePageData (data = {}) {
+    async getTablePageData(data = {}) {
       try {
-        /*  const {
-           data: { list, count }
-         } = await api.getMaterielBaseList({ ...this.queryBar.data, ...data });
-         this.table = { ...this.table, list, count } */
+        const {
+          data: { list, count }
+        } = await api.getJustInTimeInventoryData({
+          ...this.queryBar.data,
+          ...data
+        })
+        this.table = { ...this.table, list, count }
       } catch (error) {
         this.$message.error('获取列表数据失败，请重试！')
-        console.log(error);
+        console.log(error)
       }
     },
 
     // 列表分页时间
-    handlePageChange (pageData) {
+    handlePageChange(pageData) {
       this.getTablePageData(pageData)
     },
 
     // 查询栏按钮点击事件
-    handleBtnClickType (target) {
+    handleBtnClickType(target) {
       switch (target) {
         case 'add':
         case 'update':
-          this.jumpEditPage(target); break;
+          this.jumpEditPage(target)
+          break
         case 'search':
-          this.getTablePageData(); break;
+          this.getTablePageData()
+          break
         case 'delete':
           this.removeBills()
       }
     },
 
     // 跳转到编辑页面
-    jumpEditPage (type) {
-      const IS_UPDATE = type === 'update';
-      if (IS_UPDATE && isNull(this.table.activeRow)) return this.$message.warning('请选择一条数据进行操作！');
+    jumpEditPage(type) {
+      const IS_UPDATE = type === 'update'
+      if (IS_UPDATE && isNull(this.table.activeRow))
+        return this.$message.warning('请选择一条数据进行操作！')
       let param = {
         path: '/MaterielBaseForm',
         title: '物料基础信息',
         data: {
           status: type,
-          formData: type === 'update' && { materielCode: this.table.activeRow.materielCode }
+          formData: type === 'update' && {
+            materielCode: this.table.activeRow.materielCode
+          }
         }
-      };
-      this.addbreadCrumbsList(param);
-      this.$router.push('/MaterielBaseForm');
+      }
+      this.addbreadCrumbsList(param)
+      this.$router.push('/MaterielBaseForm')
     },
 
     // 删除单据
-    async removeBills () {
-      if (isNull(this.table.activeRow)) return this.$message.error('请选择一条数据进行操作！');
+    async removeBills() {
+      if (isNull(this.table.activeRow))
+        return this.$message.error('请选择一条数据进行操作！')
 
-      let sCode = 1;
+      let sCode = 1
       try {
-        const data = await api.deleteMaterielBase(this.table.activeRow.materielCode);
-        this.table.activeRow = {},
-          this.getTablePageData();
+        const data = await api.deleteMaterielBase(
+          this.table.activeRow.materielCode
+        )
+        ;(this.table.activeRow = {}), this.getTablePageData()
       } catch (error) {
-        sCode = 0;
+        sCode = 0
         console.log(error)
       } finally {
         this.$message({

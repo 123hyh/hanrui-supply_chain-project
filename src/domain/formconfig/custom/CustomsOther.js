@@ -185,5 +185,11 @@ export default [
     key: 'royaltyConfirm',
     name: '支付特许权使用费确认',
     prop: 'royaltyConfirm'
+  },
+  {
+    type: 'checkbox',
+    key: 'needInspection',
+    name: '需检验检疫',
+    prop: 'needInspection'
   }
 ]

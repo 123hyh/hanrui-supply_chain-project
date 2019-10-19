@@ -1,3 +1,5 @@
+import validate from "@/domain/common/validate"
+const rules = validate.setRequired()
 export default {
   list: [
     {
@@ -60,7 +62,8 @@ export default {
       key: 'needPay',
       name: '此次需付款金额',
       prop: 'needPay',
-      group: 1
+      group: 1,
+      rules
     },
     // {
     //   type: 'string',

@@ -102,11 +102,11 @@ export default {
   },
   components:{
     //	子菜单组件
-    CompanyInfoList: () => import("@/components/views/basicdata/CompanyInfoList.vue"), // 公司
-    ClientList: () => import("@/components/views/business/ClientList.vue"), // 委托方
-    CustomerList: () => import("@/components/views/basicdata/CustomerList.vue"), // 客户
-    SupplierBaseList: () => import("@/components/views/basicdata/SupplierBaseList.vue"), //	供应商
-    CarrierBaseList: () => import("@/components/views/basicdata/CarrierBaseList.vue"), // 承运商
+    CompanyInfoList: () => import("@/components/views/basicdata/SeCompanyInfoList.vue"), // 公司
+    ClientList: () => import("@/components/views/business/SeClientList.vue"), // 委托方
+    CustomerList: () => import("@/components/views/basicdata/SeCustomerList.vue"), // 客户
+    SupplierBaseList: () => import("@/components/views/basicdata/SeSupplierBaseList.vue"), //	供应商
+    CarrierBaseList: () => import("@/components/views/basicdata/SeCarrierBaseList.vue"), // 承运商
   },
   watch: {
     menuCode (val) {

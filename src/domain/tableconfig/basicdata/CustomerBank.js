@@ -27,10 +27,4 @@ export default [
 		prop: 'bankArea',
 		label: '开户地区',
 	},
-	{
-	  prop: 'toexamine',
-	  label: '财务是否审核',
-	  width: '200',
-	  template:true,
-	},
 ]

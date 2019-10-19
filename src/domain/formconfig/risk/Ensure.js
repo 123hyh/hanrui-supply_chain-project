@@ -77,14 +77,14 @@ export default [
     name: '汇率',
     prop: 'exchangeRate',
     readonly: true,
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'number',
     key: 'ensureAmount',
     name: '担保金额',
     prop: 'ensureAmount',
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'number',
@@ -98,7 +98,7 @@ export default [
     key: 'ensureDeposits',
     name: '担保保证金',
     prop: 'ensureDeposits',
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'date',

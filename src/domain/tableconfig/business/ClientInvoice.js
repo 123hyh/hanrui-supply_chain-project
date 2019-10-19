@@ -1,44 +1,58 @@
 export default [
-// 	{
-// 		prop: 'itemCode',
-// 		label: '表业务主键编号',
-// 		width: '100',
-// 	},
-// 	{
-// 		prop: 'clientNo',
-// 		label: '委托方编号',
-// 		width: '100',
-// 	},
 	{
-		prop: 'invoiceShortName',
-		label: '开票简称',
+		label: "委托方编号",
+		prop: "clientNo",
 	},
 	{
-		prop: 'invoiceName',
-		label: '开票全称',
+	  label: "公司名称",
+	  prop: "companyName",
 	},
 	{
-		prop: 'invoiceAddress',
-		label: '收票地址',
+	  label: "纳税识别号",
+	  prop: "taxNo",
 	},
 	{
-		prop: 'invoiceTel',
-		label: '发票签收人联系电话',
+	  label: "开户行",
+	  prop: "bankName",
 	},
 	{
-		prop: 'invoiceEmail',
-		label: '发票签收人Email',
+	  label: "银行账号",
+	  prop: "bankNo",
 	},
 	{
-		prop: 'invoiceFile',
-		label: '发票签收人预留印件',
+		label: '发票类型',
+		prop: 'invoiceType',
 	},
 	{
-		prop: 'invoiceSendModeName',
-		label: '发票发送方式',
+		label: "开票简称",
+		prop: "invoiceShortName"
 	},
 	{
-		prop: 'remark',
-		label: '备注',
+		label: "开票全称",
+		prop: "invoiceName"
 	},
+	{
+		label: "收票地址",
+		prop: "invoiceAddress"
+	},
+	{
+		label: "发票签收人联系电话",
+		prop: "invoiceTel"
+	},
+	{
+		label: "发票签收人Email",
+		prop: "invoiceEmail"
+	},
+	{
+		label: "发票签收人预留印件",
+		prop: "invoiceFile"
+	},
+	{
+		label: "发票发送方式",
+		prop: "invoiceSendModeName"
+	},
+	{
+		label: "备注",
+		prop: "remark"
+	}
 ]

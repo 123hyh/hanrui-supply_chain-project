@@ -46,6 +46,7 @@ export default [
     btn: true,
     key: 'brandName',
     prop: 'brandName',
+    readonly: true,
     name: '品牌名称'
   },
   {
@@ -63,6 +64,7 @@ export default [
   {
     type: 'string',
     btn: true,
+    readonly: true,
     key: 'originName',
     prop: 'originName',
     name: '产地国'
@@ -91,6 +93,7 @@ export default [
     name: '成交单位',
     prop: 'measurementUnitName',
     btn: true,
+    readonly: true,
     rules
   },
   {

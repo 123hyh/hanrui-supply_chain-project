@@ -187,9 +187,9 @@ export default [
       },
       {
         type: 'integer',
-        key: "currencyExchangeRate",
+        key: "buyerExchangeRate",
         name: "买方汇率",
-        prop: "currencyExchangeRate",
+        prop: "buyerExchangeRate",
 			  decimal:6,
         isShow:true,
         disabled: true

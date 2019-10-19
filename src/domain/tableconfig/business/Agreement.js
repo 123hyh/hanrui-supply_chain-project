@@ -12,7 +12,7 @@ export default [
   {
     prop: 'updateTime',
     label: '系统时间',
-    width: '155'
+    width: '150'
   },
 	// {
 	// 	prop: 'agreementCode',
@@ -22,7 +22,7 @@ export default [
 	{
 		prop: 'agreementName',
 		label: '协议名称',
-		width: '100',
+		width: '150',
 	},
 	{
 		prop: 'contractTypeName',
@@ -37,7 +37,7 @@ export default [
 	{
 		prop: 'customerName',
 		label: '委托方名称',
-		width: '100',
+		width: '200',
 	},
 	// {
 	// 	prop: 'customerCode',
@@ -52,12 +52,12 @@ export default [
 	{
 		prop: 'legalPersonAAddress',
 		label: '地址（甲方）',
-		width: '100',
+		width: '200',
 	},
 	{
 		prop: 'trusteeName',
 		label: '受托方名称',
-		width: '100',
+		width: '200',
 	},
 	// {
 	// 	prop: 'trusteeCode',
@@ -72,7 +72,7 @@ export default [
 	{
 		prop: 'trusteeAddress',
 		label: '地址（乙方）',
-		width: '100',
+		width: '250',
 	},
 	{
 		prop: 'legalPersonC',
@@ -82,7 +82,7 @@ export default [
 	{
 		prop: 'legalPersonCAddress',
 		label: '地址 (丙方)',
-		width: '100',
+		width: '200',
 	},
 	{
 		prop: 'legalPersonD',
@@ -92,7 +92,7 @@ export default [
 	{
 		prop: 'legalPersonDAddress',
 		label: '地址 (丁方)',
-		width: '100',
+		width: '200',
 	},
 	{
 		prop: 'remark',

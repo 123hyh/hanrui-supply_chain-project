@@ -43,14 +43,6 @@ export default {
   data () {
     return {
       queryBar: {
-        queryBarFormConfig: [
-          { label: "编码", moduleBind: "billNo", isInput: true },
-          { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
-          { label: "名称", moduleBind: "name", isInput: true },
-          { label: "制单人", moduleBind: "creator", isInput: true },
-          { label: "制单时间", moduleBind: "createTimeFrom", isDate: true },
-          { label: "至", moduleBind: "createTimeTo", isDate: true },
-        ],
         data: {}
       },
       table: {
@@ -79,9 +71,9 @@ export default {
     ...mapGetters(['orderStatus']),
     queryBarFormConfig () {
       return [
-        { label: "编码", moduleBind: "creditNo", isInput: true },
+        { label: "编码", moduleBind: "billNo", isInput: true },
         { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
-        { label: "名称", moduleBind: "name", isInput: true },
+        { label: "委托单号", moduleBind: "entrustOrderNo", isInput: true },
         { label: "制单人", moduleBind: "creator", isInput: true },
         { label: "制单时间", moduleBind: "createTimeFrom", isDate: true },
         { label: "至", moduleBind: "createTimeTo", isDate: true },
@@ -167,7 +159,7 @@ export default {
     // 查询数据
     async queryPage () {
       try {
-        const { data: { list, count } } = await api.getEntrustpaybillData(this.queryEntrustpaybill);
+        const { data: { list, count } } = await api.getEntrustpaybillData({...this.queryEntrustpaybill, ...this.queryBar.data});
         this.table.tableData = this.utools.tableDataTranstionBoolen({
           data: list,
           config: ['payBeyond', 'booked', 'shouldReceiveBill', 'innerDeduction', 'fullAccountArrival', 'accountBeenPaid', 'discount']

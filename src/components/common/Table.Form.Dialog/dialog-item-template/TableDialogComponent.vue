@@ -32,7 +32,7 @@
         :key="index"
         :prop="item.key || item.prop"
         :label="item.name || item.label"
-        :width="!index && 200">
+        :width="!index ? 200 : item.width">
       </el-table-column>
       <el-table-column
         v-else

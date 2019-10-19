@@ -29,17 +29,17 @@ export default [
   },
   {
     type: 'string',
-    key: 'brand',
+    key: 'brandName',
     name: '品牌',
-    prop: 'brand',
+    prop: 'brandName',
     disabled: true,
     rules
   },
   {
     type: 'string',
-    key: 'sourceArea',
+    key: 'sourceAreaName',
     name: '原产地',
-    prop: 'sourceArea',
+    prop: 'sourceAreaName',
     disabled: true,
     rules
   },
@@ -193,6 +193,12 @@ export default [
     prop: 'netWeight',
     disabled: true,
     rules
+  },
+  {
+    type: "string",
+    key: "packingType",
+    name: "货物包装种类",
+    prop: "packingType",
   },
   {
     type: 'string',
@@ -460,7 +466,6 @@ export default [
     name: '退税金额',
     prop: 'drawback',
     disabled: true,
-    rules
   },
   // {
   //   type: 'string',

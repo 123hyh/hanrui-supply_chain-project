@@ -1,34 +1,46 @@
 <template>
-  <div class="table third-group">
+  <div class="table">
     <breadcrumb-navigation />
     <div class="container pd-10">
       <!-- 查询栏 -->
       <query-bar
+        :btnObj="btnObj"
         :formConfig="queryBarFormConfig"
         :ruleForm="queryBar.data"
         @handleBtnClickType="handleBtnClickType"
       ></query-bar>
       <!-- 表格 -->
       <table-component
-        :dialog="false"
-        :queryBarVisible="false"
-        :popoverList="table.tableData"
-        :popoverListKey="table.tableConfig"
-        :count="pageCount"
-        @dblclickTableRow="handleDbclickTable"
-        :activeRow.sync="tableClickRow"
-        @handlePageChange="initTableList"
+        :tableData="table.tableData"
+        :tableDataKey="table.tableConfig"
+        :isShowTabTable="true"
+        @TableClickRowData="TableClickRowData"
+        @handleDbclickTable="handleDbclickTable"
       ></table-component>
+      <!-- 分页 -->
+      <pagination-component
+        :count="pageCount"
+        @handlePageChange="initTableList"
+      ></pagination-component>
     </div>
     <!-- 表单弹窗 -->
     <popover-component
-      :itemName="formDialog.itemName"
+      :itemName='formDialog.itemName'
       :isShowPopover.sync="formDialog.isshow"
       popoverType="form"
-      :billsStatus="formDialog.ruleForm.status"
+      :billsStatus='formDialog.ruleForm.status'
       :formData="formDialog"
-      @handlerFormVerify="handlerFormVerify"
+      @changeisShowPopover="closeFormDialog"
       @formClickPreservation="handlerTableFormPreservation"
+      @handlerFormConfigClickSearch='handlerFormConfigClickSearch'
+    ></popover-component>
+    <!-- 表格弹窗选择 -->
+    <popover-component
+      :isShowPopover="tableDialog.isshow"
+      :popoverList='tableDialog.data'
+      :popoverListKey='tableDialog.tableConfig'
+      @changeisShowPopover="closeTableDialog"
+      @handlerSubPreservation="tableDialogPreservation"
     ></popover-component>
   </div>
 </template>
@@ -40,24 +52,25 @@ import utools from "@/domain/common/utools.js";
 
 // 组件
 import QueryBar from "@/components/common/QueryBar.vue";
-import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
-
+import TableComponent from "@/components/common/TabTable.vue";
+import PaginationComponent from "@/components/common/Pagination.vue";
 import PopoverComponent from "@/components/common/Table.Form.Dialog/DialogComponent.vue";
 
 // 注册表
 import tableConfig from "@/domain/tableconfig/basicdata/ThirdGroup.js";
 import formConfig from "@/domain/formconfig/basicdata/ThirdGroup.js";
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 
 export default {
-  created() {
+  created () {
     this.initTableList();
-    api.initSelect(this.formDialog.formConfig);
+    api.initSelect(this.formDialog.formConfig)
   },
   data: () => ({
     queryBar: {
       data: {}
     },
+    tableDialogTarget: '',
     table: {
       tableData: [],
       tableConfig
@@ -66,17 +79,20 @@ export default {
       isshow: false,
       ruleForm: {},
       formConfig,
-      itemName: "第三方",
-      validate: eval,
-      resetFields: eval
+      itemName: '第三方'
     },
-
+    tableDialog: {
+      isshow: false,
+      data: [],
+      tableConfig: [] /* tableDialogConfig */
+    },
     pageCount: 0,
     tableClickRow: {},
-    status: ""
+    status: ''
   }),
+  mounted () { },
   methods: {
-    async initTableList(params = {}) {
+    async initTableList (params = {}) {
       try {
         const {
           data: { list, count }
@@ -86,7 +102,7 @@ export default {
         console.log(error);
       }
     },
-    async handleBtnClickType(type) {
+    async handleBtnClickType (type) {
       switch (type) {
         case "search":
           await this.initTableList();
@@ -98,121 +114,160 @@ export default {
               this.formDialog.ruleForm = {};
               this.formDialog.ruleForm.billCode = data;
               this.formDialog.isshow = true;
-              this.status = "add";
+              this.status = 'add'
             } catch (error) {
-              this.$message.error("获取列表数据失败，请重试！");
-              console.log(error);
+              console.log(error)
             }
           }
           break;
         case "update":
           {
-            utools.titleCallBack.call(this, this.tableClickRow, () => {
-              this.formDialog.ruleForm = this.tableClickRow;
-              this.formDialog.isshow = true;
-              this.status = "update";
-            });
+
+            if (!this.tableClickRow.billCode) {
+              utools.alertMessage.bind(this)("", "请选择一条数据");
+              return;
+            };
+            this.formDialog.ruleForm = this.tableClickRow;
+            this.formDialog.isshow = true;
+            this.status = 'update'
           }
           break;
         case "delete":
           {
-            utools.titleCallBack.call(
-              this,
-              this.tableClickRow,
-              utools.removeReceiptsTips.bind(this, async () => {
-                const { status } = await this.queryBarRequest[type]();
-                this.initTableList();
-                this.tableClickRow = {};
-              })
-            );
+            if (!this.tableClickRow.billCode) {
+              utools.alertMessage.bind(this)("", "请选择一条数据");
+              return;
+            }
+            try {
+              const { status } = await this.queryBarRequest[type]();
+              this.initTableList();
+              this.tableClickRow = {};
+              utools.alertMessage.bind(this)(status);
+            } catch (error) {
+              console.log(error);
+            }
           }
           break;
       }
     },
-
-    handleDbclickTable(data) {
-      this.handleBtnClickType("update");
+    TableClickRowData (data) {
+      this.tableClickRow = data;
     },
-
+    handleDbclickTable (data) {
+      this.handleBtnClickType('update');
+    },
+    closeFormDialog () {
+      if (!this.formDialog.isshow) return;
+      this.formDialog.isshow = !this.formDialog.isshow
+    },
     // 弹窗按钮点击
-    async handlerTableFormPreservation() {
-      this.saveForm();
+    async handlerTableFormPreservation () {
+      this.saveForm()
     },
-    handlerFormVerify({ formModel: { validate, resetFields } }) {
-      (this.formDialog.validate = validate),
-        (this.formDialog.resetFields = resetFields);
-    },
+
     // 保存单据
-    async saveForm() {
-      this.formDialog.validate(valid => {
-        if (valid) {
-          utools.saveReceiptsTips.call(this, async () => {
-            const { data, status } = await this.queryBarRequest["change"](
-              this.status == "add" ? "POST" : "PUT"
-            );
-            this.formDialog.ruleForm.status = data.status;
-            this.status = 'update'
-            this.initTableList();
-          });
-        }
-      });
+    async saveForm () {
+      let s = 0;
+      try {
+        const { data, status } = await this.queryBarRequest['change'](this.status == 'add' ? 'POST' : 'PUT');
+        s = status;
+        this.formDialog.ruleForm.status = data.status;
+        this.initTableList()
+      } catch (error) {
+        console.log(error)
+      }
+      utools.alertMessage.bind(this)(s);
+    },
+    closeTableDialog () {
+      if (!this.tableDialog.isshow) return;
+      this.tableDialog.isshow = !this.tableDialog.isshow;
+      this.formDialog.isshow = true
+    },
+    tableDialogPreservation (clickrow) {
+      switch (this.tableDialogTarget) {
+        // case 'tradeName':
+        //   this.formDialog.ruleForm = {...this.formDialog.ruleForm, tradeName: clickrow.tradeName, trade: clickrow.materielCode };
+        //   break;
+        // case 'delegeteName':
+        //   this.formDialog.ruleForm = {...this.formDialog.ruleForm, delegeteName: clickrow.clientName, delegete: clickrow.clientNo };
+        //   break;
+      }
+    },
+    async handlerFormConfigClickSearch (params) {
+      try {
+        const { data: { list, count } } = await this.tableDialogRequest[params]();
+        this.tableDialog.data = list;
+      } catch (error) {
+        console.log(error)
+      }
+      this.tableDialogTarget = params;
+      this.tableDialog.tableConfig = this.tableDialogConfig[params]();
+      this.tableDialog.isshow = true;
     }
+
   },
   computed: {
-    ...mapGetters(["orderStatus"]),
-
-    queryBarFormConfig() {
+    ...mapGetters(['orderStatus']),
+    queryBarFormConfig () {
       return [
         { label: "单据编码", moduleBind: "billCode", isInput: true },
-        {
-          label: "单据状态",
-          moduleBind: "status",
-          isSelect: true,
-          selectOption: this.orderStatus
-        }
-      ];
+        { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus }
+      ]
     },
-
-    queryBarRequest() {
+    btnObj: () => [
+      { label: "查询", type: "search" },
+      { label: "新增", type: "add" },
+      { label: "修改", type: "update" },
+      { label: "删除", type: "delete" }
+    ],
+    queryBarRequest () {
       return {
         delete: _ => api.deleteThirdGroupData(this.tableClickRow.billCode),
         add: _ => api.getThirdGroupCode(),
-        change: method =>
-          api.changeThirdGroupData(this.formDialog.ruleForm, method)
+        change: method => api.changeThirdGroupData(this.formDialog.ruleForm, method)
       };
-    }
+    },
+    tableDialogRequest () {
+      return {
+        // tradeName: (data={}) => api.getMaterielBaseList(data),
+        // delegeteName: (data={}) => api.queryclientSearch(data)
+      }
+    },
+    tableDialogConfig: () => ({
+      // delegeteName: _ => require('@/domain/tableconfig/business/Client.js').default,
+      // tradeName: _ => require('@/domain/tableconfig/basicdata/MaterielBase.js').default
+    })
   },
   components: {
     QueryBar,
     TableComponent,
+    PaginationComponent,
     PopoverComponent
   }
 };
 </script>
 
-<style lang='less'>
-.third-group {
-  .handle-select {
-    width: 120px;
-  }
+<style scoped>
+.handle-select {
+  width: 120px;
+}
 
-  .handle-input {
-    width: 300px;
-    display: inline-block;
-  }
-  .del-dialog-cnt {
-    font-size: 16px;
-    text-align: center;
-  }
-  .table {
-    width: 100%;
-    font-size: 14px;
-  }
-  .red {
-    color: #ff0000;
-  }
-  .mr10 {
-    margin-right: 10px;
-  }
+.handle-input {
+  width: 300px;
+  display: inline-block;
+}
+.del-dialog-cnt {
+  font-size: 16px;
+  text-align: center;
+}
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+.red {
+  color: #ff0000;
+}
+.mr10 {
+  margin-right: 10px;
 }
 </style>

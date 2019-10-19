@@ -34,7 +34,49 @@
       <template slot='bottom'>
         <div class="layout">
           <div>
-
+            <!-- 计算公式 -->
+            <div>
+              <el-form
+                status-icon
+                ref="ruleForm"
+                label-width="100px"
+                class="form-layout"
+              >
+                <el-form-item
+                  label="计算结果"
+                  prop="pass"
+                  style="flex:4"
+                >
+                  <el-select
+                    placeholder="请选择"
+                    v-model="formDialog.ruleForm.resultFactor"
+                    filterable
+                  >
+                    <el-option
+                      v-for="item of resultSelectOption"
+                      :key="item.id"
+                      :label="item.factorName"
+                      :value="item.factorField"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item
+                  style="flex:9"
+                  label="="
+                  prop=""
+                  class="result-select"
+                >
+                  <el-input
+                    v-model="formDialog.ruleForm.formula"
+                    style="width:100%"
+                    :rows="2"
+                    type="textarea"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+            </div>
             <!-- 顶部 运算符按钮 -->
             <div>
               <el-button
@@ -56,8 +98,8 @@
                   v-for="item of val"
                   type="text"
                   :key="item.comment"
-                  @click.stop='setFormula({comment:item.comment, field:item.field})'
-                >{{item.comment}}</el-button>
+                  @click.stop='setFormula({comment:item.factorName, field:item.factorField})'
+                >{{item.factorName}}</el-button>
               </div>
             </div>
           </div>
@@ -107,6 +149,7 @@ export default {
     api.initSelect(this.formDialog.formConfig)
   },
   data: () => ({
+    resultSelectOption: [],
     computedField: [],
     operationalCharacter: ['+', '-', '*', '/', '(', ')', '='],
     queryBar: {
@@ -183,7 +226,14 @@ export default {
               utools.alertMessage.bind(this)("", "请选择一条数据");
               return;
             };
-            this.formDialog.ruleForm = this.transtionField({ data: cloneObj([this.tableClickRow]), is: false })[0];
+            this.formDialog.ruleForm = (() => {
+              let data = this.transtionField({ data: cloneObj([this.tableClickRow]), is: false })[0];
+              const [resultFactor, formula] = data.formula.split('=');
+              // 处理 显示字段的处理
+              data.resultFactor = resultFactor;
+              data.formula = formula;
+              return data
+            })()
             this.formDialog.isshow = true;
             this.status = 'update'
           }
@@ -223,7 +273,11 @@ export default {
     async saveForm () {
       let s = 200;
       try {
-        const { data, status } = await api.changeCustomizedFormulaData({ data: this.formDialog.ruleForm, method: this.status == 'add' ? 'POST' : 'PUT' });
+        const params = this.utools.cloneObj(this.formDialog.ruleForm);
+        // 拼接公式
+        params.formula = `${params.resultFactor} = ${params.formula}`;
+
+        const { data, status } = await api.changeCustomizedFormulaData({ data: params, method: this.status == 'add' ? 'POST' : 'PUT' });
         this.formDialog.isshow = false,
           this.formDialog.ruleForm = {},
           this.tableClickRow = {},
@@ -275,7 +329,9 @@ export default {
     async setComputedField () {
       const formulaBill = this.formDialog.ruleForm.formulaBill;
       try {
-        this.computedField = (await api.getComputedField(formulaBill)).data;
+        const [result, computedField] = await Promise.all([api.getCalculationfactorResult(formulaBill), api.getComputedField(formulaBill)])
+        this.resultSelectOption = result.data
+        this.computedField = computedField.data;
       } catch (error) {
         this.$message.error('获取取值单据的字段失败，请重试！')
         console.log(error)
@@ -287,6 +343,18 @@ export default {
     'formDialog.ruleForm.formulaBill' (val) {
       if (!val) return;
       this.setComputedField(val)
+    },
+    'formDialog.ruleForm.resultFactor' (val) {
+
+      if (!val) return;
+
+      const [{ factorName = '' }] = this.resultSelectOption.length ? this.resultSelectOption.filter(item => item.factorField === val) : [{}];
+
+      const data = this.formDialog.ruleForm;
+      const i = (data.formulaDes || '').indexOf('=');
+      let name = `${factorName} = ${i === -1 ? '' : data.formulaDes.slice(i + 1)}`
+
+      this.$set(this.formDialog.ruleForm, 'formulaDes', name)
     }
   },
   computed: {
@@ -303,7 +371,7 @@ export default {
     ],
     queryBarRequest () {
       return {
-        delete: _ => api.deleteCustomizedFormulaData(this.tableClickRow.itemCode),
+        delete: _ => api.deleteCustomizedFormulaData(this.tableClickRow.formulaCode),
         add: _ => api.getControlledCode(),
         change: method => api.changeControlledData(this.formDialog.ruleForm, method)
       };
@@ -331,6 +399,17 @@ export default {
 
 <style lang="less">
 .calculating-item-formula {
+  .result-select {
+    display: flex;
+    align-items: center;
+    .el-form-item__label {
+      width: 0 !important;
+    }
+    .el-form-item__content {
+      flex: 9;
+      margin-left: 0 !important;
+    }
+  }
   .handle-select {
     width: 120px;
   }

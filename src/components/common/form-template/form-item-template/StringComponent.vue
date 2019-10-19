@@ -3,7 +3,7 @@
   <el-input
     :style="styles"
     v-model="formModel[config['key']]"
-    :disabled="config.disabled"
+    :disabled=" formStatus ? true : config.disabled"
     :readonly="config.readonly"
     :placeholder="config.btn && '请点击按钮选择'"
   >
@@ -39,6 +39,8 @@
 <script>
 export default {
   props: {
+        formStatus:Boolean,
+
     // form 实体
     formModel: {
       type: Object,

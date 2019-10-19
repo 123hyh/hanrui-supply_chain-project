@@ -7,36 +7,24 @@
       @handleBtnClickType="handleBtnClick"
     ></query-bar>
     <!-- 表格 -->
-    <el-table
-      :data="tableData"
-      border
-      stripe
-      highlight-current-row
-      @row-click="clickTableRow"
-        @row-dblclick="dblclickTableRow"
-      ref="moviesTable"
-    >
-      <el-table-column
-        v-for='item in tableconfig'
-        :key="item.label"
-        :prop="item.prop"
-        :label="item.label"
-        :width="item.width"
-      ></el-table-column>
-    </el-table>
-    <div class="pagination">
-      <pagination
-        @handlePageChange="handleChange"
-        :count="tableCount"
-      ></pagination>
-    </div>
+    <table-component
+      :dialog="false"
+      :queryBarVisible='false'
+      :popoverList="tableData"
+      :popoverListKey='tableconfig'
+      :count="tableCount"
+      @dblclickTableRow='dblclickTableRow'
+      :activeRow.sync="clickRow"
+      @handlePageChange="handleChange"
+    ></table-component>
   </div>
 </template>
 
 <script>
 import api from '@/assets/js/appHelper'
-import Pagination from '@/components/common/Pagination'
 import QueryBar from '@/components/common/QueryBar'
+import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent.vue";
+
 
 import tableconfig from '@/domain/tableconfig/basicdata/SupplierBase'
 import { mapMutations, mapGetters } from 'vuex'
@@ -45,7 +33,7 @@ import utools from "@/domain/common/utools.js";
 export default {
   components: {
     QueryBar,
-    Pagination
+    TableComponent
   },
   data: () => ({
     tableconfig,
@@ -59,7 +47,7 @@ export default {
     ...mapGetters(['orderStatus']),
     queryBarFormConfig () {
       return [
-        { label: "供应商编码", moduleBind: "supplierCode", isInput: true },
+        { label: "名称", moduleBind: "supplierName", isInput: true },
         { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
         { label: "制单人", moduleBind: "creator", isInput: true },
         { label: "制单时间", moduleBind: "createTimeFrom", isDate: true },
@@ -68,12 +56,17 @@ export default {
     },
     clickTypeAsync () {
       return {
-        'search': async (page) => {
+        'search': async (page = {}) => {
           try {
             const { data: { list, count } } = await api.querysupplierbaseSearch({ ...this.ruleForm, ...page });
-            list && (this.utools.turnCodeBoolean(list), this.tableData = list, this.tableCount = count);
-					  this.$refs.moviesTable.setCurrentRow(this.tableData.filter(e=>(e[this.$route.query.key] == this.$route.query.code))[0]||'');
-          } catch (e) { console.log(e) }
+            list && (
+              this.utools.turnCodeBoolean(list),
+              this.tableData = list, this.tableCount = count
+            );
+          } catch (e) {
+            this.$message.error('获取列表数据失败，请重试！')
+            console.log(e)
+          }
         },
         'add': () => { this.utools.setSession('SupplierBaseForm', { jumpType: 'add' }); this.jumpForm('add') },
         'update': () => {          this.utools.titleCallBack.bind(this)(this.clickRow, async () => {
@@ -84,14 +77,12 @@ export default {
             } catch (e) { console.log(e) }
           })        },
         'delete': () => {
-          this.utools.titleCallBack.bind(this)(this.clickRow, () => {
-            this.utools.deleteMessage.bind(this)(async () => {
-              try {
-                const { status, data: { list, count } } = await api.deletesupplierbaseData(this.clickRow.supplierCode);
-                this.utools.alertMessage.bind(this)(status, null, '删除')
-                this.clickTypeAsync['search']()
-              } catch (e) { console.log(e) }
-            })
+          this.utools.titleCallBack.bind(this)(this.clickRow, async () => {
+            try {
+              const { status, data: { list, count } } = await api.deletesupplierbaseData(this.clickRow.supplierCode);
+              this.utools.alertMessage.bind(this)(status, null, '删除')
+              this.clickTypeAsync['search']()
+            } catch (e) { console.log(e) }
           })
         },
       }

@@ -1,7 +1,7 @@
-import validate from "@/domain/common/validate.js";
-const rules = validate.setRequired();
+import validate from '@/domain/common/validate.js'
+const rules = validate.setRequired()
 export default [
-/* 	{
+  /* 	{
 		type: 'string',
 		key: "customsTariffCode",
 		name: "关务税则编码",
@@ -65,29 +65,29 @@ export default [
 		btn: true,
 		rules
 	}, */
-	// {
-	// 	type: 'string',
-	// 	key: "secondUnitCode",
-	// 	name: "第二单位",
-	// 	prop: "secondUnitCode"
-	// },
-	{
-		type: 'string',
-		key: "secondUnitName",
-		name: "第二单位名称",
-		prop: "secondUnitName",
-		readonly: true,
-		btn: true,
+  // {
+  // 	type: 'string',
+  // 	key: "secondUnitCode",
+  // 	name: "第二单位",
+  // 	prop: "secondUnitCode"
+  // },
+  {
+    type: 'string',
+    key: 'secondUnitName',
+    name: '第二单位名称',
+    prop: 'secondUnitName',
+    readonly: true,
+    btn: true,
     rules,
     isShow: true
-	},
-	// {
-	// 	type: 'string',
-	// 	key: "transactionUnitCode",
-	// 	name: "成交单位",
-	// 	prop: "transactionUnitCode"
-	// },
-/* 	{
+  },
+  // {
+  // 	type: 'string',
+  // 	key: "transactionUnitCode",
+  // 	name: "成交单位",
+  // 	prop: "transactionUnitCode"
+  // },
+  /* 	{
 		type: 'string',
 		key: "transactionUnitName",
 		name: "成交单位名称",
@@ -96,14 +96,16 @@ export default [
 		btn: true,
 		rules
 	}, */
-	{
-		type: 'string',
-		key: "valueAddRate",
-		name: "增值税税率(%)",
-		prop: "valueAddRate",
-		rules
-	},
-/* 	{
+  {
+    type: 'select',
+    key: 'valueAddRate',
+    name: '增值税税率(%)',
+    prop: 'valueAddRate',
+    selectKey: 'valueAddedTax',
+    selectOption: [],
+    rules
+  },
+  /* 	{
 		type: 'string',
 		key: "superConditionName",
 		name: "监管条件",
@@ -112,10 +114,10 @@ export default [
 		btn: true,
 		rules
 	}, */
-	{
-		type: 'string',
-		key: "taRemarks",
-		name: "备注",
-		prop: "taRemarks"
-	}
+  {
+    type: 'string',
+    key: 'taRemarks',
+    name: '备注',
+    prop: 'taRemarks'
+  }
 ]

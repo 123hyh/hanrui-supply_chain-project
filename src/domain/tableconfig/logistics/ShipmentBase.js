@@ -316,12 +316,12 @@ export default [
     width: '100',
   },
   {
-    prop: 'sendCity',
+    prop: 'sendCityName',
     label: '寄件城市',
     width: '100',
   },
   {
-    prop: 'receiveCity',
+    prop: 'receiveCityName',
     label: '收件城市',
     width: '100',
   },

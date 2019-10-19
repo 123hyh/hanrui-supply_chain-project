@@ -81,6 +81,8 @@ import TableComponent from "@/components/common/TabTable.vue";
 import Pagination from "@/components/common/Pagination";
 import PopoverComponent from "@/components/common/Popover.vue";
 import api from "@/assets/js/appHelper.js";
+import utools from '@/domain/common/utools.js'
+
 // 表单表格
 import entities from "@/domain/entities/finance/Payapply";
 import formConfig from "@/domain/formconfig/finance/Payapply";
@@ -115,7 +117,7 @@ export default {
     itemstatus: "",
     writeback: "",
     form: {
-      config: formConfig,
+      config: utools.cloneObj(formConfig) ,
       data: new entities(),
       isLoading: false
     },

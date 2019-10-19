@@ -49,10 +49,4 @@ export default [
 		name: "开户地区",
 		prop: "bankArea"
 	},
-	{
-	  prop: 'toexamine',
-	  label: '财务是否审核',
-	  width: '200',
-	  template:true,
-	},
 ]

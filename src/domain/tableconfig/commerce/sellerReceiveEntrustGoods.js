@@ -26,7 +26,7 @@ export default [
 	},
 	{
 		prop: 'shippedQuantity',
-		label: '已接(提)货数量',
+		label: '已交(发)货数量',
 		width: '100',
 	},
 ]

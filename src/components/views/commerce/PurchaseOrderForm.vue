@@ -193,7 +193,7 @@ export default {
       isShowTabTable: true,
       isShowTableDialog: false,
       isShowAddBtn: true,
-      formConfig,
+      formConfig: utools.cloneObj(formConfig),
       fromDialogData: {
         ruleForm: {},
         formConfig: []
@@ -751,6 +751,7 @@ export default {
     },
 
     initData () {
+      api.initSelect(this.formConfig)
       const { formData, status } = this.getActivePathData(this.$route.path);
       this.status = status;
       status === "update"

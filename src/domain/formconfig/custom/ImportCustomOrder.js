@@ -256,18 +256,18 @@ export default [{
     trigger: ['blur', 'change']
   }] */
 },
-{
-  // disabled: true,
-  type: 'string',
-  key: "totalAmount",
-  name: "总金额",
-  prop: "totalAmount",
-  rules: [{
-    required: true, message: '必填', trigger: 'blur',
-    validator: validate.validateNum,
-    trigger: ['blur', 'change']
-  }]
-},
+// {
+//   type: 'string',
+//   key: "totalAmount",
+//   name: "总金额",
+//   prop: "totalAmount",
+//   rules: [{
+//     required: true, message: '必填', trigger: 'blur',
+//     validator: validate.validateNum,
+//     trigger: ['blur', 'change']
+//   }],
+//   disabled:true
+// },
 {
   btn: true,
   readonly: true,

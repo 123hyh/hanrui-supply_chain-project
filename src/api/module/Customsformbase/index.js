@@ -72,5 +72,13 @@ export default {
       url: '/customsformbase/searchOne?customsFormCode=' + codeNo,
       method: 'GET'
     })
+  },
+  // 获取报关单其他信息
+  getOtherData(data) {
+    return this._getData({
+      url: `/customsother/search`,
+      method: 'POST',
+      data
+    })
   }
 }

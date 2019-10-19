@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
-
 export default new VueRouter({
   routes: [
     {
@@ -52,6 +51,16 @@ export default new VueRouter({
           }
         },
         {
+          path: '/SeCarrierBaseForm',
+          name: 'SeCarrierBaseForm',
+          component: _ =>
+            import('@/components/views/basicdata/SeCarrierBaseForm.vue'),
+          meta: {
+            title: '承运商信息',
+            parentRoute: 'M082005'
+          }
+        },
+        {
           path: '/M0106',
           name: 'M0106',
           component: _ =>
@@ -65,6 +74,16 @@ export default new VueRouter({
           name: 'CompanyInfo',
           component: _ =>
             import('@/components/views/basicdata/CompanyInfoForm.vue'),
+          meta: {
+            title: '公司信息',
+            parentRoute: 'M082001'
+          }
+        },
+        {
+          path: '/SeCompanyInfo',
+          name: 'SeCompanyInfo',
+          component: _ =>
+            import('@/components/views/basicdata/SeCompanyInfoForm.vue'),
           meta: {
             title: '公司信息',
             parentRoute: 'M0106'
@@ -273,6 +292,16 @@ export default new VueRouter({
           }
         },
         {
+          path: '/SeSupplierBaseForm',
+          name: 'SeSupplierBaseForm',
+          component: _ =>
+            import('@/components/views/basicdata/SeSupplierBaseForm.vue'),
+          meta: {
+            title: '供应商信息',
+            parentRoute: 'M082004'
+          }
+        },
+        {
           path: '/M0144',
           component: _ =>
             import('@/components/views/basicdata/BatchRuleList.vue'),
@@ -381,6 +410,17 @@ export default new VueRouter({
           }
         },
         {
+          path: '/SeClientForm',
+          name: 'SeClientForm',
+          component: _ =>
+            import('@/components/views/business/SeClientForm.vue'),
+          props: true,
+          meta: {
+            title: '委托方信息',
+            parentRoute: 'M082002'
+          }
+        },
+        {
           path: '/M0205',
           component: _ =>
             import('@/components/views/business/AgreementList.vue'),
@@ -433,6 +473,16 @@ export default new VueRouter({
           meta: {
             title: '供应链客户信息',
             parentRoute: 'M020104'
+          }
+        },
+        {
+          path: '/SeCustomerform',
+          name: 'SeCustomerform',
+          component: _ =>
+            import('@/components/views/basicdata/SeCustomerForm.vue'),
+          meta: {
+            title: '供应链客户信息',
+            parentRoute: 'M082003'
           }
         },
         {
@@ -526,10 +576,28 @@ export default new VueRouter({
             title: '网上授信信息'
           }
         },
+        // {
+        //   path: '/M0402',
+        //   component: _ =>
+        //     import('@/components/views/commerce/EntrustOrderList.vue'),
+        //   meta: {
+        //     title: '委托订单'
+        //   }
+        // },
+        // {
+        //   path: '/EntrustOrderForm',
+        //   name: 'EntrustOrderForm',
+        //   component: _ =>
+        //     import('@/components/views/commerce/EntrustOrderForm.vue'),
+        //   meta: {
+        //     title: '委托订单信息',
+        //     parentRoute: 'M0402'
+        //   }
+        // },
         {
           path: '/M0402',
           component: _ =>
-            import('@/components/views/commerce/EntrustOrderList.vue'),
+            import('@/components/views/model/views/entrustorder/entrustorderlist.vue'),
           meta: {
             title: '委托订单'
           }
@@ -538,12 +606,30 @@ export default new VueRouter({
           path: '/EntrustOrderForm',
           name: 'EntrustOrderForm',
           component: _ =>
-            import('@/components/views/commerce/EntrustOrderForm.vue'),
+            import('@/components/views/model/views/entrustorder/entrustorderform.vue'),
           meta: {
             title: '委托订单信息',
             parentRoute: 'M0402'
           }
         },
+        // {
+        //   path: '/M0409',
+        //   component: _ =>
+        //     import('@/components/views/model/views/entrustorder/entrustorderlist.vue'),
+        //   meta: {
+        //     title: '新委托订单'
+        //   }
+        // },
+        // {
+        //   path: '/newentrustorderform',
+        //   name: 'newentrustorderform',
+        //   component: _ =>
+        //     import('@/components/views/model/views/entrustorder/entrustorderform.vue'),
+        //   meta: {
+        //     title: '新委托订单信息',
+        //     parentRoute: 'M0409'
+        //   }
+        // },
         {
           path: '/M0403',
           component: _ =>
@@ -1160,6 +1246,14 @@ export default new VueRouter({
           }
         },
         {
+          path: '/M0821',
+          component: () =>
+            import('@/components/views/finance/MakeManage/MakeManage.vue'),
+          meta: {
+            title: '开票管理'
+          }
+        },
+        {
           path: '/M0817',
           component: _ =>
             import('@/components/views/finance/VouchermanageList.vue'),
@@ -1198,15 +1292,6 @@ export default new VueRouter({
             title: '订单基础资料'
           }
         },
-        // {
-        //   path: '/OrderBaseForm',
-        // 	name: 'OrderBaseForm',
-        //   component: ()=> import('@/components/views/commerce/OrderBaseForm.vue'),
-        //   props: true,
-        // 	meta: {
-        //     title: '订单基础资料信息'
-        //   }
-        // },
         {
           path: '/M0407',
           component: _ =>
@@ -1276,121 +1361,6 @@ export default new VueRouter({
           meta: {
             title: '关务基础资料'
           }
-          /* children:[
-          {
-            path: '',
-            alias: 'M060115',
-            name: 'M060115',
-            component: _ => import('@/components/views/basicdata/MaterielCustomList.vue'),
-            meta: {
-              title: '物料海关信息'
-            }
-          },
-          {
-            path: 'M060101',
-            name: 'M060101',
-            component: _ => import('@/components/page/404.vue'),
-            meta: {
-              title: '关务舱单'
-            }
-          },
-          {
-            path: 'M060102',
-            name: 'M060102',
-            component: _ => import('@/components/views/basicdata/UnitConvertList.vue'),
-            meta: {
-              title: '关务海关单位转换'
-            }
-          }, 
-          {
-            path: 'M060103',
-            name: 'M060103',
-            component: _ => import('@/components/views/basicdata/ContainerList.vue'),
-            meta: {
-              title: '关务集装箱信息'
-            }
-          }, 
-          {
-            path: 'M060104',
-            name: 'M060104',
-            component: _ => import('@/components/views/basicdata/SupervisionConditionList.vue'),
-            meta: {
-              title: '关务监管条件'
-            }
-          },
-          {
-            path: 'M060105',
-            name: 'M060105',
-            component: _ => import('@/components/views/basicdata/ProductTaxList.vue'),
-            meta: {
-              title: '关务客品税号'
-            }
-          },
-          {
-            path: 'M060106',
-            name: 'M060106',
-            component: _ => import('@/components/page/404.vue'),
-            meta: {
-              title: '关务清关费用'
-            }
-          }, 
-          {
-            path: 'M060107',
-            name: 'M060107',
-            component: _ => import('@/components/views/basicdata/CustomsTariffList.vue'),
-            meta: {
-              title: '关务税则表'
-            }
-          },
-          {
-            path: 'M060108',
-            name: 'M060108',
-            component: _ => import('@/components/views/basicdata/CustomsMaterielList.vue'),
-            meta: {
-              title: '关务物料税号表'
-            }
-          },
-          {
-            path: 'M060109',
-            name: 'M060109',
-            component: _ => import('@/components/views/basicdata/MailSendLogList.vue'),
-            meta: {
-              title: '电子税单邮件发送日志'
-            }
-          },
-          {
-            path: 'M060111',
-            name: 'M060111',
-            component: _ => import('@/components/views/basicdata/CustomsRecordList.vue'),
-            meta: {
-              title: '报关单删改记录'
-            }
-          },
-          {
-            path: 'M060112',
-            name: 'M060112',
-            component: _ => import('@/components/views/basicdata/SourceBillList.vue'),
-            meta: {
-              title: '原始舱单'
-            }
-          },
-          {
-            path: 'M060113',
-            name: 'M060113',
-            component: _ => import('@/components/views/basicdata/GoodsTaxList.vue'),
-            meta: {
-              title: '商品税号'
-            }
-          },
-          {
-            path: 'M060114',
-            name: 'M060114',
-            component: _ => import('@/components/views/basicdata/ExemptionList.vue'),
-            meta: {
-              title: '征免性质'
-            }
-          },
-        ] */
         },
         {
           path: '/MaterielBaseForm',
@@ -1825,6 +1795,7 @@ export default new VueRouter({
             title: '盘点方案'
           }
         },
+        
         {
           path: '/M1103',
           component: () =>
@@ -1860,7 +1831,7 @@ export default new VueRouter({
     {
       path: '*',
       redirect: '/404'
-    },
+    }
     /* {
       path: '/export',
       component: () => import('@/test/Export.vue')

@@ -7,7 +7,7 @@ export default [
 		readonly:true
 	},
 	{
-		btn:true,
+		// btn:true,
 		type: "string",
 		key: "delegeteBillNo",
 		name: "委托单号",
@@ -26,7 +26,8 @@ export default [
 		selectKey: "currencyName",
 		key: "settleCurrency",
 		name: "结算币别",
-		prop: "settleCurrency"
+		prop: "settleCurrency",
+		disabled: true,
 	},
 	{
 		btn:true,
@@ -79,8 +80,9 @@ export default [
 	{
 		type: "money",
 		key: "totalAmount",
-		name: "子表合计金额",
-		prop: "totalAmount"
+		name: "合计金额",
+		prop: "totalAmount",
+		disabled: true
 	},
 	{
 		type: "select",

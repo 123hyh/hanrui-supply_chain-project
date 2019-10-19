@@ -234,13 +234,14 @@ export default {
         continue
       }
 
-      for (let { type, key, disabled, btn, name, rules } of params) {
+      for (let { type, key, disabled, btn, name, rules, isShow } of params) {
         if (key === item.key) {
           type !== undefined && (item.type = type)
           disabled !== undefined && (item.disabled = disabled)
           btn !== undefined && (item.btn = btn)
           name !== undefined && (item.name = name)
-          rules !== undefined && (item.rules = rules)
+          rules !== undefined && (item.rules = rules),
+            isShow !== undefined && (item.isShow = isShow)
         }
       }
     }
@@ -773,7 +774,7 @@ export default {
     if (this.getDataType(formObj) !== 'Array') {
       throw new Error('需传入form实体')
     }
-    var ratios = [] //百分比的栏位
+    var ratios = ['serviceTaxRate'] //百分比的栏位
     for (let item of formObj) {
       if (item.list) {
         for (let con of item.list) {
@@ -803,7 +804,6 @@ export default {
         }
       } else {
         if (item.type == 'calc') {
-          console.log(item.name + item.key + ':     ' + item.solutionFormula)
           data[item.key] = this.calcConfig(
             data,
             item.solutionFormula,
@@ -846,7 +846,6 @@ export default {
             }
             solutionFormula = solutionFormula.replace(key, da).replace(' ', '')
           } else if (ratios.indexOf(key) != -1) {
-            console.log(key)
             solutionFormula = solutionFormula
               .replace(key, data[key] + '/100')
               .replace(' ', '')
@@ -1016,5 +1015,32 @@ export default {
       item.itemValue = item[itemValue]
     }
     return data
+  },
+
+  // 处理单表单或多表单校验结果
+  checkFormPass(verify) {
+    let set = [],
+      pass = new Set()
+    for (let key in verify) {
+      if (verify.hasOwnProperty(key)) {
+        if (Array.isArray(verify[key])) {
+          for (let form of verify[key]) {
+            set.push(form)
+          }
+        } else if (verify[key].constructor.name === 'VueComponent') {
+          set.push(verify[key])
+        }
+      }
+    }
+    const fn = (fun, pass) => {
+      fun.validate(valid => pass.add(valid))
+    }
+    set.forEach(
+      function(item) {
+        this.fn(item, this.pass)
+      },
+      { pass, fn }
+    )
+    return !pass.has(false)
   }
 }

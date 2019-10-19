@@ -38,6 +38,8 @@ import TableComponent from "@/components/common/TabTable.vue";
 import Pagination from "@/components/common/Pagination";
 import PopoverComponent from "@/components/common/Popover.vue";
 import api from "@/assets/js/appHelper.js";
+import utools from '@/domain/common/utools.js'
+
 // 表单表格
 import entities from "@/domain/entities/finance/Accountingwriteoff";
 import formConfig from "@/domain/formconfig/finance/Accountingwriteoff";
@@ -70,7 +72,7 @@ export default {
     status: "",
     writeback: "",
     form: {
-      config: formConfig,
+      config: utools.cloneObj(formConfig) ,
       data: new entities(),
       isLoading: false
     },

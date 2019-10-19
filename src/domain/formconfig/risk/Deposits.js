@@ -78,14 +78,14 @@ export default [
     name: '汇率',
     prop: 'exchangeRate',
     readonly: true,
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'number',
     key: 'depositsAmount',
     name: '保证(押)金额',
     prop: 'depositsAmount',
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'number',
@@ -93,7 +93,7 @@ export default [
     name: '保证(押)金额本位币',
     prop: 'depositsCurrency',
     readonly: true,
-    rules: [...rules, { validator: validate.validateNum }]
+    rules
   },
   {
     type: 'select',
@@ -119,11 +119,10 @@ export default [
     rules
   },
   {
-    type: 'string',
+    type: 'number',
     key: 'timeLimit',
     name: '期限(天)',
     prop: 'timeLimit',
-    rules: [{ validator: validate.validateNum }]
   },
   {
     type: 'select',

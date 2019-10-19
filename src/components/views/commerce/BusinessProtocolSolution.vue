@@ -184,7 +184,7 @@ export default {
           this.getformDialogData();
           break;
         case 'delete':
-          utools.deleteMessage.call(this, this.removeSolutionData)
+          this.removeSolutionData()
       }
       // 控制弹窗的显示
       if (type != "search" && type != "delete") {
@@ -264,9 +264,13 @@ export default {
       if (isNull(this.slotTable[target].activeRow)) return this.$message.warning('请选择一条数据删除！');
       if (this.status === 'add') {
         const activeRow = this.slotTable[target].activeRow;
-        this.slotTable[target].list.splice((() => {
-          this.slotTable[target].list.findIndex(item => ((item.itemCode || item.financeProjectCode) === (activeRow.itemCode || activeRow.financeProjectCode)))
-        })(), 1);
+        // 删除逻辑
+        this.slotTable[target].list.splice((() =>
+          this.slotTable[target].list.findIndex(item =>
+            ((item.formulaCode || item.financeProjectCode) === (activeRow.formulaCode || activeRow.financeProjectCode))
+          )
+        )(), 1);
+        this.slotTable[target].count--
       } else {
         this.removeSlotTableData(target)
       }
@@ -340,13 +344,13 @@ export default {
       let { multipleTable, target } = this.tableDialog, IS_FORMULA = this.tableDialog.target === "formula"
       if (this.status === 'add') {
         if (IS_FORMULA) {
-          this.slotTable[target] = { ...this.slotTable[target], list: cloneObj(multipleTable), count: multipleTable.length };
+          this.slotTable[target] = { ...this.slotTable[target], list: [...this.slotTable[target].list, ...cloneObj(multipleTable)], count: multipleTable.length };
           this.tableDialog.multipleTable = [];
         } else {
-          const { activeRow: { itemCode }, list } = this.slotTable.formula,
+          const { activeRow: { formulaCode: itemCode }, list } = this.slotTable.formula,
             { financeProjectCode, financeProjectName } = this.tableDialog.activeRow;
           list.forEach((item, index) => {
-            if (item.itemCode === itemCode) {
+            if (item.formulaCode === itemCode) {
               this.$set(this.slotTable.formula.list, index, { ...item, financeProjectCode, financeProjectName });
               return;
             }
@@ -363,6 +367,7 @@ export default {
 
     // 单据状态 修改 时 批量新增计费公式
     async changeSolutionFormulaData () {
+
       let sCode = 200;
       try {
         const data = await api.changeSolutionFormulaData({

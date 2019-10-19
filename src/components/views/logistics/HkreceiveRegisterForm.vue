@@ -20,7 +20,7 @@
     <section v-show="table.isshow">
       <div
         class="mb-10"
-        v-show="+form.data.status||0<=1"
+        v-show="+(form.data.status||0) <= 1"
       >
         <el-button
           :disabled="!addcz"

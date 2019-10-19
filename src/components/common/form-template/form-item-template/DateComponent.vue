@@ -6,13 +6,14 @@
     v-model="formModel[config['key']]"
     type="date"
     placeholder="选择日期"
-    :disabled="config.disabled"
+    :disabled="formStatus ? true : config.disabled"
     :readonly="config.readonly"
   ></el-date-picker>
 </template>
 <script>
 export default {
   props: {
+        formStatus:Boolean,
     // form 实体
     formModel: {
       type: Object,

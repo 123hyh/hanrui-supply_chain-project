@@ -9,23 +9,35 @@ import {
   mapMutations,
   mapActions,
   mapGetters
-} from 'vuex'
+} from 'vuex';
+import { instance as service } from '@/assets/js/initApi.js'
+import store from '@/store/index.js'
+
+// 页面刷新 和 初始化时 取 token 和 store数据
+service.defaults.headers.common['x-auth-token'] = localStorage.getItem('token');
+store.commit('setStore');
 
 export default {
   computed: {
     ...mapGetters(['systemName'])
   },
+
   methods: {
-    ...mapMutations(['PreservationStore',]),
+    ...mapMutations(['PreservationStore', 'setStore']),
   },
+
   created () {
-    // 页面刷新 和 初始化时 取 store数据
     window.addEventListener('beforeunload', () => {
-      this.PreservationStore()
+      // 存取token 和 store数据
+      this.PreservationStore();
     });
     // 设置 网页title
     document.getElementsByTagName('title')[0].textContent = this.systemName
-  }
+  },
+  mounted(){
+    const loading = document.getElementById('transion-loading');
+    loading.style.display = 'none'
+  },
 }
 </script>
 

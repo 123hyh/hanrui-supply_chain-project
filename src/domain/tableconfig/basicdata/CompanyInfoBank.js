@@ -29,10 +29,4 @@ export default [
     label: '开户地区',
     width: '200',
   },
-  {
-    prop: 'toexamine',
-    label: '财务是否审核',
-    width: '200',
-    template:true,
-  },
 ]

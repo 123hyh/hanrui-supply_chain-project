@@ -91,19 +91,19 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'loanRateFlag',
+		prop: 'loanRateFlagName',
 		label: '汇率取值依据-贷款',
-		width: '100',
+		width: '300',
 	},
 	{
-		prop: 'seviceRateFlag',
+		prop: 'seviceRateFlagName',
 		label: '汇率取值依据-服务费',
-		width: '100',
+		width: '300',
 	},
 	{
-		prop: 'matTaxesRateFlag',
+		prop: 'matTaxesRateFlagName',
 		label: '汇率取值依据-垫付税金',
-		width: '100',
+		width: '300',
 	},
 	{
 		prop: 'minimumCharge',
@@ -171,7 +171,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'chargeAgreement',
+		prop: 'chargeAgreementName',
 		label: '结算方案',
 		width: '100',
 	},

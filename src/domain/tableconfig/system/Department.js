@@ -2,22 +2,18 @@ export default [
 	{
 		prop: 'departmentCode',
 		label: '部门编码',
-		width: '100',
 	},
 	{
 		prop: 'departmentName',
 		label: '部门名称',
-		width: '100',
 	},
 	{
 		prop: 'parentDepartment',
 		label: '上级部门',
-		width: '100',
 	},
 	{
 		prop: 'remark',
 		label: '部门说明',
-		width: '100',
 	},
 	// {
 	// 	prop: 'creator',

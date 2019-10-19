@@ -1,8 +1,8 @@
 export default [
-	{
-		prop: 'supplierCode',
-		label: '编码',
-	},
+	// {
+	// 	prop: 'supplierCode',
+	// 	label: '编码',
+	// },
 	{
 		prop: 'bankName',
 		label: '开户银行',
@@ -26,11 +26,5 @@ export default [
 	{
 		prop: 'bankArea',
 		label: '开户地区',
-	},
-	{
-	  prop: 'toexamine',
-	  label: '财务是否审核',
-	  width: '200',
-	  template:true,
 	},
 ]

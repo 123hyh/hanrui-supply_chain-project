@@ -55,9 +55,8 @@ export default {
 
     queryBarFormConfig () {
       return [
-        { label: "编码", moduleBind: "customerNo", isInput: true },
-        { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
         { label: "名称", moduleBind: "customerName", isInput: true },
+        { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
         { label: "简称", moduleBind: "shortName", isInput: true },
         { label: "助记码", moduleBind: "shortCode", isInput: true },
       ]

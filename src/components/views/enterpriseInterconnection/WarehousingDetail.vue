@@ -19,7 +19,7 @@
       @handlePageChange="handlePageChange"
     ></table-component>
     <!-- 商品信息表格 -->
-    <table-component
+    <!-- <table-component
       :queryBarVisible='false'
       :dialog="false"
       :popoverList="productTable.list"
@@ -27,7 +27,7 @@
       :count="productTable.count"
       :activeRow.sync="productTable.activeRow"
       @handlePageChange="handleProductPageChange"
-    ></table-component>
+    ></table-component> -->
   </div>
 </template>
 <script>
@@ -42,7 +42,7 @@ import TableComponent from "@/components/common/Table.Form.Dialog/TableComponent
 
 // 注册表
 import tableConfig from "@/domain/tableconfig/enterpriseInterconnection/WarehousingDetail.js";
-import productConfig from '@/domain/tableconfig/enterpriseInterconnection/WarehousingDetailProduct.js'
+// import productConfig from '@/domain/tableconfig/enterpriseInterconnection/WarehousingDetailProduct.js'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
 
@@ -61,21 +61,21 @@ export default {
       count: 0,
       activeRow: {}
     },
-    productTable: {
+    /* productTable: {
       list: [],
       count: 0,
       config: productConfig,
       activeRow: {}
-    }
+    } */
   }),
 
   computed: {
     ...mapGetters(['orderStatus']),
     queryBarFormConfig () {
       return [
-        { label: "委托单号", moduleBind: "tradeName", isInput: true },
-        { label: '商品名称', moduleBind: 'status', isInput: true },
-        { label: "批次", moduleBind: "materielType", isInput: true },
+        { label: "委托单号", moduleBind: "entrustOrderNo", isInput: true },
+        { label: '存货名称', moduleBind: 'inventoryName', isInput: true },
+        { label: "入库日期", moduleBind: "inTime", isDate: true },
 
       ]
     },
@@ -90,10 +90,10 @@ export default {
 
     async getTablePageData (data = {}) {
       try {
-        /*  const {
+         const {
            data: { list, count }
-         } = await api.getMaterielBaseList({ ...this.queryBar.data, ...data });
-         this.table = { ...this.table, list, count } */
+         } = await api.getWarehousingDetailData({ ...this.queryBar.data, ...data });
+         this.table = { ...this.table, list, count }
       } catch (error) {
         this.$message.error('获取列表数据失败，请重试！')
         console.log(error);
@@ -106,9 +106,9 @@ export default {
     },
 
     // 商品信息分页事件
-    handleProductPageChange (pageData = {}) {
+   /*  handleProductPageChange (pageData = {}) {
       debugger
-    },
+    }, */
 
     // 查询栏按钮点击事件
     handleBtnClickType (target) {

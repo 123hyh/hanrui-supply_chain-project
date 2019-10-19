@@ -391,7 +391,8 @@ export default {
           try {
             const {
               data
-            } = await api.addclientevaluationData(this.clientevaluationForm)
+            } = await api.addclientevaluationData(this.clientevaluationForm);
+            this.jumpType = 'update';
             this.clientevaluationForm = { ...this.clientevaluationForm, status: data.status || '1' }
             if (data) {
               // 提交成功后...

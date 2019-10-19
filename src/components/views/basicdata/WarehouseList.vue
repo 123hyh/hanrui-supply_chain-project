@@ -56,7 +56,7 @@ const { titleCallBack, deleteMessage, alertMessage, turnCodeBoolean, alertStatus
   , removeReceiptsTips,
   sbumitReceiptsTips } = utools;
 import QueryBar from '@/components/common/QueryBar'
-import PopoverComponent from '@/components/common/Table.Form.Dialog/DialogComponent.vue'
+// import PopoverComponent from '@/components/common/Table.Form.Dialog/DialogComponent.vue'
 import TableComponent from '@/components/common/Table.Form.Dialog/TableComponent.vue'
 
 
@@ -69,7 +69,7 @@ export default {
   components: {
     QueryBar,
     TableComponent,
-    PopoverComponent,
+    PopoverComponent:_=>import('@/components/common/Table.Form.Dialog/DialogComponent.vue'),
   },
   data: () => ({
     tableconfig,

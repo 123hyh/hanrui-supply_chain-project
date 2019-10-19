@@ -23,10 +23,4 @@ export default [
 		prop: 'currencyName',
 		label: '币别',
 	},
-	{
-	  prop: 'toexamine',
-	  label: '财务是否审核',
-	  width: '200',
-	  template:true,
-	},
 ]

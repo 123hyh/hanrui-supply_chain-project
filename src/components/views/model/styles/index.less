@@ -1,0 +1,246 @@
+/* 全局 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #d0d0d0;
+  margin-right: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #ccc;
+}
+
+::-webkit-scrollbar-resizer {
+  background-color: #ff6e00;
+}
+
+.border-b {
+  border-bottom: 1px solid #e9edf2;
+}
+
+.border-t {
+  border-top: 1px solid #e9edf2;
+}
+
+.border-l {
+  border-left: 1px solid #e9edf2;
+}
+
+.border-r {
+  border-right: 1px solid #e9edf2;
+}
+
+.img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.transition {
+  transition: 0.3s ease all;
+}
+
+.line {
+  height: 1px;
+  background: #e9edf2;
+}
+
+.box-shadow {
+  box-shadow: 0 0 5px #f5f7fa;
+}
+
+/* 自定义 */
+// 布局
+.app-container {
+  width: 100%;
+  height: 100%;
+}
+
+.el-header {
+  background-color: #b3c0d1;
+}
+
+.app-mian-container {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.el-aside {
+  background-color: #d1d8e0;
+}
+
+.model-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  min-width: 1440px;
+}
+
+.model {
+  flex: 1;
+}
+
+.el-footer {
+  text-align: center;
+  padding-top: 36px;
+  font-size: 14px;
+  color: #a6a6a6;
+}
+
+//  model
+.login {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-size: 100% 100%;
+}
+
+.login-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logout-btn {
+  float: right;
+  margin-top: 30px;
+  transform: translate(0, -50%);
+}
+
+.header {
+  line-height: 36px;
+}
+
+.table,
+.form {
+}
+
+// 分页
+.page {
+  text-align: right;
+  // padding: 0;
+  // margin-right: -5px;
+  margin-top: 20px;
+  // margin-bottom: 20px;
+}
+
+// 按钮
+.operationDiv {
+  // text-align: right;
+  margin-bottom: 20px;
+}
+
+.operationDialogDiv {
+  text-align: right;
+  margin-top: 20px;
+}
+
+// 表单
+.el-form {
+  text-align: left;
+}
+
+.form-item {
+  width: 300px;
+  vertical-align: top;
+  display: inline-block;
+  padding-right: 50px;
+  margin-bottom: 10px;
+}
+
+.form-item-long {
+  width: 416px;
+}
+
+.form-item-big {
+  width: 650px;
+}
+
+// 下拉输入框
+.el-input {
+  .el-select .el-input {
+    width: 85px;
+  }
+}
+
+.text-r input {
+  text-align: right;
+}
+
+
+.el-date-editor.el-input,
+.el-select {
+  width: 100%;
+}
+
+.el-radio {
+  height: 28px;
+  line-height: 28px;
+}
+
+// 展示
+.form-item.text {
+  .colon{
+    margin-right: 10px;
+  }
+}
+
+.el-form-item__error {
+  // top:auto;
+}
+
+// 弹窗
+.el-dialog {
+  min-width: 1440px;
+  .el-dialog__header{
+    padding: 20px;
+    .el-dialog__headerbtn{
+      top: 25px;
+    }
+  }
+  .el-dialog__body {
+    padding: 0 20px 30px 20px;
+  }
+}
+
+.formHead{
+  text-align: center
+}

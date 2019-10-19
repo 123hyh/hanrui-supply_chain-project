@@ -14,7 +14,8 @@ export default [
 	  key: "companyName",
 	  name: "公司名称",
 	  prop: "companyName",
-	  btn: true,
+		btn: true,
+		readonly: true,
 	  rules
 	},
 	{

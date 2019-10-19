@@ -2,27 +2,22 @@ export default [
 	{
 		prop: 'vehicleNo',
 		label: '车牌号',
-		width: '100',
 	},
 	{
 		prop: 'carType',
 		label: '车型',
-		width: '100',
 	},
 	{
 		prop: 'loadWeight',
 		label: '载重',
-		width: '100',
 	},
 	{
 		prop: 'pachageNo',
 		label: '可载件数',
-		width: '100',
 	},
 	{
 		prop: 'carriageVolume',
 		label: '车厢容积(立方)',
-		width: '100',
 	},
 // 	{
 // 		prop: 'creator',

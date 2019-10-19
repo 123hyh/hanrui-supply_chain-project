@@ -217,10 +217,8 @@ export default {
     ...mapGetters(['orderStatus']),
     queryBarFormConfig () {
       return [
-        { label: "单据编号", moduleBind: "originCode", isInput: true },
         { label: '单据状态', moduleBind: 'status', isSelect: true, selectOption: this.orderStatus },
-        { label: "简称", moduleBind: "originAbb", isInput: true },
-        { label: "对应海关编码", moduleBind: "customsCode", isInput: true },
+        { label: "国家名称或代码", moduleBind: "keyword", isInput: true },
       ]
     },
     btnObj: () => [

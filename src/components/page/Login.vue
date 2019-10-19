@@ -169,7 +169,7 @@ export default {
               password: md5(this.ruleForm.password)
             }));
             const { userName, userCode } = data;
-            
+
             // 客户信息存储到 vuex中
             this.setUserInfo(data)
 
@@ -231,7 +231,8 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url(../../assets/img/login/login_bg.png);
+  background: linear-gradient(to left bottom, #ddeafb, #afeafc);
+  // background-image: url(../../assets/img/login/login_bg.png);
   background-size: 100%;
 }
 
@@ -243,7 +244,7 @@ export default {
   height: 500px;
   margin: -240px 0 0 -520px;
   border-radius: 20px;
-  background: #fff;
+  // background: #fff;
   // overflow: hidden;
 }
 
@@ -251,8 +252,13 @@ export default {
   float: left;
   width: 480px;
   height: 480px;
-  background-image: url(../../assets/img/login/login_img.png);
+  // background-image: url(../../assets/img/login/login_img.png);
+  background-image: url(~@/assets/img/login/20190910155850.png);
+  background-repeat: no-repeat;
   background-size: 100%;
+  // transform:  translate(10%, 20%)
+  transform: scale(1.38);
+  transform-origin: center top;
 }
 
 .ms-login-form {
@@ -305,7 +311,8 @@ export default {
   width: 240px;
   height: 40px;
   font-size: 20px;
-  background: linear-gradient(to right, #ffaf4d, #fb8436);
+  // background: linear-gradient(to right, #ffaf4d, #fb8436);
+  background: #80c8ec;
   border: none;
 }
 

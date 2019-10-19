@@ -1,10 +1,20 @@
 export default [
-  { prop: '', name: '出库仓库' },
-  { prop: '', name: '物流商' },
-  { prop: '', name: '物料单号' },
-  { prop: '', name: '包裹号' },
-  { prop: '', name: '包裹重量' },
-  { prop: '', name: '发票号' },
-  { prop: '', name: '出库时间' },
-  { prop: '', name: '备注' }
-]
+	{ prop: 'entrustOrderNo', name: '委托订单' },
+	{ prop: 'orderNo', name: '出库单号', width: 150 },
+	{ prop: 'goodsCode', name: '商品编码(SKU)', width: 150 },
+	{ prop: 'barCode', name: '条形码', width: 150 },
+	{ prop: 'inventoryName', name: '存货名称', width: 150 },
+	{ prop: 'goodsName', name: '海关商品名称', width: 150 },
+	{ prop: 'model', name: '规格型号', width: 150 },
+	{ prop: 'unitName', name: '单位名称', width: 150 },
+	{ prop: 'shipper', name: '货主', width: 150 },
+	{ prop: 'qualityId', name: '品质', width: 150 },
+	{ prop: 'batch', name: '批次', width: 150 },
+	{ prop: 'status', name: '状态', width: 150 },
+	{ prop: 'warehouseName', name: '出库仓库', width: 150 },
+	{ prop: 'outTime', name: '出库时间', width: 150 },
+	{ prop: 'harvestQuantity', name: '实际出库数量', width: 150 },
+	{ prop: 'volume', name: '体积（CBM）', width: 150 },
+	{ prop: 'netWeight', name: '净重（KG）', width: 150 },
+	{ prop: 'grossWeight', name: '毛重（KG）', width: 150 }
+];

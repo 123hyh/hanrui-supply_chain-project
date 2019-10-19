@@ -1,14 +1,24 @@
 /* 页面刷新时保存 state 的数据 */
-import utools from "@/domain/common/utools.js";
+import utools from '@/domain/common/utools.js'
 
-export default{
+export default {
   mutations: {
-    setStore(state, data){
+    setStore(state) {
       // 替换 state
-      utools.getSession('state') && this.replaceState(data)
+      const data = utools.getSession('state')
+      if (data) {
+        this.replaceState(data)
+      } else {
+        // 初始化 查询条件下拉,  和 版权信息 //// 权限菜单放在 路由鉴权时获取
+        Promise.all(
+          ['getOrderStatus', 'getSystem'].map(item =>
+            this.dispatch(item)
+          )
+        )
+      }
     },
-    PreservationStore(){
+    PreservationStore() {
       utools.setSession('state', this.state)
-    },
+    }
   }
 }

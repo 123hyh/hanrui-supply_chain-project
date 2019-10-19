@@ -73,10 +73,7 @@ export default [
 		key: "registFund",
 		name: "注册资金(万)",
 		prop: "registFund",
-		rules: [{
-			validator: validate.validateNum,
-			trigger: 'blur'
-		}]
+		rules:validate.setRequired()
 	},
 	{
 		type : "string",

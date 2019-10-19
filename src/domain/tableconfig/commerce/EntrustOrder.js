@@ -358,6 +358,26 @@ export default [
 		prop: 'supplierPayMode',
 		label: '付供应商货款方式',
 		width: '150',
+  },
+  {
+		prop: 'creator',
+		label: '创建人',
+		width: '150',
+	},
+	{
+		prop: 'createTime',
+		label: '创建时间',
+		width: '150',
+	},
+	{
+		prop: 'updater',
+		label: '修改人',
+		width: '150',
+	},
+	{
+		prop: 'updateTime',
+		label: '修改时间',
+		width: '150',
 	},
 	// {
 	// 	prop: 'trusteeCode',

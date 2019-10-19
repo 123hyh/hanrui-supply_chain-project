@@ -70,7 +70,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'reportGateType',
+		prop: 'reportGateTypeName',
 		label: '报关类型',
 		width: '100',
 	},

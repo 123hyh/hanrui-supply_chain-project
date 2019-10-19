@@ -24,10 +24,10 @@ export default [
 		name: "报关类型",
 		prop: "reportGateType",
 	},
-	{
+/* 	{
 		type: 'string',
 		key: "declareType",
 		name: "申报型号",
 		prop: "declareType"
-  }
+  } */
 ]

@@ -4,6 +4,10 @@ export default [
     label: '委托单号',
   },
   {
+    label: '委托方',
+    prop: 'clientName',
+  },
+  {
     prop: 'customerName',
     label: '客户',
   },

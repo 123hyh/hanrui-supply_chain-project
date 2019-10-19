@@ -56,15 +56,15 @@ export default [{
 		key: "currencyName",
 		name: "币种",
     readonly: true,
-    rules
-		// selectKey: 'currencyName',
+    rules,
+		selectKey: 'currencyName',
 	},
 	{
 		type: 'number',
 		key: "exchangeRate",
 		name: "汇率 %",
 		readonly: true,
-		rules: [...rules, {validator: validate.validateNum,}]
+		rules,
 	},
 	{
 		type: 'select',

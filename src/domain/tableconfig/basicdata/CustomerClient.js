@@ -1,5 +1,5 @@
 export default [
-	{
+/* 	{
 		prop: 'itemCode',
 		label: '表业务主键编号',
 		width: '100',
@@ -8,7 +8,7 @@ export default [
 		prop: 'customerNo',
 		label: '编码',
 		width: '100',
-	},
+	}, */
 	{
 		prop: 'clientNo',
 		label: '委托方编码',

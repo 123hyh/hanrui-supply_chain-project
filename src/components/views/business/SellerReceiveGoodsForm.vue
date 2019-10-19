@@ -43,7 +43,17 @@
         ></form-component>
       </div>
     </div>
-
+    <el-row style="padding:10px 0">
+      <form-module-head title></form-module-head>型号
+      <el-input
+        v-model="arrivalGoodsModel"
+        style="width:200px;margin-right:10px"
+      ></el-input>
+      <el-button
+        type="primary"
+        @click="getDelegeteBillList"
+      >查询</el-button>
+    </el-row>
     <!-- tab -->
     <el-row :gutter="10">
       <el-col :span="11">
@@ -67,7 +77,6 @@
                 :label="item.label"
                 :width="item.width"
               >
-                <!-- <template slot-scope="scope">{{ scope.row }}</template> -->
               </el-table-column>
             </el-table>
             <pagination
@@ -199,11 +208,14 @@
               >
                 <template slot-scope="scope">
                   <el-button
+                  v-if="!(ruleForm.status == '2' ||
+            ruleForm.status.charAt(0) == '3' ||
+            ruleForm.status == '4' ||
+            ruleForm.status.charAt(0) == '5')"
                     size="mini"
                     @click="changeCount(scope.row)"
                     style="padding: 3px;"
                   >确定</el-button>
-                  <!-- <i class="el-icon-circle-check" @click="changeCount(scope.row)"></i> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -262,10 +274,10 @@ export default {
       curRightRow: {}, //右侧表格中被选中的行
 
       ruleForm: new formBind(),
-      formConfig,
+      formConfig: utools.cloneObj(formConfig),
       tableColumn: sellerLogisticsTableConfig,
 
-      verify: {}, // 表单验证
+      verify: [], // 表单验证
       jumpType: "", //页面状态：新增/修改
       popover: {
         //弹出框组件参数
@@ -333,7 +345,8 @@ export default {
           nameFrom: "supplierName",
           codeFrom: "supplierCode"
         }
-      ]
+      ],
+      arrivalGoodsModel: '', // 型号查询
     };
   },
   computed: {
@@ -371,17 +384,6 @@ export default {
           "6": "其他",
           "7": "供应商",
         },
-      };
-    },
-    maxBind () {
-      return function (value) {
-        if (value.temporary == null) {
-          value.temporary = value.quantity;
-        }
-        // 卖方数量 - 已提货数量 + 当前提货数量
-        return (
-          value.sellerQuantity - (value.shippedQuantity || 0) + value.temporary
-        );
       };
     }
   },
@@ -480,7 +482,7 @@ export default {
       this.ruleForm.carrierName = '深圳市讯宇供应链管理有限公司';
       // 交货方式
       this.ruleForm.deliveryMode = '2';
-      
+
     },
     //修改时：初始化表单数据，和物流明细
     async initFormData () {
@@ -492,6 +494,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      let con =  utools.getFromconfigObj(this.formConfig,'delegeteBillNo')
+      delete con['btn']
+      
     },
     //返回
     goBack: function () {
@@ -526,29 +531,23 @@ export default {
           this.isLoading = false;
         }
       } else {
-        this.$message.error("单据编号、承运商、委托单号不能为空");
         console.log("验证失败");
       }
     },
     //获取表单
     handlerFormVerify ($refs) {
-      this.verify = $refs;
+      this.verify.push($refs);
     },
-    //表单验证
-    isVerify () {
-      return (
-        this.ruleForm.carrierCode &&
-        this.ruleForm.delegeteBillNo &&
-        this.ruleForm.billNo
-      );
+    isVerify() {
+        var isVerify = true;
+        for(let item of this.verify){
+          item["formModel"].validate(valid => {
+              if(!valid) isVerify = false
+          });
+          
+        }
+        return isVerify;
     },
-    // isVerify() {
-    //     let isVerify = false;
-    //     this.verify["formModel"].validate(valid => {
-    //         isVerify = valid;
-    //     });
-    //     return isVerify;
-    // },
 
     /**
      * 弹窗
@@ -586,16 +585,21 @@ export default {
     async requestTable () {
       console.log(this.searchTarget);
       const WHITE_LIST = ['dispatchOrganizationName', 'carrierName', 'carModelName', 'dispatchLineName', 'areaName', 'underPartyName', 'premiumPartyName'];
+      const WHITE_newLIST = ['delegeteBillNo'];
+      
       let status =
         WHITE_LIST.includes(this.searchTarget) ? '2' : '';
+        if(WHITE_newLIST.includes(this.searchTarget)){
+          status = '4'
+        }
       this.searchTarget == 'underPartyName' && this.ruleForm.underPartyType === '2' && (status = '');
       this.searchTarget == 'premiumPartyName' && this.ruleForm.premiumPartyType === '2' && (status = '');
-
       const obj = this.popover.element;
       const { data } = await api[obj.api]({ ...this.popover.ruleForm, status });
       console.log(data, "初始数据---");
       return data;
     },
+
     //弹窗中，点击查询
     handleBtnClick: function () {
       this.requestTable().then(val => {
@@ -605,12 +609,14 @@ export default {
         });
       });
     },
+
     //弹窗中，点击页码查询
     handlePageChange: function (paper) {
       this.popover.ruleForm.pageIndex = paper.pageIndex;
       this.popover.ruleForm.pageSize = paper.pageSize;
       this.handleBtnClick();
     },
+
     //弹窗中，点击保存
     handlerSubPreservation: function (data, key) {
       this.popover.element.tableConfig.forEach(item => {
@@ -620,6 +626,7 @@ export default {
       });
       console.log(this.ruleForm, "this.ruleForm");
     },
+
     //关闭弹窗
     changeisShowPopover: function () {
       this.$set(this.popover, "isShowPopover", false);
@@ -633,13 +640,15 @@ export default {
       const { data } = await api.getEntrustGoods({
         entrustOrderNo: this.ruleForm["delegeteBillNo"],
         pageSize: pager ? pager.pageSize : 10,
-        pageIndex: pager ? pager.pageIndex : 1
+        pageIndex: pager ? pager.pageIndex : 1,
+        arrivalGoodsModel: this.arrivalGoodsModel
       });
       this.delegeteBillTableData = data.list;
       this.delegeteBillTableCount = data.count;
       this.curLeftRow = {}; //清空当前选中行
       this.curRightRow = {};
     },
+
     //获取发运明细 - 表格数据
     async getHkshipmentBaseList (pager) {
       const { data } = await api.getHkShipmentBase({
@@ -679,8 +688,10 @@ export default {
           if (this.jumpType == "create") {
             this.logisticsTableData.push(this.formatTableData(this.curLeftRow));
           } else {
+            let cur = this.formatTableData(this.curLeftRow)
+            cur.quantity = cur.sellerQuantity - (cur.shippedQuantity || 0)
             await api.saveSellerLogisticsInfo(
-              JSON.stringify([this.formatTableData(this.curLeftRow)])
+              JSON.stringify([cur])
             );
             this.serchLogisticsTable();
           }
@@ -702,8 +713,10 @@ export default {
             if (this.jumpType == "create") {
               this.logisticsTableData.push(this.formatTableData(element));
             } else {
+              let cur = this.formatTableData(element)
+              cur.quantity = cur.sellerQuantity - (cur.shippedQuantity || 0)
               await api.saveSellerLogisticsInfo(
-                JSON.stringify([this.formatTableData(element)])
+                JSON.stringify([cur])
               );
               this.serchLogisticsTable();
             }

@@ -36,8 +36,8 @@ export default [
     key: "agreementCode",
     name: "协议编码",
     prop: "agreementCode",
-    disabled: true,
-    rules
+    // disabled: true,
+    // rules
   },
   {
     selectOption: [],
@@ -62,9 +62,7 @@ export default [
     prop: "contractDate",
     rules
   },
-  {
-
-  },
+  
   {
     btn: true,
     type: "string",
@@ -134,44 +132,28 @@ export default [
     key: "insideDayRate",
     name: "账期内日利率 %",
     prop: "insideDayRate",
-    rules: [rules[0], {
-      validator: validate.validateNum,
-      trigger: ['blur', 'change']
-    }]
+    rules
   },
   {
     type: "string",
     key: "outsideDayRate",
     name: "超期日利率 %",
     prop: "outsideDayRate",
-    rules: [
-      rules[0],
-      {
-        validator: validate.validateNum,
-        trigger: ['blur', 'change']
-      }]
+    rules
   },
   {
     type: "string",
     key: "dayRate",
     name: "内部结算日利率 %",
     prop: "dayRate",
-    rules: [rules[0], {
-      validator: validate.validateNum,
-      trigger: ['blur', 'change']
-    }]
+    rules
   },
   {
     type: "string",
     key: "breachDayRate",
     name: "违约日利率 %",
     prop: "breachDayRate",
-    rules: [
-      rules[0],
-      {
-        validator: validate.validateNum,
-        trigger: ['blur', 'change']
-      }]
+    rules
   },
   // 	{
   // 		type: "string",
@@ -190,10 +172,7 @@ export default [
     key: "minCharge",
     name: "最低消费(元)",
     prop: "minCharge",
-    rules: [rules[0], {
-      validator: validate.validateNum,
-      trigger: ['blur', 'change']
-    }]
+    rules
   },
   {
     type: "checkbox",

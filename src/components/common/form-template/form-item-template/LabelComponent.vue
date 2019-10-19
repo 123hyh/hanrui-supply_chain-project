@@ -4,6 +4,7 @@
 <script>
 export default {
    props: {
+        formStatus:Boolean,
     // form 实体
     formModel: {
       type: Object,

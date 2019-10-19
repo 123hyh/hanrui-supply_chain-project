@@ -1,4 +1,5 @@
 import validate from "@/domain/common/validate"
+const rules = validate.setRequired()
 export default [
 	{
 		type: "string",
@@ -20,20 +21,14 @@ export default [
 	},
 	{
 		type : "number",
-		rules: [{
-			validator: validate.validateNum,
-			trigger: 'blur'
-		}],
+		rules,
 		key: "pachageNo",
 		name: "可载件数",
 		prop: "pachageNo"
 	},
 	{
 		type : "number",
-		rules: [{
-			validator: validate.validateNum,
-			trigger: 'blur'
-		}],
+		rules,
 		key: "carriageVolume",
 		name: "车厢容积(立方)",
 		prop: "carriageVolume"

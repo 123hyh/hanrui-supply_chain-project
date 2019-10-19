@@ -197,7 +197,7 @@ export default [
 		type: true,
 		text: true,
 		key: "recognizedMoneyAmount",
-		name: "已认款金额",
+		name: "",
 		prop: "recognizedMoneyAmount"
 	},
 	{

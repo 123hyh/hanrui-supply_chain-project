@@ -52,10 +52,6 @@ export default [
     prop: 'tariff',
     label: '关税'
   },
-  /* 	{
-		prop: 'currency',
-		label: '币种',
-	}, */
   {
     prop: 'remark',
     label: '备注'

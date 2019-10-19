@@ -1,105 +1,94 @@
 <template>
   <div class="subscription-order-form">
-
     <!-- 顶部操作按钮 -->
     <preserve-btn
-      :form='form.data'
-      @handlePreserve='handlePreserve'
-      @handleRollback='handleRollback'
-      :isLoading='topBtn.isLoading'
+      :form="form.data"
+      :isLoading="topBtn.isLoading"
+      @handlePreserve="handlePreserve"
+      @handleRollback="handleRollback"
     ></preserve-btn>
 
     <!-- 委托单 收款单表格 -->
-    <div
-      v-for="(val,key,i) of table"
-      :key="i"
-    >
+    <div :key="i" v-for="(val,key,i) of table">
       <!-- 标题 -->
       <div class="cut-off-rule">{{val.title}}</div>
 
       <!-- 按钮 -->
       <btn-component
-        :btnList='val.btnList'
-        @handleItemBtnClick='(type) => handleItemBtnClick(type,key)'
+        :btnList="val.btnList"
+        @handleItemBtnClick="(type) => handleItemBtnClick(type,key)"
       ></btn-component>
 
       <!-- 表格 -->
       <table-component
-        :dialog='false'
-        :popoverType='val.type'
-        :popoverList='val.table.list'
-        :popoverListKey='val.table.config'
-        :multipleTable.sync='val.table.multipleTable'
-        :activeRow.sync='val.table.activeRow'
-        :count='val.table.count'
-        @handlePageChange='formDialoClickPreservation'
+        :activeRow.sync="val.table.activeRow"
+        :count="val.table.count"
+        :dialog="false"
+        :multipleTable.sync="val.table.multipleTable"
+        :popoverList="val.table.list"
+        :popoverListKey="val.table.config"
+        :popoverType="val.type"
+        @handlePageChange="formDialoClickPreservation"
       ></table-component>
     </div>
 
     <!-- 输入框 -->
     <p class="cut-off-rule"></p>
     <form-component
+      :calculate="calculate"
       :formConfig="form.formConfig"
       :formModel="form.data"
-      :calculate='calculate'
-      @handlerFormVerify='handlerFormVerify'
-      @handlerSearchClick='handlerSearchClick'
+      @handlerFormVerify="item => form.method = item"
+      @handlerSearchClick="handlerSearchClick"
     >
-      <btn-component
-        :btnList="recognition"
-        @handleItemBtnClick='handleItemBtnClick'
-      ></btn-component>
+      <btn-component :btnList="recognition" @handleItemBtnClick="handleItemBtnClick"></btn-component>
     </form-component>
 
     <!-- 子表 -->
     <div>
-      <btn-component
-        :btnList="itemTableBtn"
-        @handleItemBtnClick='handleItemTableBtnClick'
-      ></btn-component>
+      <btn-component :btnList="itemTableBtn" @handleItemBtnClick="handleItemTableBtnClick"></btn-component>
       <table-component
-        :isSubTable='true'
-        :dialog='false'
-        :popoverList='itemTable.list'
-        :popoverListKey='itemTable.config'
-        :count='itemTable.count'
-        :activeRow.sync='itemTable.activeRow'
-        @handlePageChange='getItemData'
+        :activeRow.sync="itemTable.activeRow"
+        :count="itemTable.count"
+        :dialog="false"
+        :isSubTable="true"
+        :popoverList="itemTable.list"
+        :popoverListKey="itemTable.config"
+        @handlePageChange="getItemData"
       ></table-component>
     </div>
 
     <!-- 表格弹窗 -->
     <table-dialog
-      :itemName='tableDialog.title'
-      :isShowPopover.sync='tableDialog.visibel'
-      :popoverList='tableDialog.list'
-      :popoverListKey='tableDialog.config'
-      :count='tableDialog.count'
-      :ruleForm='tableDialog.queryBar.data'
-      :formConfig='tableDialog.queryBar.formConfig'
-      :btnObj='tableDialog.queryBar.btnList'
-      @handleBtnClickType='handleTableDialogClickQuery'
-      @handlerSubPreservation='handlerTableDialogSave'
-      @handlePageChange='handleTableDialogPageChange'
+      :btnObj="tableDialog.queryBar.btnList"
+      :count="tableDialog.count"
+      :formConfig="tableDialog.queryBar.formConfig"
+      :isShowPopover.sync="tableDialog.visibel"
+      :itemName="tableDialog.title"
+      :popoverList="tableDialog.list"
+      :popoverListKey="tableDialog.config"
+      :ruleForm="tableDialog.queryBar.data"
+      @handleBtnClickType="handleTableDialogClickQuery"
+      @handlePageChange="handleTableDialogPageChange"
+      @handlerSubPreservation="handlerTableDialogSave"
     ></table-dialog>
 
     <!-- 表单弹窗 -->
     <form-dialog
-      popoverType='form'
-      :itemName='formDialog.title'
-      :isShowPopover.sync='formDialog.visibel'
-      :formData='formDialog.form'
-      @formClickPreservation='formDialoClickPreservation'
-      @handlerFormConfigClickSearch='handlerFormDialogClickSearch'
+      :formData="formDialog.form"
+      :isShowPopover.sync="formDialog.visibel"
+      :itemName="formDialog.title"
+      @formClickPreservation="formDialoClickPreservation"
+      @handlerFormConfigClickSearch="handlerFormDialogClickSearch"
+      popoverType="form"
     ></form-dialog>
   </div>
 </template>
 <script>
-
 import { mapMutations, mapGetters } from 'vuex'
-import api from "@/assets/js/appHelper.js";
-import utools from '@/domain/common/utools.js';
-const { isNull, alertNullData, cloneObj, setFormConfig } = utools;
+import api from '@/assets/js/appHelper.js'
+import utools from '@/domain/common/utools.js'
+const { isNull, alertNullData, cloneObj, setFormConfig } = utools
 
 // 组件
 import FormComponent from '@/components/common/form-template/FormComponent.vue'
@@ -124,11 +113,9 @@ import customer from '@/domain/tableconfig/basicdata/Customer.js'
 import client from '@/domain/tableconfig/business/Client'
 import employeeInfo from '@/domain/tableconfig/basicdata/EmployeeInfo.js'
 import supplier from '@/domain/tableconfig/basicdata/SupplierBase'
-
-
+import entrustOrder from '@/domain/tableconfig/commerce/EntrustOrder.js'
 
 export default {
-
   name: 'SubscriptionOrderForm',
 
   components: {
@@ -143,7 +130,7 @@ export default {
     status: '',
 
     topBtn: {
-      isLoading: false,
+      isLoading: false
     },
     recognition: [{ type: 'recognition', label: '自动认款' }],
 
@@ -162,14 +149,17 @@ export default {
       receipt: {
         title: '收款单信息',
         type: 'table',
-        btnList: [{ type: 'search', label: '查询' }, { type: 'add', label: '新增' }],
+        btnList: [
+          { type: 'search', label: '查询' },
+          { type: 'add', label: '新增' }
+        ],
         table: {
           activeRow: {},
           list: [],
           config: receipt,
           count: 0
         }
-      },
+      }
     },
     itemTable: {
       btnList: [{ type: 'update', label: '修改' }],
@@ -181,7 +171,8 @@ export default {
     },
     form: {
       data: {},
-      formConfig
+      formConfig: utools.cloneObj(formConfig),
+      method: eval
     },
     formDialog: {
       target: '',
@@ -195,7 +186,6 @@ export default {
         },
         formConfig: []
       }
-
     },
     tableDialog: {
       searchTarget: '',
@@ -206,27 +196,32 @@ export default {
       config: [],
       queryBar: {
         data: {},
-        formConfig: [{ label: "编码", moduleBind: '', isInput: true }],
-        btnList: [{ type: "search", label: "查询" }]
+        formConfig: [{ label: '编码', moduleBind: '', isInput: true }],
+        btnList: [{ type: 'search', label: '查询' }]
       }
     }
   }),
 
   watch: {
-    'formDialog.form.ruleForm.type' () {
-      this.formDialog.form.ruleForm = { ...this.formDialog.form.ruleForm, paymentAccountName: '', paymentAccount: '' }
+    'formDialog.form.ruleForm.type'() {
+      this.formDialog.form.ruleForm = {
+        ...this.formDialog.form.ruleForm,
+        paymentAccountName: '',
+        paymentAccount: ''
+      }
     },
-    'status': {
-      handler (cur, pre) {
-        setFormConfig.call(utools, this.form.formConfig.list, [{
-          key: 'subscriptionAmount',
-          type: cur === 'add' ? 'calculate' : 'number' /* 修改type */
-        }])
-        if (cur === 'update' && pre) this.getItemData();
+    status: {
+      handler(cur, pre) {
+        setFormConfig.call(utools, this.form.formConfig.list, [
+          {
+            key: 'subscriptionAmount',
+            type: cur === 'add' ? 'calculate' : 'number' /* 修改type */
+          }
+        ])
+        if (cur === 'update' && pre) this.getItemData()
         // 重新设置按钮
         if (cur === 'update') {
-          this.recognition = [],
-            this.table.receipt.btnList.splice(1, 1)
+          ;(this.recognition = []), this.table.receipt.btnList.splice(1, 1)
         }
       },
       deep: true
@@ -234,27 +229,32 @@ export default {
   },
   computed: {
     ...mapGetters(['getActivePathData']),
-    calculate () {
-      return {
+    calculate() {
+      var obj = {
         subscriptionAmount: this.itemTable.list.reduce((pre, cur, i) => {
-          pre += (cur.subscribedAmount || 0);
+          pre += cur.subscribedAmount || 0
           return pre
         }, 0)
       }
+      this.$set(this.form.data, 'subscriptionAmount', obj.subscriptionAmount)
+      return obj
     },
-    itemTableBtn () {
-      if (+this.form.data.status <= 1) {
-        return [{ type: 'update', label: '修改' }, { type: 'delete', label: '删除' }]
+    itemTableBtn() {
+      if (+this.form.data.status <= 1 || +this.form.data.status == 6) {
+        return [
+          { type: 'update', label: '修改' },
+          { type: 'delete', label: '删除' }
+        ]
       }
       return []
     }
   },
 
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     let param = {
       data: {
         status: this.status,
-        formData: this.form.data,
+        formData: this.form.data
       },
       path: this.$route.path
     }
@@ -263,24 +263,30 @@ export default {
     next()
   },
 
-  created () {
+  created() {
     this.initData()
   },
 
   methods: {
-    ...mapMutations([
-      'addbreadCrumbsList'
-    ]),
+    ...mapMutations(['addbreadCrumbsList']),
 
     // 初始化表单数据
-    initData () {
-      const { code, status, formData, itemTable } = this.getActivePathData(this.$route.path);
-      this.status = status;
-      !code && !formData && this.getCode();
-      formData && (this.form.data = formData);
-      code && (this.form.data.billNo = code); // 有code一定是修改状态
-      itemTable && (this.itemTable = { ...this.itemTable, list: itemTable.list, count: itemTable.count, tempList: itemTable.tempList });
-      status === 'update' && this.getData(code);
+    initData() {
+      const { code, status, formData, itemTable } = this.getActivePathData(
+        this.$route.path
+      )
+      this.status = status
+      !code && !formData && this.getCode()
+      formData && (this.form.data = formData)
+      code && (this.form.data.billNo = code) // 有code一定是修改状态
+      itemTable &&
+        (this.itemTable = {
+          ...this.itemTable,
+          list: itemTable.list,
+          count: itemTable.count,
+          tempList: itemTable.tempList
+        })
+      status === 'update' && this.getData(code)
 
       /* status === 'add' && Promise.all([
         this.getentrustOrdertData(),
@@ -289,13 +295,16 @@ export default {
     },
 
     // 获取单据表单数据
-    async getData (code) {
+    async getData(code) {
       try {
         const [{ data }, sum] = await Promise.all([
           api.getOneSubscriptionorderData(code),
           this.getItemData()
-        ]).catch(error => { console.log(error); return {} })
-        this.form.data = { ...data, subscriptionAmount: sum };
+        ]).catch(error => {
+          console.log(error)
+          return {}
+        })
+        this.form.data = { ...data, subscriptionAmount: sum }
       } catch (error) {
         this.$message({ type: 'error', message: '获取单据数据失败' })
         console.log(error)
@@ -303,11 +312,19 @@ export default {
     },
 
     // 获取子表数据
-    async getItemData (data = {}) {
+    async getItemData(data = {}) {
       try {
-        const { data: { list, count, subscribedAmountCount } } = await api.getSubscriptionorderItem({ ...data, billNo: this.form.data.billNo });
-        this.itemTable.list = list, this.itemTable.count = count;
-        this.form.data = { ...this.form.data, subscriptionAmount: subscribedAmountCount }
+        const {
+          data: { list, count, subscribedAmountCount }
+        } = await api.getSubscriptionorderItem({
+          ...data,
+          billNo: this.form.data.billNo
+        })
+        ;(this.itemTable.list = list), (this.itemTable.count = count)
+        this.form.data = {
+          ...this.form.data,
+          subscriptionAmount: subscribedAmountCount
+        }
         return Promise.resolve(subscribedAmountCount)
       } catch (error) {
         this.$message({
@@ -319,110 +336,137 @@ export default {
     },
 
     // 获取单据编码
-    async getCode () {
+    async getCode() {
       try {
-        this.form.data = { ...this.form.data, billNo: (await api.getSubscriptionorderCode()).data }
+        this.form.data = {
+          ...this.form.data,
+          billNo: (await api.getSubscriptionorderCode()).data
+        }
       } catch (error) {
-        this.getCode()
         console.log(error)
       }
     },
     // 保存按钮事件
-    async handlePreserve () {
-      let sCode = 200;
-      try {
-        let isAdd = this.status === 'add',
-          param = { data: this.form.data, method: isAdd ? 'POST' : 'PUT' };
-        isAdd && (param.data.subscriptionItemList = this.itemTable.tempList); // 新增单据时把子表一同保存
-        const { data } = await api.changeSubscriptionorderData(param);
-        isAdd && (this.status = 'update', this.$set(this.form.data, 'status', '1'));
-      } catch (error) {
-        sCode = 0;
-        console.log(error)
-      } finally {
-        this.$message({
-          type: sCode ? 'success' : 'error',
-          message: sCode ? '保存成功！' : '保存失败，请重试！'
+    async handlePreserve() {
+      const IS_PASS = utools.checkFormPass(this.form.method)
+      // 子表的币种和主表必须一致
+      const SAME_CURRENCY =
+        this.status === 'add'
+          ? this.itemTable.list.every(
+              item => item.singleCurrency === this.form.data.sourceCurrency
+            )
+          : true
+      if (IS_PASS) {
+        if (!SAME_CURRENCY) return this.$message.warning('请确保币别一致的！')
+        utools.saveReceiptsTips.call(this, async () => {
+          let isAdd = this.status === 'add',
+            param = { data: this.form.data, method: isAdd ? 'POST' : 'PUT' }
+          isAdd && (param.data.subscriptionItemList = this.itemTable.tempList) // 新增单据时把子表一同保存
+          const { data } = await api.changeSubscriptionorderData(param)
+          isAdd &&
+            ((this.status = 'update'), this.$set(this.form.data, 'status', '1'))
         })
+        /*   let sCode = 200;
+          try {
+  
+          } catch (error) {
+            sCode = 0;
+            console.log(error)
+          } finally {
+            this.$message({
+              type: sCode ? 'success' : 'error',
+              message: sCode ? '保存成功！' : '保存失败，请重试！'
+            })
+          } */
       }
     },
 
     // 返回上一级
-    handleRollback () {
+    handleRollback() {
       this.$router.push('/M0807')
     },
 
-    // 表单验证配置
-    handlerFormVerify () {
-
-    },
-
     // 表单点击search按钮
-    handlerSearchClick () { },
+    handlerSearchClick() {},
 
     // 表格弹窗点击保存
-    handlerTableDialogSave (data = {}) {
+    handlerTableDialogSave(data = {}) {
       const {
-        customerName, customerNo,
-        clientName, clientNo,
-        employeeInfoName, employeeInfoCode,
-        supplierCode, supplierName
-      } = data,
+          entrustOrderNo,
+          customerName,
+          customerNo,
+          clientName,
+          clientNo,
+          employeeInfoName,
+          employeeInfoCode,
+          supplierCode,
+          supplierName
+        } = data,
         target = this.tableDialog.searchTarget,
         param = {
+          delegeteBillNo:{delegeteBillNo: entrustOrderNo},
           clientName: { clientName: customerName, client: customerNo },
           delegateName: { delegateName: clientName, delegate: clientNo },
-          accountingName: { accountingName: employeeInfoName, accounting: employeeInfoCode },
+          accountingName: {
+            accountingName: employeeInfoName,
+            accounting: employeeInfoCode
+          },
           paymentAccountName: new Map([
             ['1', [clientNo, clientName]],
             ['2', [customerNo, customerName]],
             ['3', [supplierCode, supplierName]]
           ])
-        };
-      this.formDialog.form.ruleForm = { ...this.formDialog.form.ruleForm, ...this.setTableDialogValue(param[target], target) }
+        }
+      this.formDialog.form.ruleForm = {
+        ...this.formDialog.form.ruleForm,
+        ...this.setTableDialogValue(param[target], target)
+      }
     },
 
     // 设置表格弹窗保存取值
-    setTableDialogValue (set, target) {
-      const type = this.formDialog.form.ruleForm.type;
+    setTableDialogValue(set, target) {
+      const type = this.formDialog.form.ruleForm.type
       let config = {
-        paymentAccountName: () => ({ paymentAccount: set.get(type)[0], paymentAccountName: set.get(type)[1] })
+        paymentAccountName: () => ({
+          paymentAccount: set.get(type)[0],
+          paymentAccountName: set.get(type)[1]
+        })
       }
       return target in config ? config[target]() : set
     },
 
     // 表格弹窗分页事件
-    handleTableDialogPageChange () {
+    handleTableDialogPageChange(pageData = {}) {
+      this.getTableDialogData(this.tableDialog.searchTarget, pageData)
     },
 
     // 显示查询弹窗
-    showQueryDialog () {
-
-    },
+    showQueryDialog() {},
 
     // 表格的操作按钮事件 激活form弹窗
-    handleItemBtnClick (type, target) {
+    handleItemBtnClick(type, target) {
       if (type === 'search') {
-        this.formDialog.form.ruleForm = {};
-        const { queryList } = this.formDialog.form;
-        this.formDialog.form.formConfig = queryList[target],
-          this.formDialog.visibel = true,
-          this.formDialog.target = target;
+        this.formDialog.form.ruleForm = {}
+        const { queryList } = this.formDialog.form
+        ;(this.formDialog.form.formConfig = queryList[target]),
+          (this.formDialog.visibel = true),
+          (this.formDialog.target = target)
         return
       }
 
-      if (target === 'receipt' && type === 'add')/* 收款单新增 */ {
-        this.tanstionReceiptForm(this.table[target].table.activeRow);
+      if (target === 'receipt' && type === 'add') {
+        /* 收款单新增 */ this.tanstionReceiptForm(
+          this.table[target].table.activeRow
+        )
         return
-      };
+      }
 
-      if (type === 'recognition')/* 自动认款 */ {
-        const IS_TRUE = this.table.entrustOrdert.table.multipleTable.every(
-          item => item.settleCurrency === this.form.data.sourceCurrency// 多选的应收结算 的币种必须和收款单的币种相同
-        );
+      if (type === 'recognition') {
+        /* 自动认款 */ const IS_TRUE = this.table.entrustOrdert.table.multipleTable.every(
+          item => item.settleCurrency === this.form.data.sourceCurrency // 多选的应收结算 的币种必须和收款单的币种相同
+        )
 
         if (IS_TRUE) {
-
           this.transtionItemTableData()
         } else {
           this.$message({
@@ -434,7 +478,7 @@ export default {
     },
 
     // 子表数据 字段转换
-    transtionItemTableData () {
+    transtionItemTableData() {
       const config = {
         entrustOrderNo: 'delegeteBillNo', // 委托单号
         bizType: 'bizType', // 业务类型
@@ -442,52 +486,66 @@ export default {
         declareCustoms: 'declareCustoms',
         declareCustomsName: 'declareCustomsName', // 报关类型
         feeNo: 'billNo', // 计费结算单号
-        settlementAmount: 'totalAmount',  // 结算金额
+        settlementAmount: 'totalAmount', // 结算金额
         hasSubscribedAmount: 'confirmedAmount', //已认款金额
         subscribedAmount: 'unconfirmedAmount', // 认款金额
         singleCurrencyName: 'settleCurrencyName', // 结算单币别
-        singleCurrency: 'settleCurrency',
-      };
+        singleCurrency: 'settleCurrency'
+      }
 
-      const table = this.itemTable;
-      table.tempList = cloneObj(this.table.entrustOrdert.table.multipleTable).map(item => {
+      const table = this.itemTable
+      table.tempList = cloneObj(
+        this.table.entrustOrdert.table.multipleTable
+      ).map(item => {
         for (let elem of Object.keys(config)) {
           item[elem] = item[config[elem]]
         }
-        this.form.data.receivableAmount = (this.form.data.receivableAmount || 0) + (item.unconfirmedAmount || 0)
-        item.billNo = this.form.data.receiptNo;
+        this.form.data.receivableAmount =
+          (this.form.data.receivableAmount || 0) + (item.unconfirmedAmount || 0)
+        item.billNo = this.form.data.receiptNo
         return item
-      });
-      table.count = table.tempList.length;
-      this.itemTable.list = cloneObj(this.itemTable.tempList.slice(0, 10));
+      })
+      table.count = table.tempList.length
+      this.itemTable.list = cloneObj(this.itemTable.tempList.slice(0, 10))
       this.form.data = { ...this.form.data }
     },
 
     // form弹窗 点击保存之后获取表格数据
-    formDialoClickPreservation (data = {}) {
+    formDialoClickPreservation(data = {}) {
       switch (this.formDialog.target) {
-        case 'entrustOrdert': this.getentrustOrdertData(data); break;     /* 应收结算单查询 */
-        case 'receipt': this.getReceiptData(data); break;     /* 收款单的查询 */
-        case 'itemTable': this.updateItemTbaleMoney() /* 子表的表单保存 */
+        case 'entrustOrdert':
+          this.getentrustOrdertData(data)
+          break /* 应收结算单查询 */
+        case 'receipt':
+          this.getReceiptData(data)
+          break /* 收款单的查询 */
+        case 'itemTable':
+          this.updateItemTbaleMoney() /* 子表的表单保存 */
       }
     },
 
     // 点击新增转换到表单当中
-    tanstionReceiptForm (data = {}) {
-      if (isNull(data)) { this.$message({ type: 'warning', message: '请选中一条数据后再操作！' }); return };
+    tanstionReceiptForm(data = {}) {
+      if (isNull(data)) {
+        this.$message({ type: 'warning', message: '请选中一条数据后再操作！' })
+        return
+      }
 
       const {
         billNo, //收款单号
-        moneyType,// 币别
+        moneyType, // 币别
         receiptsType, //收款类型
-        receiverAccountName, receiverAccount, // 收款账户 
+        receiverAccountName,
+        receiverAccount, // 收款账户
         receiveBank, // 收款银行
         paymentBank, // 付款银行
-        paymentAccountName, paymentAccount, // 付款账户
+        paymentAccountName,
+        paymentAccount, // 付款账户
         payerType, // 往来类型
-        payerName, payer, // 往来户
-        unconfirmedAmount, // 未认款金额
-      } = data;
+        payerName,
+        payer, // 往来户
+        unconfirmedAmount // 未认款金额
+      } = data
       this.form.data = {
         ...this.form.data,
         receiptNo: billNo,
@@ -500,28 +558,40 @@ export default {
         paymentAccount,
         paymentAccountName,
         communicateType: payerType,
-        communicateAccount: payer, communicateAccountName: payerName,
-        unsubscribedAmount: unconfirmedAmount
+        communicateAccount: payer,
+        communicateAccountName: payerName,
+        unsubscribedAmount: unconfirmedAmount,
+        subCurrency: moneyType,
+        recCurrency: moneyType
       }
     },
 
     // 获取委托订单分页数据
-    getentrustOrdertData (data = {}) {
-      this.getTableData(api.queryreceivesettlementSearch, { ...data, unZero: true }) // 查询应收结算单单！！,带上 未认款金额 > 0 的条件
+    getentrustOrdertData(data = {}) {
+      this.getTableData(api.queryreceivesettlementSearch, {
+        ...data,
+        unZero: true
+      }) // 查询应收结算单单！！, 带上 unZero 未认款金额 > 0 的条件
     },
 
-    // 获取收款单分页数据 
-    getReceiptData (data = {}) {
-      this.getTableData(api.queryReceiptSearch, { ...data, unZero: true }) // 查询未认款金额大于0的
+    // 获取收款单分页数据
+    getReceiptData(data = {}) {
+      this.getTableData(api.queryReceiptSearch, {
+        ...data,
+        unZero: true,
+        status: '4'
+      }) // 查询未认款金额大于0的
     },
 
     // 获取表格数据
-    async getTableData (cb, pageData = {}, ) {
+    async getTableData(cb, pageData = {}) {
       try {
         const target = this.formDialog.target,
-          { data: { list, count } } = await cb.call(api, { ...pageData, ...this.setRequestParam() });
-        this.table[target].table = { ... this.table[target].table, list, count };
-        this.formDialog.visibel = false;
+          {
+            data: { list, count }
+          } = await cb.call(api, { ...pageData, ...this.setRequestParam() })
+        this.table[target].table = { ...this.table[target].table, list, count }
+        this.formDialog.visibel = false
       } catch (error) {
         this.$message({ type: 'error', message: '获取数据失败，请重试！' })
         console.log(error)
@@ -529,31 +599,46 @@ export default {
     },
 
     // 子表单据修改认款金额
-    async updateItemTbaleMoney () {
+    async updateItemTbaleMoney() {
       try {
         if (this.status === 'add') {
-          const { settlementAmount, hasSubscribedAmount, subscribedAmount, billNo } = this.formDialog.form.ruleForm;
-          if ((subscribedAmount || 0) + (hasSubscribedAmount || 0) > settlementAmount) {
+          const {
+            settlementAmount,
+            hasSubscribedAmount,
+            subscribedAmount,
+            billNo
+          } = this.formDialog.form.ruleForm
+          if (
+            (subscribedAmount || 0) + (hasSubscribedAmount || 0) >
+            settlementAmount
+          ) {
             this.$message({
               type: 'warning',
               message: '金额不允许超过结算金额！'
-            });
+            })
             return
           }
           const fn = item => item.billNo === billNo,
             formData = this.formDialog.form.ruleForm,
             tIndex = this.itemTable.tempList.findIndex(fn),
-            lIndex = this.itemTable.list.findIndex(fn);
+            lIndex = this.itemTable.list.findIndex(fn)
 
-          ~tIndex && (this.itemTable.tempList[tIndex] = { ...formData });
-          ~lIndex && (this.itemTable.list[lIndex] = { ...formData });
+          ~tIndex && (this.itemTable.tempList[tIndex] = { ...formData })
+          ~lIndex && (this.itemTable.list[lIndex] = { ...formData })
 
-          this.itemTable.list = [...this.itemTable.list];
-          this.formDialog.visibel = false;
+          this.itemTable.list = [...this.itemTable.list]
+          this.formDialog.visibel = false
         } else {
-          await api.changeSubscriptionorderItem({ data: this.formDialog.form.ruleForm, method: 'PUT' });
-          this.formDialog = { ...this.formDialog, visibel: false, form: { ...this.formDialog.form, ruleForm: {} } }
-          this.getItemData();
+          await api.changeSubscriptionorderItem({
+            data: this.formDialog.form.ruleForm,
+            method: 'PUT'
+          })
+          this.formDialog = {
+            ...this.formDialog,
+            visibel: false,
+            form: { ...this.formDialog.form, ruleForm: {} }
+          }
+          this.getItemData()
         }
         this.$message({
           type: 'success',
@@ -569,29 +654,38 @@ export default {
     },
 
     // 过滤带Name后缀的请求参数
-    setRequestParam () {
-      return Object.keys(this.formDialog.form.ruleForm).filter((item) => !/Name$/i.test(item)).reduce((pre, cur, i) => {
-        pre[cur] = this.formDialog.form.ruleForm[cur];
-        return pre
-      }, {});
+    setRequestParam() {
+      return Object.keys(this.formDialog.form.ruleForm)
+        .filter(item => !/Name$/i.test(item))
+        .reduce((pre, cur, i) => {
+          pre[cur] = this.formDialog.form.ruleForm[cur]
+          return pre
+        }, {})
     },
 
     // form弹窗点击 search 按钮
-    handlerFormDialogClickSearch (target) {
-      if (target === 'paymentAccountName' && !this.formDialog.form.ruleForm.type) {
+    handlerFormDialogClickSearch(target) {
+      if (
+        target === 'paymentAccountName' &&
+        !this.formDialog.form.ruleForm.type
+      ) {
         this.$message({
           type: 'warning',
           message: '请先选择往来户类型！'
-        });
+        })
         return
       }
-      Promise.all([this.setTableDialog(target), this.getTableDialogData(target)])
+      Promise.all([
+        this.setTableDialog(target),
+        this.getTableDialogData(target)
+      ])
     },
 
     // 请求表格弹窗的数据
     getTableDialogData: (() => {
       let client = api.queryclientSearch,
         port = {
+          delegeteBillNo: api.queryentrustorderSearch,
           clientName: api.getCustomerList,
           delegateName: api.queryclientSearch,
           accountingName: api.queryemployeeinfoSearch,
@@ -600,10 +694,25 @@ export default {
             ['2', api.getCustomerList],
             ['3', api.querysupplierbaseSearch]
           ])
-        };
-      return async function (target) {
+        }
+      return async function(target, pageData = {}) {
         try {
-          const { data: { list, count } } = await this.setRequestPort(port[target], target).call(api, this.formDialog.form.ruleForm);
+          const params = {
+            ...this.tableDialog.queryBar.data,
+            ...pageData
+          }
+
+          ;[
+            'paymentAccountName',
+            'accountingName',
+            'clientName',
+            'delegateName'
+          ].includes(target) && (params.status = '2')
+          ;['delegeteBillNo'] // 查询已提交
+            .includes(target) && (params.status = '4')
+          const {
+            data: { list, count }
+          } = await this.setRequestPort(port[target], target).call(api, params)
           this.tableDialog = { ...this.tableDialog, list, count }
         } catch (error) {
           console.log(error)
@@ -612,7 +721,7 @@ export default {
     })(),
 
     // 设置 表格弹窗的请求接口
-    setRequestPort (set, target) {
+    setRequestPort(set, target) {
       let config = {
         paymentAccountName: () => set.get(this.formDialog.form.ruleForm.type)
       }
@@ -622,16 +731,55 @@ export default {
     // 设置弹窗的配置
     setTableDialog: (() => {
       let config = {
-        clientName: { title: '客户', config: customer, queryBarConfig: { moduleBind: 'customerNo' } },
-        delegateName: { title: '委托方', config: client, queryBarConfig: { moduleBind: 'clientNo' } },
-        accountingName: { title: '跟账人', config: employeeInfo, queryBarConfig: { moduleBind: 'employeeInfoCode' } },
+        delegeteBillNo: {
+          title: '委托订单',
+          config: entrustOrder,
+          queryBarConfig: { moduleBind: 'entrustOrderNo' }
+        },
+        clientName: {
+          title: '客户',
+          config: customer,
+          queryBarConfig: { moduleBind: 'customerNo' }
+        },
+        delegateName: {
+          title: '委托方',
+          config: client,
+          queryBarConfig: { moduleBind: 'clientNo' }
+        },
+        accountingName: {
+          title: '跟账人',
+          config: employeeInfo,
+          queryBarConfig: { moduleBind: 'employeeInfoCode' }
+        },
         paymentAccountName: new Map([
-          ['1', { title: '委托方', config: client, queryBarConfig: { moduleBind: 'clientNo' } }],
-          ['2', { title: '客户', config: customer, queryBarConfig: { moduleBind: 'customerNo' } }],
-          ['3', { title: '供应商', config: supplier, queryBarConfig: { moduleBind: 'supplierCode' } }]
+          [
+            '1',
+            {
+              title: '委托方',
+              config: client,
+              queryBarConfig: { moduleBind: 'clientNo' }
+            }
+          ],
+          [
+            '2',
+            {
+              title: '客户',
+              config: customer,
+              queryBarConfig: { moduleBind: 'customerNo' }
+            }
+          ],
+          [
+            '3',
+            {
+              title: '供应商',
+              config: supplier,
+              queryBarConfig: { moduleBind: 'supplierCode' }
+            }
+          ]
         ])
       }
-      return function (target) {
+      return function(target) {
+        this.tableDialog.queryBar.data = {} // 清空参数
         this.tableDialog = {
           ...this.tableDialog,
           visibel: true,
@@ -640,61 +788,71 @@ export default {
           searchTarget: target,
           ...this.setTableDialogConfig(config[target], target)
         }
+        this.tableDialog.queryBar.formConfig[0].moduleBind = this.tableDialog.queryBarConfig.moduleBind
       }
     })(),
 
     // 设置 弹窗 接上
-    setTableDialogConfig (set, target) {
+    setTableDialogConfig(set, target) {
       let config = {
         paymentAccountName: () => set.get(this.formDialog.form.ruleForm.type)
-      };
+      }
       return target in config ? config[target]() : set
     },
 
     // 表格弹窗点击查询
-    handleTableDialogClickQuery () {
+    handleTableDialogClickQuery() {
+      this.getTableDialogData(this.tableDialog.searchTarget)
     },
 
     // 子表点击按钮事件
-    handleItemTableBtnClick (type) {
-      if (type === 'update')/* 点击子表修改时 */ {
-        this.formDialog = {
-          ...this.formDialog, visibel: true, title: '修改认款金额',
+    handleItemTableBtnClick(type) {
+      if (type === 'update') {
+        /* 点击子表修改时 */ this.formDialog = {
+          ...this.formDialog,
+          visibel: true,
+          title: '修改认款金额',
           target: 'itemTable',
           form: {
             ...this.formDialog.form,
             ruleForm: { ...this.itemTable.activeRow },
             formConfig: [
-              { type: 'number', key: 'subscribedAmount', name: '认款金额', prop: 'subscribedAmount' },
-              { type: 'textarea', key: 'remark', name: '备注', prop: 'remark' },
+              {
+                type: 'number',
+                key: 'subscribedAmount',
+                name: '认款金额',
+                prop: 'subscribedAmount'
+              },
+              { type: 'textarea', key: 'remark', name: '备注', prop: 'remark' }
             ]
           }
         }
-      } else/* 删除 */ {
+      } /* 删除 */ else {
         this.removeItemTableData()
       }
     },
-    async removeItemTableData () {
+    async removeItemTableData() {
       try {
         if (isNull(this.itemTable.activeRow)) {
           this.$message({
             type: 'warning',
             message: '请选中一条数据操作'
-          });
+          })
           return
-        };
+        }
         if (this.status === 'add') {
           const { billNo } = this.itemTable.activeRow,
             fn = item => item.billNo === billNo,
             tIndex = this.itemTable.tempList.findIndex(fn),
-            lIndex = this.itemTable.list.findIndex(fn);
-          ~tIndex && (
-            this.itemTable.tempList.splice(tIndex, 1),
-            this.itemTable.list.splice(lIndex, 1)
-          );
+            lIndex = this.itemTable.list.findIndex(fn)
+          ~tIndex &&
+            (this.itemTable.tempList.splice(tIndex, 1),
+            this.itemTable.list.splice(lIndex, 1))
           this.itemTable.list = [...this.itemTable.list]
         } else {
-          const { data } = await api.deleteSubscriptionorderItem(this.itemTable.activeRow.itemCode);
+          const { data } = await api.deleteSubscriptionorderItem(
+            this.itemTable.activeRow.itemCode
+          )
           this.getItemData()
         }
         this.$message({
@@ -708,7 +866,6 @@ export default {
         })
         console.log(error)
       }
-
     }
   }
 }

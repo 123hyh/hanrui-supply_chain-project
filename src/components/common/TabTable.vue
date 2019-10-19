@@ -377,7 +377,83 @@ export default {
               showDialog: true
             }
           },
+          SeCustomerform: {
+            bank: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            contact: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            client: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            }
+          },
           SupplierBaseForm: {
+            bank: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            contact: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            delivery: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            address: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            },
+            credit: {
+              btn: [
+                { name: "新增", type: "add" },
+                { name: "修改", type: "update" },
+                { name: "删除", type: "delete" }
+              ],
+              form: [],
+              showDialog: true
+            }
+          },
+          SeSupplierBaseForm: {
             bank: {
               btn: [
                 { name: "新增", type: "add" },

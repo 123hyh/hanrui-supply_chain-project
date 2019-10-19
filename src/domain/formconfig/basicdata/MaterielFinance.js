@@ -22,7 +22,6 @@ export default [
 		name: "结算币种",
 		prop: "currency",
 		selectKey: 'currencyName',
-		rules
 	},
 	{
 		selectOption: [],
@@ -31,7 +30,6 @@ export default [
 		name: "结算方式",
 		prop: "settlementType",
 		selectKey: 'settlementMethod',
-		rules
 	},
 	{
 		selectOption: [],
@@ -40,7 +38,6 @@ export default [
 		name: "付款方式",
 		prop: "paymentMethod",
 		selectKey: 'paymentMethod',
-		rules
 	},
 	{
 		selectOption: [],
@@ -49,7 +46,6 @@ export default [
 		name: "付款条件",
 		prop: "paymentTerm",
 		selectKey: 'paymentTerms',
-		rules
 	},
 	{
 		selectOption: [],
@@ -58,14 +54,14 @@ export default [
 		name: "记账分类",
 		prop: "financeType",
 		selectKey: 'chargeUpType',
-		rules
 	},
 	{
 		btn: true,
 		type: 'string',
 		key: "accContactName",
 		name: "会计联系人",
-		prop: "accContactName"
+    prop: "accContactName",
+    readonly: true
 	},
 	{
 		type: 'string',
