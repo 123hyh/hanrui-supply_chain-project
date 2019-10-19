@@ -198,10 +198,9 @@ export default [
     type: 'string',
     ratio:true,
     key: "freightRate",
-    name: "运费费率%",
+    name: "运费费率(%)",
     prop: "freightRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -214,10 +213,9 @@ export default [
     type: 'string',
     ratio:true,
     key: "premiumRate",
-    name: "保费费率%",
+    name: "保费费率(%)",
     prop: "premiumRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -230,10 +228,9 @@ export default [
     type: 'string',
     ratio:true,
     key: "extrasRate",
-    name: "杂费费率%",
+    name: "杂费费率(%)",
     prop: "extrasRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -290,7 +287,6 @@ export default [
     name: "关税税率(%)",
     prop: "customTaxRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -299,7 +295,6 @@ export default [
     name: "加征税率(%)",
     prop: "increaseTaxRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -316,7 +311,6 @@ export default [
     name: "消费税率(%)",
     prop: "exciseTaxRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -358,7 +352,6 @@ export default [
     name: "其他税率(%)",
     prop: "otherTaxRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',
@@ -374,7 +367,6 @@ export default [
     name: "价税合计",
     prop: "priceTax",
     solutionFormula:"sellerGoodsValue*customsExchangeRate+customTaxAmount+exciseTax+vatTaxAmount+otherTaxAmount",
-    decimal:2,
     symbol:'￥',
     disabled: true,
     rules
@@ -395,7 +387,6 @@ export default [
     name: "服务费费率(%)",
     prop: "serviceExchangeRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'select',
@@ -462,7 +453,6 @@ export default [
     name: "退税率(%)",
     prop: "drawbackRate",
     disabled: true,
-    decimal: 2
   },
   {
     type: 'string',

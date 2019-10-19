@@ -25,7 +25,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'entrustOrderType',
+		prop: 'entrustOrderTypeName',
 		label: '委托单类型',
 		width: '100',
 	},
@@ -35,7 +35,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'receiveUnitType',
+		prop: 'receiveUnitTypeName',
 		label: '应收结算单位类型',
 		width: '100',
 	},
@@ -45,7 +45,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'payableUnitType',
+		prop: 'payableUnitTypeName',
 		label: '应付结算单位类型',
 		width: '100',
 	},
@@ -60,7 +60,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'currency',
+		prop: 'currencyName',
 		label: '币别',
 		width: '100',
 	},
@@ -80,7 +80,7 @@ export default [
 		width: '100',
 	},
 	{
-		prop: 'settlementMethod',
+		prop: 'settlementMethodName',
 		label: '结算方式',
 		width: '100',
 	},

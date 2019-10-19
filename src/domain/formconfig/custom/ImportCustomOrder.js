@@ -272,9 +272,9 @@ export default [{
   btn: true,
   readonly: true,
   type: 'string',
-  key: "packageKind",
+  key: "packageKindName",
   name: "包装种类",
-  prop: "packageKind",
+  prop: "packageKindName",
 },
 {
   type: 'string',

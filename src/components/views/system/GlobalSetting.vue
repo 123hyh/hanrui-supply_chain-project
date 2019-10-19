@@ -1,18 +1,11 @@
 <template>
-  <div class='globalSetting'>
+  <div class="globalSetting">
     <breadcrumb-navigation />
     <!-- tab -->
     <div class="container pd-10">
       <div>
-        <el-tabs
-          type="border-card"
-          value="setting"
-          @tab-click="handlerTabClick"
-        >
-          <el-tab-pane
-            label="全局设置"
-            name="setting"
-          >
+        <el-tabs type="border-card" value="setting" @tab-click="handlerTabClick">
+          <el-tab-pane label="全局设置" name="setting">
             <!-- 查询栏 -->
             <query-bar
               :ruleForm="ruleForm"
@@ -29,16 +22,8 @@
               @row-dblclick="dblclickTableRow"
               ref="moviesTable"
             >
-              <el-table-column
-                label="设置名称"
-                prop="propName"
-                width="200"
-              ></el-table-column>
-              <el-table-column
-                label="值"
-                prop="remark"
-                width="200"
-              ></el-table-column>
+              <el-table-column label="设置名称" prop="propName" width="200"></el-table-column>
+              <el-table-column label="值" prop="remark" width="200"></el-table-column>
               <el-table-column label="说明">
                 <template slot-scope="scope">
                   <el-tooltip
@@ -53,16 +38,10 @@
               </el-table-column>
             </el-table>
             <div class="pagination">
-              <pagination
-                @handlePageChange="handleChange"
-                :count="ruleForm.total"
-              ></pagination>
+              <pagination @handlePageChange="handleChange" :count="ruleForm.total"></pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane
-            label="审核设定"
-            name="trial"
-          >
+          <el-tab-pane label="审核设定" name="trial">
             <!-- 查询栏 -->
             <query-bar
               :ruleForm="ruleForm"
@@ -88,16 +67,10 @@
               ></el-table-column>
             </el-table>
             <div class="pagination">
-              <pagination
-                @handlePageChange="handleChange"
-                :count="ruleForm.total"
-              ></pagination>
+              <pagination @handlePageChange="handleChange" :count="ruleForm.total"></pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane
-            label="银行汇率"
-            name="exchangeRate"
-          >
+          <el-tab-pane label="银行汇率" name="exchangeRate">
             <!-- 查询栏 -->
             <query-bar
               :ruleForm="ruleForm"
@@ -107,11 +80,7 @@
             ></query-bar>
             <!-- 方块 -->
             <div class="bocend">
-              <div
-                class="card"
-                :key="i"
-                v-for="(item,i) in tableData"
-              >
+              <div class="card" :key="i" v-for="(item,i) in tableData">
                 <div>
                   <i class="draw-circle-orange"></i>
                   <span v-if="item.date">{{ item.date | datetitle}}外汇牌价</span>
@@ -127,16 +96,10 @@
               </div>
             </div>
             <div class="pagination">
-              <pagination
-                @handlePageChange="handleChange"
-                :count="ruleForm.total"
-              ></pagination>
+              <pagination @handlePageChange="handleChange" :count="ruleForm.total"></pagination>
             </div>
           </el-tab-pane>
-          <el-tab-pane
-            label="海关汇率"
-            name="customsExchange"
-          >
+          <el-tab-pane label="海关汇率" name="customsExchange">
             <!-- 查询栏 -->
             <query-bar
               :ruleForm="ruleForm"
@@ -146,11 +109,7 @@
             ></query-bar>
             <!-- 方块 -->
             <div class="bocend">
-              <div
-                class="card"
-                :key="i"
-                v-for="(item,i) in tableData"
-              >
+              <div class="card" :key="i" v-for="(item,i) in tableData">
                 <div>
                   <i class="draw-circle-orange"></i>
                   <span v-if="item.date">{{ item.date | datetitle}}外汇牌价</span>
@@ -166,20 +125,14 @@
               </div>
             </div>
             <div class="pagination">
-              <pagination
-                @handlePageChange="handleChange"
-                :count="ruleForm.total"
-              ></pagination>
+              <pagination @handlePageChange="handleChange" :count="ruleForm.total"></pagination>
             </div>
           </el-tab-pane>
         </el-tabs>
       </div>
     </div>
     <!-- 设置表单弹窗 -->
-    <el-dialog
-      :visible.sync="popup"
-      class="dia"
-    >
+    <el-dialog :visible.sync="popup" class="dia">
       <el-form
         ref="form"
         :model="formEntity"
@@ -191,33 +144,17 @@
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item
-              v-if="formtype == 'input'"
-              :label="formEntity.propName"
-            >
+            <el-form-item v-if="formtype == 'input'" :label="formEntity.propName">
               <el-input v-model="formEntity.propValue"></el-input>
             </el-form-item>
-            <el-form-item
-              v-if="formtype == 'select'"
-              :label="formEntity.propName"
-            >
-              <el-select
-                v-model="formEntity.propValue"
-                placeholder="请选择选项"
-              >
+            <el-form-item v-if="formtype == 'select'" :label="formEntity.propName">
+              <el-select v-model="formEntity.propValue" placeholder="请选择选项">
                 <template v-for="(obj,index) in selectOption">
-                  <el-option
-                    :key="index"
-                    :label="obj.itemValue"
-                    :value="obj.itemKey"
-                  ></el-option>
+                  <el-option :key="index" :label="obj.itemValue" :value="obj.itemKey"></el-option>
                 </template>
               </el-select>
             </el-form-item>
-            <el-form-item
-              v-if="formtype == 'radio'"
-              :label="formEntity.propName"
-            >
+            <el-form-item v-if="formtype == 'radio'" :label="formEntity.propName">
               <el-radio-group v-model="formEntity.propValue">
                 <!-- <el-radio v-for="index in 4" :label="index" :key='index'>{{index}}位</el-radio> -->
                 <el-radio label="0">整数</el-radio>
@@ -225,10 +162,7 @@
                 <el-radio label="2">小数两位</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item
-              v-if="formtype == 'radio2'"
-              :label="formEntity.propName"
-            >
+            <el-form-item v-if="formtype == 'radio2'" :label="formEntity.propName">
               <el-radio-group v-model="formEntity.propValue">
                 <el-radio label="2">小数两位</el-radio>
                 <el-radio label="4">小数四位</el-radio>
@@ -237,22 +171,13 @@
           </el-col>
         </el-row>
       </el-form>
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
+      <div slot="footer" class="dialog-footer">
         <el-button @click="popup = false;">取 消</el-button>
-        <el-button
-          type="primary"
-          @click.native="saveEdit()"
-        >确 定</el-button>
+        <el-button type="primary" @click.native="saveEdit()">确 定</el-button>
       </div>
     </el-dialog>
     <!--级别--->
-    <el-dialog
-      :visible.sync="popup2"
-      :title="'设置['+formEntity.billName+']审核级别'"
-    >
+    <el-dialog :visible.sync="popup2" :title="'设置['+formEntity.billName+']审核级别'">
       <el-form
         ref="form"
         :model="formEntity"
@@ -262,10 +187,7 @@
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item
-              label="审核级数"
-              class="labnem"
-            >
+            <el-form-item label="审核级数" class="labnem">
               <el-radio-group v-model="formEntity.levelNumber">
                 <el-radio :label="1">一级审核</el-radio>
                 <el-radio :label="2">二级审核</el-radio>
@@ -291,32 +213,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item
-              label="审核角色"
-              class="labline"
-            >
+            <el-form-item label="审核角色" class="labline">
               <div class="da">
-                <div
-                  class="shutiao"
-                  v-for="(obj,index) in formEntity.levelNumber"
-                  :key="index"
-                >
-                  <div
-                    class="nrst"
-                    v-if="cRoles(index).length"
-                    @click="setRole(index)"
-                  >
-                    <el-tag
-                      size="medium"
-                      v-for="(e,i) in cRoles(index)"
-                      :key="i"
-                    >{{ e }}</el-tag>
+                <div class="shutiao" v-for="(obj,index) in formEntity.levelNumber" :key="index">
+                  <div class="nrst" v-if="cRoles(index).length" @click="setRole(index)">
+                    <el-tag size="medium" v-for="(e,i) in cRoles(index)" :key="i">{{ e }}</el-tag>
                   </div>
-                  <div
-                    class="nrst"
-                    v-else
-                    @click="setRole(index)"
-                  >
+                  <div class="nrst" v-else @click="setRole(index)">
                     <el-tag size="medium">请选择角色</el-tag>
                   </div>
                 </div>
@@ -324,10 +227,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item
-              label="审核人员"
-              class="labdi"
-            >
+            <el-form-item label="审核人员" class="labdi">
               <div class="cont">
                 <div
                   class="box"
@@ -335,21 +235,10 @@
                   :key="index"
                   @click="setUser(index)"
                 >
-                  <div
-                    v-if="cUsers(index).length"
-                    @click="setUser(index)"
-                  >
-                    <el-tag
-                      size="medium"
-                      v-for="(e,i) in cUsers(index)"
-                      :key="i"
-                    >{{ e }}</el-tag>
+                  <div v-if="cUsers(index).length" @click="setUser(index)">
+                    <el-tag size="medium" v-for="(e,i) in cUsers(index)" :key="i">{{ e }}</el-tag>
                   </div>
-                  <div
-                    class
-                    v-else
-                    @click="setUser(index)"
-                  >
+                  <div class v-else @click="setUser(index)">
                     <el-tag size="medium">请选择用户</el-tag>
                   </div>
                 </div>
@@ -358,15 +247,9 @@
           </el-col>
         </el-row>
       </el-form>
-      <div
-        slot="footer"
-        class="dialog-footer pop"
-      >
+      <div slot="footer" class="dialog-footer pop">
         <el-button @click="popup2 = false;">取 消</el-button>
-        <el-button
-          type="primary"
-          @click.native="saveEdit()"
-        >确 定</el-button>
+        <el-button type="primary" @click.native="saveEdit()">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 级别弹出框点选表格 -->
@@ -411,37 +294,18 @@
         ></el-table-column>
       </el-table>
       <div class="pagination">
-        <pagination
-          @handlePageChange="handleChangepop"
-          :count="popover.count"
-        ></pagination>
+        <pagination @handlePageChange="handleChangepop" :count="popover.count"></pagination>
       </div>
-      <el-button
-        type="primary"
-        @click.native="StrRoleanduser()"
-        class="btnjson"
-      >确 定</el-button>
+      <el-button type="primary" @click.native="StrRoleanduser()" class="btnjson">确 定</el-button>
     </el-dialog>
 
-    <el-dialog
-      title="设置汇率"
-      :visible.sync="popup3"
-      close-on-press-escape
-    >
-      <el-form
-        ref="form"
-        :model="formEntity"
-        label-width="10rem"
-        :rules="formConfig3.rules"
-      >
-        <el-form-item
-          label="汇率日期"
-          prop="date"
-        >
+    <el-dialog title="设置汇率" :visible.sync="popup3" close-on-press-escape>
+      <el-form ref="form" :model="formEntity" label-width="10rem" :rules="formConfig3.rules">
+        <el-form-item label="汇率日期" prop="date">
           <!-- 设置不同日和月不同的汇率日期 -->
           <el-date-picker
             :type="formConfig3.dateConfig.type"
-            :value-format='formConfig3.dateConfig.format'
+            :value-format="formConfig3.dateConfig.format"
             :picker-options="pickerOptions"
             ref="redate"
             placeholder="请选择汇率日期"
@@ -454,17 +318,11 @@
       <form-config
         :formModel="formEntity"
         :inputKey="formConfig3.list"
-        @handlerFormVerify='handlerFormVerify'
+        @handlerFormVerify="handlerFormVerify"
       ></form-config>
-      <div
-        slot="footer"
-        class="dialog-footer pop"
-      >
+      <div slot="footer" class="dialog-footer pop">
         <el-button @click="popup3 = false;">取 消</el-button>
-        <el-button
-          type="primary"
-          @click.native="saveEdit()"
-        >确 定</el-button>
+        <el-button type="primary" @click.native="saveEdit()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -472,7 +330,7 @@
 
 <script>
 import validate from "@/domain/common/validate";
-import utools from '@/domain/common/utools.js'
+import utools from "@/domain/common/utools.js";
 import formModuleHead from "@/components/common/FormModuleHead.vue";
 import Popover from "@/components/common/Popover";
 import FormConfig from "@/components/common/FormConfig";
@@ -482,8 +340,21 @@ import QueryBar from "@/components/common/QueryBar";
 import DialogQueryBar from "@/components/common/DialogQueryBar.vue"; // 自定义按钮
 const rules = [
   { required: true, message: "必填", trigger: "blur" },
-  { validator: validate.validateNum, trigger: ["blur", "change"] }
-]
+  {
+    validator: (rule, value, callback) => {
+      if (typeof +value !== "number" || isNaN(+value)) {
+        return callback(new Error("格式错误"));
+      }
+      const val = "" + value,
+        i = val.indexOf(".") + 1;
+      if (val.slice(i).length > 6) {
+        return callback(new Error("小数不能超过6位"));
+      }
+      callback();
+    },
+    trigger: ["blur", "change"]
+  }
+];
 export default {
   components: {
     QueryBar,
@@ -534,11 +405,11 @@ export default {
       },
       {
         prop: "verifyRoleName",
-        label: "所选角色",
+        label: "所选角色"
       },
       {
         prop: "verifyUserName",
-        label: "所选用户",
+        label: "所选用户"
       }
     ],
     tableData: [],
@@ -621,8 +492,8 @@ export default {
         }
       ],
       dateConfig: {
-        type: 'date',
-        format: 'yyyy-MM-dd HH:mm:ss'
+        type: "date",
+        format: "yyyy-MM-dd HH:mm:ss"
       },
       date: [
         {
@@ -638,7 +509,7 @@ export default {
       resetFields: eval
     },
     pickerOptions: {
-      disabledDate (time) {
+      disabledDate(time) {
         return time.getTime() > Date.now();
       }
     },
@@ -688,49 +559,48 @@ export default {
     sectuor: 1 // 角色人员区分
   }),
   filters: {
-    datetitle (value) {
+    datetitle(value) {
       if (!value) return "";
       value = value.slice(0, 10);
       let ondate = new Date().toJSON().slice(0, 10);
-      return value == ondate ? "今日" : value;
+      return value /* == ondate ? "今日" : value; */
     }
   },
 
   methods: {
-
     // 验证规则
-    handlerFormVerify ({ formModel: { resetFields, validate } } = {}) {
+    handlerFormVerify({ formModel: { resetFields, validate } } = {}) {
       this.formConfig3.validate = validate;
-      this.formConfig3.resetFields = resetFields
+      this.formConfig3.resetFields = resetFields;
     },
 
     // 选中行
-    clickRow (row) {
+    clickRow(row) {
       this.curRowData = row;
       this.$refs.moviesTable.toggleRowSelection(row);
     },
 
-    dblclickTableRow (row) {
-      this.clickRow(row)
-      this.handleBtnClick('setting');
+    dblclickTableRow(row) {
+      this.clickRow(row);
+      this.handleBtnClick("setting");
     },
 
     // 切换页卡
-    handlerTabClick (tab, event) {
+    handlerTabClick(tab, event) {
       this.curRowData = "";
       let index = {
         setting: 1,
         trial: 2,
         exchangeRate: 3,
         customsExchange: 4
-      }[tab.name]
+      }[tab.name];
       if (this.tabpag == index) return;
       this.tabpag = index;
       this.goStartPage();
     },
 
     // 搜索
-    goStartPage () {
+    goStartPage() {
       this.ruleForm.pageIndex = 1;
       this.tableData = [];
       this.ruleForm.total = 0;
@@ -738,14 +608,14 @@ export default {
     },
 
     // 查询
-    handleBtnClickpop () {
-      this.sectuor === 1 ? this.setRole() : this.setUser()
+    handleBtnClickpop() {
+      this.sectuor === 1 ? this.setRole() : this.setUser();
     },
 
     // 修改翻页条数
     handleChange: (() => {
       let fn = null;
-      return function (paper) {
+      return function(paper) {
         // 节流 防止频繁触发
         fn = setTimeout(() => {
           this.ruleForm.pageIndex = paper.pageIndex;
@@ -756,17 +626,17 @@ export default {
           } else if (this.tabpag == 2) {
             this.getVerifysetting();
           } else if (this.tabpag == 4) {
-            this.getCustomsExchangeData()
+            this.getCustomsExchangeData();
           } else {
             this.getExchangerate();
           }
-          clearTimeout(fn)
+          clearTimeout(fn);
         }, 100);
-      }
+      };
     })(),
 
     // 获取全局设置 列表
-    async queryData () {
+    async queryData() {
       try {
         const { data } = await api.getGlobalSetting(this.ruleForm);
         this.tableData = data.list;
@@ -778,7 +648,7 @@ export default {
     },
 
     // 获取审核设定列表
-    async getVerifysetting () {
+    async getVerifysetting() {
       try {
         const { data } = await api.getVerifysetting(this.ruleForm);
         this.tableData = data.list;
@@ -790,42 +660,50 @@ export default {
     },
 
     // 获取银行汇率 列表
-    async getExchangerate () {
+    async getExchangerate() {
       try {
-        const { data } = await api.getExchangerate({ ...this.ruleForm, source: 'system' });
+        const { data } = await api.getExchangerate({
+          ...this.ruleForm,
+          source: "system"
+        });
         const list = (data.list || []).reduce((pre, cur, i) => {
           const { date, rate = [] } = cur;
           for (let item of rate) {
-            item.cenPrice = ((+item.cenPrice) / 100).toFixed(4)
+            item.cenPrice = item.cenPrice;
           }
-          return pre = [...pre, cur]
-        }, [])
+          return (pre = [...pre, cur]);
+        }, []);
         this.tableData = list;
         this.ruleForm.total = data.count;
         this.curRowData = {};
       } catch (e) {
-        this.$message.error('获取银行汇率数据失败，请重试！')
+        this.$message.error("获取银行汇率数据失败，请重试！");
         console.log(e);
       }
     },
 
     // 获取 海关汇率 列表
-    async getCustomsExchangeData (data = {}) {
+    async getCustomsExchangeData(data = {}) {
       try {
-        const { data: { list, count } } = await api.getCustomsExchangeData({ ...this.ruleForm, source: 'custom' });
-        this.tableData = list,
-          this.ruleForm.total = count,
-          this.curRowData = {};
+        const {
+          data: { list, count }
+        } = await api.getCustomsExchangeData({
+          ...this.ruleForm,
+          source: "custom"
+        });
+        (this.tableData = list),
+          (this.ruleForm.total = count),
+          (this.curRowData = {});
       } catch (error) {
-        this.$message.error('获取海关汇率数据失败，请重试！')
-        console.log(error)
+        this.$message.error("获取海关汇率数据失败，请重试！");
+        console.log(error);
       }
     },
 
     // 击查询栏按钮事件
     handleBtnClick: (() => {
       var obj = null;
-      return function (type, clear) {
+      return function(type, clear) {
         if (clear) {
           obj = null;
         } else {
@@ -835,12 +713,12 @@ export default {
       };
     })(),
 
-    handleBtnClickObj () {
+    handleBtnClickObj() {
       return {
-        search () {
+        search() {
           this.goStartPage();
         },
-        async setting () {
+        async setting() {
           if (!this.tabpag == 3 && JSON.stringify(this.curRowData) == "{}") {
             this.$message.warning("请选择要设置的数据");
           } else {
@@ -876,13 +754,15 @@ export default {
               this.popup2 = true;
             } else if (this.tabpag == 4) {
               // 海关汇率
-              this.formConfig3.dateConfig.type = 'month';
+              this.formConfig3.dateConfig.type = "month";
               this.formEntity = { date: `${new Date().toJSON().slice(0, 7)}` };
               this.popup3 = true;
             } else {
               // 银行汇率
-              this.formConfig3.dateConfig.type = 'date'
-              this.formEntity = { date: new Date().toJSON().slice(0, 10) + ' 00:00:00' };
+              this.formConfig3.dateConfig.type = "date";
+              this.formEntity = {
+                date: new Date().toJSON().slice(0, 10) + " 00:00:00"
+              };
               this.popup3 = true;
             }
           }
@@ -890,7 +770,7 @@ export default {
       };
     },
 
-    formattercellValue (row, column, cellValue, index) {
+    formattercellValue(row, column, cellValue, index) {
       if (cellValue) {
         let vals = [];
         const arr = cellValue.split(",");
@@ -910,12 +790,12 @@ export default {
 
     //---------------------------------------级数窗体操作
     // 设置级数
-    setPer (index) {
+    setPer(index) {
       this.onselepros = index + 1;
     },
 
     // 角色转数组
-    ArrRoles (index) {
+    ArrRoles(index) {
       if (!this.formEntity.verifyRole) {
         return [];
       }
@@ -935,7 +815,7 @@ export default {
       return roles;
     },
 
-    ArrRolesname (index) {
+    ArrRolesname(index) {
       if (!this.formEntity.verifyRoleName) {
         return [];
       }
@@ -956,7 +836,7 @@ export default {
     },
 
     // 人员转数组
-    ArrUsers (index) {
+    ArrUsers(index) {
       if (!this.formEntity.verifyUser) {
         return [];
       }
@@ -976,7 +856,7 @@ export default {
       return users;
     },
 
-    ArrUsersname (index) {
+    ArrUsersname(index) {
       if (!this.formEntity.verifyUserName) {
         return [];
       }
@@ -997,16 +877,16 @@ export default {
     },
 
     // 转中文
-    cRoles (index) {
+    cRoles(index) {
       return this.ArrRolesname(index);
     },
 
-    cUsers (index) {
+    cUsers(index) {
       return this.ArrUsersname(index);
     },
 
     // 展示角色
-    async setRole (index) {
+    async setRole(index) {
       this.sectuor = 1;
       this.popover.queryConfig = [
         { label: "角色名称", moduleBind: "roleName", isInput: true }
@@ -1039,7 +919,7 @@ export default {
     },
 
     // 展示人员
-    async setUser (index) {
+    async setUser(index) {
       if (!this.ArrRoles(index).length > 0) {
         this.$message.warning("请先选择角色");
         return;
@@ -1077,7 +957,7 @@ export default {
     },
 
     // 转字符串
-    StrRoleanduser () {
+    StrRoleanduser() {
       if (this.sectuor == 1) {
         let code = "[";
         code += this.roleanduser.verifyRole.join(";");
@@ -1135,7 +1015,7 @@ export default {
     },
 
     // 选中行
-    clrow (row) {
+    clrow(row) {
       if (!row) {
         return;
       }
@@ -1175,7 +1055,7 @@ export default {
     },
 
     // 删除
-    handleClose (i) {
+    handleClose(i) {
       if (this.sectuor == 1) {
         this.roleanduser.verifyRole.splice(i, 1);
         this.roleanduser.verifyRoleName.splice(i, 1);
@@ -1185,8 +1065,7 @@ export default {
       }
     },
 
-
-    async saveEdit () {
+    async saveEdit() {
       try {
         if (this.tabpag == 1) {
           if (this.formtype == "select") {
@@ -1304,154 +1183,149 @@ export default {
           } else {
             this.$message.error("保存失败");
           }
-        } if (this.tabpag === 4) {
+        }
+        if (this.tabpag === 4) {
           // 保存海关汇率
           this.formConfig3.validate(valid => {
             if (valid) {
-              this.utools.saveReceiptsTips.call(
-                this,
-                async () => {
-                  await api.changeCustomsExchangeData({ data: this.handleExchangeRateParam(this.formEntity), method: 'POST' });
-                  this.getCustomsExchangeData();
-                  this.ruleForm.pageIndex = 1,
-                    this.ruleForm.pageSize = 10;
-                  this.popup3 = false;
-                  this.formConfig3.resetFields();
-                }
-              )
+              this.utools.saveReceiptsTips.call(this, async () => {
+                await api.changeCustomsExchangeData({
+                  data: this.handleExchangeRateParam(this.formEntity),
+                  method: "POST"
+                });
+                this.getCustomsExchangeData();
+                (this.ruleForm.pageIndex = 1), (this.ruleForm.pageSize = 10);
+                this.popup3 = false;
+                this.formConfig3.resetFields();
+              });
             }
-          })
+          });
         } else {
           this.formConfig3.validate(valid => {
             if (valid) {
-              this.utools.saveReceiptsTips.call(
-                this,
-                async () => {
-                  if (!this.formEntity.date) return
-                  // this.formEntity.date = this.formEntity.date.slice(0,10)+' 00:00:00'
-                  let Ratedata = [];
-                  (this.formEntity.dollar) && Ratedata.push(
-                    {
-                      currency: "美元",
-                      cenPrice: this.formEntity.dollar,
-                      releasedate: this.formEntity.date,
-                      showorder: 1
-                    });
-                  (this.formEntity.Euro) && Ratedata.push(
-                    {
-                      currency: "欧元",
-                      cenPrice: this.formEntity.Euro,
-                      releasedate: this.formEntity.date,
-                      showorder: 2
-                    });
-                  (this.formEntity.HKdollar) && Ratedata.push(
-                    {
-                      currency: "港币",
-                      cenPrice: this.formEntity.HKdollar,
-                      releasedate: this.formEntity.date,
-                      showorder: 3
-                    });
-                  (this.formEntity.Pound) && Ratedata.push(
-                    {
-                      currency: "英镑",
-                      cenPrice: this.formEntity.Pound,
-                      releasedate: this.formEntity.date,
-                      showorder: 4
-                    });
-                  (this.formEntity.Yen) && Ratedata.push(
-                    {
-                      currency: "日元",
-                      cenPrice: this.formEntity.Yen,
-                      releasedate: this.formEntity.date,
-                      showorder: 5
-                    });
-                  (this.formEntity.Audollar) && Ratedata.push(
-                    {
-                      currency: "澳大利亚元",
-                      cenPrice: this.formEntity.Audollar,
-                      releasedate: this.formEntity.date,
-                      showorder: 6
-                    });
-                  (this.formEntity.NtCurrency) && Ratedata.push(
-                    {
-                      currency: "新台币",
-                      cenPrice: this.formEntity.NtCurrency,
-                      releasedate: this.formEntity.date,
-                      showorder: 7
-                    });
-                  (this.formEntity.Cadollar) && Ratedata.push(
-                    {
-                      currency: "加拿大元",
-                      cenPrice: this.formEntity.Cadollar,
-                      releasedate: this.formEntity.date,
-                      showorder: 8
-                    });
-                  (this.formEntity.Sidollar) && Ratedata.push(
-                    {
-                      currency: "新加坡元",
-                      cenPrice: this.formEntity.Sidollar,
-                      releasedate: this.formEntity.date,
-                      showorder: 9
-                    });
-                  (this.formEntity.Franc) && Ratedata.push(
-                    {
-                      currency: "瑞士法郎",
-                      cenPrice: this.formEntity.Franc,
-                      releasedate: this.formEntity.date,
-                      showorder: 10
-                    });
+              this.utools.saveReceiptsTips.call(this, async () => {
+                if (!this.formEntity.date) return;
+                // this.formEntity.date = this.formEntity.date.slice(0,10)+' 00:00:00'
+                let Ratedata = [];
+                this.formEntity.dollar &&
+                  Ratedata.push({
+                    currency: "美元",
+                    cenPrice: this.formEntity.dollar,
+                    releasedate: this.formEntity.date,
+                    showorder: 1
+                  });
+                this.formEntity.Euro &&
+                  Ratedata.push({
+                    currency: "欧元",
+                    cenPrice: this.formEntity.Euro,
+                    releasedate: this.formEntity.date,
+                    showorder: 2
+                  });
+                this.formEntity.HKdollar &&
+                  Ratedata.push({
+                    currency: "港币",
+                    cenPrice: this.formEntity.HKdollar,
+                    releasedate: this.formEntity.date,
+                    showorder: 3
+                  });
+                this.formEntity.Pound &&
+                  Ratedata.push({
+                    currency: "英镑",
+                    cenPrice: this.formEntity.Pound,
+                    releasedate: this.formEntity.date,
+                    showorder: 4
+                  });
+                this.formEntity.Yen &&
+                  Ratedata.push({
+                    currency: "日元",
+                    cenPrice: this.formEntity.Yen,
+                    releasedate: this.formEntity.date,
+                    showorder: 5
+                  });
+                this.formEntity.Audollar &&
+                  Ratedata.push({
+                    currency: "澳大利亚元",
+                    cenPrice: this.formEntity.Audollar,
+                    releasedate: this.formEntity.date,
+                    showorder: 6
+                  });
+                this.formEntity.NtCurrency &&
+                  Ratedata.push({
+                    currency: "新台币",
+                    cenPrice: this.formEntity.NtCurrency,
+                    releasedate: this.formEntity.date,
+                    showorder: 7
+                  });
+                this.formEntity.Cadollar &&
+                  Ratedata.push({
+                    currency: "加拿大元",
+                    cenPrice: this.formEntity.Cadollar,
+                    releasedate: this.formEntity.date,
+                    showorder: 8
+                  });
+                this.formEntity.Sidollar &&
+                  Ratedata.push({
+                    currency: "新加坡元",
+                    cenPrice: this.formEntity.Sidollar,
+                    releasedate: this.formEntity.date,
+                    showorder: 9
+                  });
+                this.formEntity.Franc &&
+                  Ratedata.push({
+                    currency: "瑞士法郎",
+                    cenPrice: this.formEntity.Franc,
+                    releasedate: this.formEntity.date,
+                    showorder: 10
+                  });
 
-                  const { status } = await api.addExchangerate(Ratedata.map(item => {
-                    item.source = 'system';
-                    item.cenPrice = (+(item.cenPrice)) * 100
-                    return item
-                  }));
-                  this.popup3 = false;
-                  this.handleChange({ pageIndex: 1, pageSize: 10 })
-                  /* if (status == "200") {
+                const { status } = await api.addExchangerate(
+                  Ratedata.map(item => {
+                    item.source = "system";
+                    item.cenPrice = item.cenPrice;
+                    return item;
+                  })
+                );
+                this.popup3 = false;
+                this.handleChange({ pageIndex: 1, pageSize: 10 });
+                /* if (status == "200") {
                     this.popup3 = false;
                     this.$message.success("汇率设置成功");
                     this.goStartPage();
                   } else {
                     this.$message.error("汇率设置失败");
                   } */
-                }
-              )
+              });
             }
-          })
-
+          });
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     // 处理海关汇率的保存参数
-    handleExchangeRateParam (data) {
+    handleExchangeRateParam(data) {
       let currencyCn = {
-        dollar: '美元',
-        Euro: '欧元',
-        HKdollar: '港币',
-        Pound: '英镑',
-        Yen: '日元',
-        Audollar: '澳大利亚元',
-        NtCurrency: '新台币',
-        Cadollar: '加拿大元',
-        Sidollar: '新加坡元',
-        Franc: '瑞士法郎'
+        dollar: "美元",
+        Euro: "欧元",
+        HKdollar: "港币",
+        Pound: "英镑",
+        Yen: "日元",
+        Audollar: "澳大利亚元",
+        NtCurrency: "新台币",
+        Cadollar: "加拿大元",
+        Sidollar: "新加坡元",
+        Franc: "瑞士法郎"
       };
-      return Object.keys(currencyCn).map(item => (
-        {
-          currency: currencyCn[item],
-          cenPrice: data[item],
-          releasemonth: data.date,
-          source: 'custom'
-        }
-      )
-      )
+      return Object.keys(currencyCn).map(item => ({
+        currency: currencyCn[item],
+        cenPrice: data[item],
+        releasemonth: data.date,
+        source: "custom"
+      }));
     },
 
-    handleChangepop (paper) {
+    handleChangepop(paper) {
       this.popover.ruleForm.pageIndex = paper.pageIndex;
       this.popover.ruleForm.pageSize = paper.pageSize;
       if (this.sectuor == 1) {
@@ -1463,8 +1337,8 @@ export default {
   },
 
   watch: {
-    popup3 (val) {
-      if (!val) this.formConfig3.resetFields()
+    popup3(val) {
+      if (!val) this.formConfig3.resetFields();
     }
     /*   isShowPopover: {
         handler(newVal, oldVal) {
@@ -1475,7 +1349,7 @@ export default {
       } */
   },
 
-  created () {
+  created() {
     api.initSelect(this.queryConfig2);
     this.goStartPage();
   }

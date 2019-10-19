@@ -870,7 +870,7 @@ export default {
           var exchangerate = "";
           list.forEach(b => {
               if (currency == b.currency) {
-                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+                exchangerate = b.cenPrice;
               }
             });
             return this.$set(this.formDialog.ruleForm, "settleRate", exchangerate)

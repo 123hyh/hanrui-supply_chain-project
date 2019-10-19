@@ -6,13 +6,14 @@
       @handleBtnClickType="handleBtnClickType"
     ></query-bar>
     <table-component
-    :queryBarVisible='false'
+      :queryBarVisible='false'
       :dialog="false"
       :popoverList="table.list"
       :popoverListKey='table.config'
       :count="table.count"
       :activeRow.sync="table.activeRow"
       @handlePageChange="handlePageChange"
+      @dblclickTableRow="()=> handleBtnClickType('update')"
     ></table-component>
   </div>
 </template>

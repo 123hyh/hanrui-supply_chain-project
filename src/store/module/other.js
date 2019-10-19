@@ -214,7 +214,7 @@ const mutations = {
 const actions = {
   // 获取汇率
   async getExchange({ commit }) {
-    commit('setexchangeRate', await api.getExchange())
+    commit('setexchangeRate', await api.getexchangerate())
   },
   async getOrderStatus({ commit }) {
     commit('setOrderStatus', await api.getEnum('orderStatus'))

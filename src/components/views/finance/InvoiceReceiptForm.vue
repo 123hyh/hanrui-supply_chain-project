@@ -111,15 +111,11 @@ export default {
     PopoverComponent
   },
   data: () => ({
-    status: "",
-    itemstatus: "",
-    writeback: "",
     form: {
       config: formConfig,
       data: new entities(),
       isLoading: false
     },
-    active: "onemodel",
     table: {
       config: tableConfigOne,
       data: {
@@ -128,12 +124,6 @@ export default {
       },
       ruleForm: {},
       rowData: {}
-    },
-    formDialog: {
-      formConfig: formConfigOne,
-      ruleForm: new entitiesOne(),
-      itemName: "展示",
-      isshow: false
     },
     tableDialog: {
       config: [],
@@ -147,7 +137,17 @@ export default {
       btnObj: [{ type: "search", label: "查询" }],
       ruleForm: {},
       isshow: false
-    }
+    },
+    formDialog: {
+      formConfig: formConfigOne,
+      ruleForm: new entitiesOne(),
+      itemName: "展示",
+      isshow: false
+    },
+    writeback: "",
+    status: "",
+    itemstatus: "",
+    active: "onemodel",
   }),
   computed: {
     ...mapGetters(["getActivePathData"]),
@@ -163,8 +163,11 @@ export default {
     ...mapMutations(["addbreadCrumbsList"]),
     // 保存主表
     async handlePreserve () {
-      this.isLoading = true;
+      if(!this.table.data.alllist.length){
+        return this.$message.error("至少添加一条展示信息");
+      }
       try {
+        this.isLoading = true;
         if (this.status == "update") {
           const { data, status } = await api.updateinvoicereceipt(this.form.data);
           if (status) {
@@ -502,7 +505,9 @@ export default {
         switch (key) {
           case "outOrderCode":
             this.form.data[key] = rowData["shipmentBaseCode"];
-            // this.writeItemdetail(rowData);
+            this.form.data['customer'] = rowData["client"];
+            this.form.data['customerName'] = rowData["clientName"];
+            this.form.data['outTime'] = rowData["actualShipmentTime"];
             break;
           case "customerName":
             this.form.data["customer"] = rowData["customerNo"];

@@ -66,6 +66,7 @@ import productTax from '@/domain/formconfig/basicdata/ProductTax.js'
 import customsMateriel from '@/domain/formconfig/basicdata/CustomsMateriel.js'
 import customsTariff from '@/domain/formconfig/basicdata/CustomsTariff.js'
 import secondUnitOfMeasure from "@/domain/tableconfig/basicdata/SecondUnitOfMeasure.js";
+
 // 物料海关的分栏集合
 const materielCustomList = (() => ({
   list: [
@@ -104,6 +105,9 @@ import client from '@/domain/tableconfig/business/Client.js'
 import exemption from '@/domain/tableconfig/basicdata/Exemption.js'
 import brand from '@/domain/tableconfig/basicdata/Brand.js'
 import origin from '@/domain/tableconfig/basicdata/Origin.js'
+import domesticDestination from '@/domain/tableconfig/basicdata/DomesticDestination'
+import deliveredGoodsPlace from "@/domain/tableconfig/basicdata/DeliveredGoodsPlace.js";
+import institution from '@/domain/tableconfig/basicdata/Institution'
 
 
 
@@ -230,7 +234,12 @@ export default {
           volumeUnitName: mCode,
           exemptionName: 'exemptionCode',
           brandName: 'brandCode',
-          originName: 'originCode'
+          originName: 'originCode',
+          originCountryName: 'originCode',
+          domesticDestinationName: 'domesticDestinationCode',
+          goodsPlaceName: 'goodsPlaceCode',
+          inspectionNo: 'institutionCode',
+          finalCountryName: 'originCode'
         }[target],
         queryBarConfig = { formConfig: [{ moduleBind, label: '编码', isInput: true }], data: {}, btnObj: this.tableDialog.queryBarConfig.btnObj };
       this.tableDialog = {
@@ -254,7 +263,12 @@ export default {
           custSecondUnitName: { title: '第二计量单位', config: secondUnitOfMeasure },
           exemptionName: { title: '征免性质', config: exemption },
           brandName: { title: '品牌', config: brand },
-          originName: { title: '原产国', config: origin }
+          originName: { title: '原产国', config: origin },
+          originCountryName: { title: '原产国', config: origin },
+          domesticDestinationName: { title: '境内目的地', config: domesticDestination },
+          goodsPlaceName: { title: '境内货源地', config: deliveredGoodsPlace },
+          inspectionNo: { title: '检验检疫机关', config: institution },
+          finalCountryName: { title: '最终目的地', config: origin }
         }[target]
       };
       this.tableDialog.queryBarConfig = queryBarConfig
@@ -270,7 +284,10 @@ export default {
         getSecondMeasurementPageData,
         getExemptionList,
         getBrandList,
-        getOriginList
+        getOriginList,
+        querydomesticdestinationSearch,
+        getDeliveredGoodsPlaceList,
+        queryinstitutionSearch
       } = api;
 
       let config = {
@@ -287,16 +304,23 @@ export default {
         custSecondUnitName: getSecondMeasurementPageData,
         exemptionName: getExemptionList,
         brandName: getBrandList,
-        originName: getOriginList
+        originName: getOriginList,
+        originCountryName: getOriginList,
+        domesticDestinationName: querydomesticdestinationSearch,
+        goodsPlaceName: getDeliveredGoodsPlaceList,
+        inspectionNo: queryinstitutionSearch,
+        finalCountryName: getOriginList
       };
       return async function () {
         const WHITE = [
-          'brandName', 'originName', 'measurementUnitName', 'accContactName', 'superConditionName',
-          'custFirstUnitName', 'custSecondUnitName', 'lengthUnitName', 'weightUnitName', 'volumeUnitName'
+          'brandName', 'originName', 'originCountryName', 'domesticDestinationName', 'goodsPlaceName', 'measurementUnitName', 'accContactName', 'superConditionName',
+          'custFirstUnitName', 'custSecondUnitName', 'lengthUnitName', 'weightUnitName', 'volumeUnitName', 'inspectionNo', 'finalCountryName'
         ], TARGET = this.form.searchTarget;
         try {
+          let param = typeof arguments[0] === 'string' ? {} : arguments[0]; // 防止是别的类型
+
           const { data: { list, count } } = await config[TARGET].call(api, {
-            ...arguments[0],
+            ...param,
             ...this.tableDialog.queryBarConfig.data,
             status: WHITE.includes(TARGET) ? '2' : ''
           });
@@ -317,7 +341,10 @@ export default {
         clientNo, clientName,
         exemptionCode, exemptionName,
         brandCode, brandName, brandAbb, description: brandDes,
-        originCode, originName, originAbb, description: originDes
+        originCode, originName, originAbb, description: originDes,
+        domesticDestinationCode, domesticDestinationName,
+        goodsPlaceName, goodsPlaceCode,
+        institutionCode, institutionName
       } = data;
       let activeData = {
         measurementUnitName: { measurementUnit: measurementCode, measurementUnitName: measurementUnit },
@@ -333,7 +360,12 @@ export default {
         custSecondUnitName: { custSecondUnit: measurementCode, custSecondUnitName: measurementUnit },
         exemptionName: { exemption: exemptionCode, exemptionName: exemptionName },
         brandName: { brandCode, brandName, brandAbb, brandDes },
-        originName: { originCode, originName, originAbb, originDes }
+        originName: { originCode, originName, originAbb, originDes },
+        originCountryName: { originCountryName: originName, originCountry: originCode },
+        domesticDestinationName: { domesticDestinationName, domesticDestination: domesticDestinationCode },
+        goodsPlaceName: { goodsPlaceName, goodsPlace: goodsPlaceCode },
+        inspectionNo: { inspectionNo: institutionCode, inspectionName: institutionName },
+        finalCountryName: { finalCountryName: originName, finalCountry: originCode }
       }[this.form.searchTarget];
 
       for (let key in activeData) {

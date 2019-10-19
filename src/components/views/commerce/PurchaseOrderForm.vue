@@ -14,6 +14,7 @@
     <form-component
       :formModel="ruleForm"
       :inputKey="formConfig"
+        @handlerFormVerify="handlerFormVerify"
       @handlerFormConfigClickSearch="handlerFormConfigClickSearch"
     ></form-component>
     <div>
@@ -233,7 +234,8 @@ export default {
       labelWidth: "150px",
       inputStyle: {
         width: "150px"
-      }
+      },
+      verify:'',
     };
   },
   computed: {
@@ -414,6 +416,9 @@ export default {
       this.isShowTableDialog = !this.isShowTableDialog;
     },
     async handlerPreserve () {
+      if (!this.isVerify()) {
+        return
+      }
       let statusMessage = "";
       this.isLoading = true;
       // 状态为 新增和修改 调用 不一样的 method
@@ -776,7 +781,17 @@ export default {
         console.log(error);
       }
       utools.alertMessage.bind(this)(messageStatus);
-    }
+    },
+    handlerFormVerify ($refs) {
+      this.verify = $refs;
+    },
+    isVerify () {
+      let isVerify = false;
+      this.verify["formModel"].validate(valid => {
+        isVerify = valid;
+      });
+      return isVerify;
+    },
   },
 
   components: {

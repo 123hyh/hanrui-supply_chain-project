@@ -7,7 +7,6 @@ export default [
 		key: "specification",
 		name: "规格型号",
 		prop: "specification",
-		rules
 	},
 	{
 		type: 'string',
@@ -16,7 +15,6 @@ export default [
 		prop: "clientName",
 		readonly: true,
 		btn: true,
-		rules
 	},
 	{
 		selectOption: [],
@@ -25,7 +23,6 @@ export default [
 		key: "reportGateType",
 		name: "报关类型",
 		prop: "reportGateType",
-		rules
 	},
 	{
 		type: 'string',

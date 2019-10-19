@@ -68,6 +68,7 @@ import formBind from "@/domain/entities/commerce/SalesOrder";
 //公用方法
 import api from "@/assets/js/appHelper";
 import utools from "@/domain/common/utools.js";
+import { debuglog } from 'util';
 
 export default {
   components: { FormPop, TabGoods, TabPackage, TabFee },
@@ -125,6 +126,7 @@ export default {
     },
     //表单验证
     isVerify () {
+      debugger
       return (
         this.ruleForm.company &&
         this.ruleForm.customer &&

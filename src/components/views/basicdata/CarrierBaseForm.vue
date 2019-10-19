@@ -210,6 +210,7 @@ export default {
   }),
   computed: {
     ...mapGetters(["getActivePathData"]),
+
     isShowTable () {
       return !(['base', 'credit', 'purchase', 'purchase'].includes(this.tabActiveName))
     },
@@ -223,6 +224,7 @@ export default {
       { name: "car", label: "车辆信息", codeName: "carCode" },
       { name: "driver", label: "司机信息", codeName: "driverCode" }
     ],
+
     DialogRequest: () => ({
       financeName: {
         title: "公司",
@@ -260,6 +262,7 @@ export default {
           require("@/domain/tableconfig/commerce/EntrustGoods.js").default
       }
     }),
+
     requestAddress () {
       return {
         province: _ => api.getProvince(),
@@ -267,6 +270,7 @@ export default {
         district: code => api.getDistrict(code)
       };
     },
+
     clickTypeAsync () {
       return {
         search: async page => {
@@ -291,12 +295,14 @@ export default {
             this.utools.alertMessage.call(this, 0, e.message);
           }
         },
+
         add: () => (
           this.formDialog = {
             ...this.formDialog, isShowPopover: true, ruleForm: { carrierCode: this.form.data.base.carrierCode }
           },
           this.loadTabCodeNo()
         ),
+
         update: () => {
           this.utools.titleCallBack.call(this, this.table.clickRow,
             async () => {
@@ -312,22 +318,21 @@ export default {
               }
             })
         },
+
         delete: () => {
-          this.utools.titleCallBack.call(this, this.table.clickRow, async () => {
-            try {
-              var {
-                status,
-                data: { list, count }
-              } = await api[this.table.itemTabObj.tabApi["deleteApi"]](
-                this.table.itemCode
-              );
-              this.utools.alertMessage.bind(this)(status, null, "删除"),
-                this.clickTypeAsync["search"]();
-            } catch (e) {
-              console.log(e);
-              this.utools.alertMessage.bind(this)(0, e.message);
-            }
-          });
+          this.utools.titleCallBack.call(
+            this,
+            this.table.clickRow,
+            this.utools.removeReceiptsTips.bind(
+              this,
+              async () => {
+                await api[this.table.itemTabObj.tabApi["deleteApi"]](
+                  this.table.itemCode
+                );
+                this.clickTypeAsync.search();
+              }
+            )
+          );
         }
       };
     },
@@ -406,6 +411,7 @@ export default {
         })
       }
     })(),
+
     // 加载省市区
     async getAddress (type, code) {
       try {
@@ -415,6 +421,7 @@ export default {
         console.log(e);
       }
     },
+
     handleSelectOption (data, type) {
       for (let item of this.form.formConfig[this.tabActiveName]) {
         if (item.key === type) {
@@ -473,6 +480,7 @@ export default {
         })()
         : (this.tableDialog.isShowPopover = false);
     },
+
     handleVerify () { },
     // 黑名单
     async hanldeBlacklist () {
@@ -484,6 +492,7 @@ export default {
         }
       )
     },
+
     handleRollback () {
       this.$router.push('/M0201')
     },
@@ -510,6 +519,7 @@ export default {
       }
       method();
     },
+
     // 表格删除数据
     handlerTableRemove: (() => {
       let port = {
@@ -556,6 +566,7 @@ export default {
       this.formDialog.itemName = dialogTitle;
       api.initSelect(this.formDialog.formConfig)
     },
+    
     handlerupdateFormDialog () {
       this.rouserFormDialog()
     },
@@ -651,7 +662,7 @@ export default {
       };
       const active = this.tabActiveName;
       // 表格数据
-      if (Object.keys(port).includes(this.tabActiveName)){
+      if (Object.keys(port).includes(this.tabActiveName)) {
         const { data: { list = [], count = 0 } } = await port[active].call(api, {
           // 银行信息的code不同
           [active !== 'finance' ? 'carrierCode' : 'billNo']: this.form.data.base.carrierCode,

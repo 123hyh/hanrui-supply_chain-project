@@ -1,11 +1,5 @@
 export default {
-  // 首页 汇率
-  getExchange() {
-    return this._getData({
-      url: `exchangerate/search`,
-      method: 'GET'
-    })
-  },
+
   // 增加汇率
   addExchangerate(data) {
     return this._getData({
@@ -24,14 +18,14 @@ export default {
     })
   },
 
-  // 查询指定日期银行汇率
+  // 指定日期银行汇率
   gettimeExchangerate(time) {
       return this._getData({
         url: `exchangerate/${time}`,
         method: 'GET'
       })
   },
-
+  
   // 今日银行汇率
   getexchangerate() {
     return this._getData({
@@ -40,14 +34,15 @@ export default {
     })
   },
 
-  // 获取所有汇率
-  // getexchangerateall() {
-  //   return this._getData({
-  //     url: `/exchangerate/search/settting`,
-  //     method: 'POST',
-  //     data: {source:'custom'}
-  //   })
-  // },
+  // 设置海关汇率
+  changeCustomsExchangeData({ data = {}, method = 'POST' } = {}) {
+    return this._getData({
+      url: `/exchangerate/custom`,
+      method,
+      data
+    })
+  },
+
   // 获取海关汇率
   getCustomsExchangeData(data) {
     return this._getData({
@@ -56,13 +51,21 @@ export default {
       data: this._handlePage(data)
     })
   },
-  // 设置海关汇率
-  changeCustomsExchangeData({ data = {}, method = 'POST' } = {}) {
-    debugger
+
+  // 指定日期海关汇率
+  gethgtimeExchangerate(time) {
     return this._getData({
-      url: `/exchangerate/custom`,
-      method,
-      data
+      url: `exchangerate/custom/${time}`,
+      method: 'GET'
     })
-  }
+  },
+
+  // 首页 汇率
+  getExchange() {
+    return this._getData({
+      url: `exchangerate/search`,
+      method: 'GET'
+    })
+  },
+  
 }

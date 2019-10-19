@@ -10,6 +10,13 @@ export default [
 		rules,
 	},
 	{
+		btn: true,
+		type: "string",
+		key: "applicationDept",
+		name: "申请人部门",
+		prop: "applicationDept"
+	},
+	{
 		type: "string",
 		key: "expenseName",
 		name: "名称",
@@ -26,14 +33,8 @@ export default [
 		type: "date",
 		key: "applicationDate",
 		name: "申请日期",
-		prop: "applicationDate"
-	},
-	{
-		btn: true,
-		type: "string",
-		key: "applicationDept",
-		name: "申请人部门",
-		prop: "applicationDept"
+		prop: "applicationDate",
+		disabled: true,
 	},
 	{
 		type: "select",

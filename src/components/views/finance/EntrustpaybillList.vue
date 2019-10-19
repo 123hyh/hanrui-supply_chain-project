@@ -16,7 +16,7 @@
       :popoverList='table.tableData'
       :count='table.count'
       :popoverListKey='table.config'
-      @handlePageChange='handleDbclickTable'
+      @handlePageChange='goPage'
       @dblclickTableRow='dblclickTableRow'
     ></table-component>
   </div>
@@ -167,7 +167,7 @@ export default {
     // 查询数据
     async queryPage () {
       try {
-        const { data: { list, count } } = await api.getEntrustpaybillData();
+        const { data: { list, count } } = await api.getEntrustpaybillData(this.queryEntrustpaybill);
         this.table.tableData = this.utools.tableDataTranstionBoolen({
           data: list,
           config: ['payBeyond', 'booked', 'shouldReceiveBill', 'innerDeduction', 'fullAccountArrival', 'accountBeenPaid', 'discount']
@@ -180,12 +180,12 @@ export default {
     },
     // 翻页处理
     goPage (val) {
-      this.queryEntrustpaybill.pageIndex = val;
+      this.queryEntrustpaybill.pageIndex = val.pageIndex;
       this.queryPage();
     },
     // 改变每页行数
     handleSizeChange (val) {
-      this.queryEntrustpaybill.pageSize = val;
+      this.queryEntrustpaybill.pageSize = val.pageSize;
       this.queryPage();
     },
     // 新增

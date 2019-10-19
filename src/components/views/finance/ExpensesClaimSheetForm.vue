@@ -119,7 +119,7 @@ export default {
     formDialog: {
       formConfig: formConfigOne,
       ruleForm: new entitiesOne(),
-      itemName: "费用明细",
+      itemName: "费用报销单",
       isshow: false
     },
     tableDialog: {
@@ -610,10 +610,12 @@ export default {
           case "expensePerson":
             this.form.data[key] = rowData["employeeInfoCode"];
             this.form.data[key] = rowData["employeeInfoName"];
+            this.form.data['position'] = rowData["position"];
             break;
           case "paymentBear":
             this.form.data[key] = rowData["employeeInfoCode"];
             this.form.data[key] = rowData["employeeInfoName"];
+            this.form.data['phoneNo'] = rowData["contactInfo"];
             break;
           case "delegateBillNo":
             this.form.data[key] = rowData["entrustOrderNo"];
@@ -683,6 +685,9 @@ export default {
       if (!this.tableDialog.isshow) return;
       this.tableDialog.isshow = !this.tableDialog.isshow;
       this.tableDialog.ruleForm = {};
+    },
+    // 统计姐 核定报销总额
+    statistics(){
     }
   },
   watch: {
@@ -710,6 +715,7 @@ export default {
       try {
         let { data } = await api.getexpenseorderCode();
         this.form.data.billNo = data;
+        this.form.data.applicationDate = new Date().toJSON().slice(0, 10) + " 00:00:00";
       } catch (e) {
         this.$message.error("编码加载失败，请重试！");
       }

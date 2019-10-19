@@ -622,7 +622,7 @@ export default {
   // 导出表格
   downFile(path) {
     let a = document.createElement('a')
-    a.href = `http://47.107.253.252:8082/scp${path}`
+    a.href = `${location.protocol}//${location.hostname}:8082/scp${path}` // http://47.107.253.252:8082
     a.target = '_self'
     a.click()
   },
@@ -846,6 +846,7 @@ export default {
             }
             solutionFormula = solutionFormula.replace(key, da).replace(' ', '')
           } else if (ratios.indexOf(key) != -1) {
+            console.log(key)
             solutionFormula = solutionFormula
               .replace(key, data[key] + '/100')
               .replace(' ', '')

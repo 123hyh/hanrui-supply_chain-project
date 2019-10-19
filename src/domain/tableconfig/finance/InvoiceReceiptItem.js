@@ -7,7 +7,6 @@ export default [
 	{
 		prop: 'billNo',
 		label: '发票签收单编码',
-		width: '100',
 	},
 	// {
 	// 	prop: 'statusName',
@@ -27,7 +26,6 @@ export default [
 	{
 		prop: 'receiverName',
 		label: '签收人',
-		width: '100',
 	},
 	// {
 	// 	prop: 'outTime',
@@ -35,34 +33,28 @@ export default [
 	// 	width: '100',
 	// },
 	{
-		prop: 'invoiceType',
+		prop: 'invoiceTypeName',
 		label: '发票类型',
-		width: '100',
 	},
 	{
 		prop: 'receivableNo',
 		label: '应收单号',
-		width: '100',
 	},
 	{
 		prop: 'invoiceAmount',
 		label: '发票金额',
-		width: '100',
 	},
 	{
 		prop: 'invoiceNo',
 		label: '发票号码',
-		width: '100',
 	},
 	{
 		prop: 'followGoods',
 		label: '票是否随货',
-		width: '100',
 	},
 	{
 		prop: 'remark',
 		label: '备注',
-		width: '100',
 	},
 	// {
 	// 	prop: 'reviewer',

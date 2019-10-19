@@ -1,3 +1,5 @@
+import validate from "@/domain/common/validate"
+const rules = [{required: true, message: "必填", trigger: 'change' }]
 export default {
   list: [
     {
@@ -7,7 +9,8 @@ export default {
       name: '单据编号',
       prop: 'billNo',
       group: '1',
-      order: 1
+      order: 1,
+      rules
     },
     {
       type: 'string',
@@ -17,7 +20,8 @@ export default {
       name: '委托单号',
       prop: 'entrustOrderNo',
       group: '1',
-      order: 1.9
+      order: 1.9,
+      rules
     },
     {
       type: 'checkbox',
@@ -43,7 +47,8 @@ export default {
       name: '付款性质',
       prop: 'payNature',
       group: '1',
-      order: 6
+      order: 6,
+      rules
     },
     {
       type: 'select',
@@ -53,7 +58,8 @@ export default {
       name: '付款操作',
       prop: 'payOperation',
       group: '1',
-      order: 7
+      order: 7,
+      rules
     },
     {
       type: 'string',
@@ -62,7 +68,8 @@ export default {
       name: '委托方',
       prop: 'delegeteName',
       group: '1',
-      order: 2
+      order: 2,
+      rules
     },
     {
       type: 'string',
@@ -90,6 +97,7 @@ export default {
       prop: 'payType',
       group: '1',
       order: 8,
+      rules
     },
     {
       type: 'string',
@@ -108,7 +116,8 @@ export default {
       name: '付款币别',
       prop: 'payMontyType',
       group: '1',
-      order: 13
+      order: 13,
+      rules
     },
     {
       type: 'select',
@@ -134,7 +143,8 @@ export default {
       name: '付款币别：人民币汇率',
       prop: 'payMoneyRMBexchangeRate',
       group: '1',
-      order: 14
+      order: 14,
+			disabled: true,
     },
     {
       type: 'string',
@@ -336,7 +346,8 @@ export default {
       name: '收款人账号',
       prop: 'payeeAccount',
       group: '2',
-      order: 4
+      order: 4,
+      rules
     },
     {
       type: 'checkbox',
@@ -384,7 +395,8 @@ export default {
       name: '收款银行',
       prop: 'receiveBank',
       group: '2',
-      order: 5
+      order: 5,
+      rules
     },
     {
       type: 'string',

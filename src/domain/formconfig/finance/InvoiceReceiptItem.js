@@ -1,3 +1,5 @@
+import validate from "@/domain/common/validate.js";
+const rules = validate.setRequired();
 export default [
 	// {
 	// 	text: true,
@@ -10,6 +12,13 @@ export default [
 		key: "billNo",
 		name: "发票签收单编码",
 		prop: "billNo"
+	},
+	{
+		type: "string",
+		key: "receivableNo",
+		name: "应收单号",
+		prop: "receivableNo",
+		rules
 	},
 	// {
 	// 	type: 'select',

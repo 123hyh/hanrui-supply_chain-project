@@ -127,36 +127,8 @@
             type="datetime"
             placeholder="选择日期时间"
           ></el-date-picker>
-          <!-- 金额输入框 -->
-          <currencyinput
-            v-if="item.type=='money'"
-            :style="lan == '3'?lanstyle:style"
-            v-model="formModel[item['key']]"
-            :disabled="item.disabled"
-            :readonly="item.readonly"
-            :decimal="item.decimal"
-            :symbol="item.symbol"
-          ></currencyinput>
-          <!-- 比率 -->
-          <ratio
-            v-if="item.type=='ratio'"
-            :style="lan == '3'?lanstyle:style"
-            v-model="formModel[item['key']]"
-            :disabled="item.disabled"
-            :readonly="item.readonly"
-            :decimal="item.decimal"
-          ></ratio>
-          <!-- 计算框 -->
-          <currencyinput
-            v-if="item.type=='calc'"
-            :style="lan == '3'?lanstyle:style"
-            v-model="formModel[item['key']]"
-            :disabled="item.disabled"
-            :readonly="item.readonly"
-            :decimal="item.decimal"
-            :symbol="item.symbol"
-          ></currencyinput>
-          <!-- 计算框 -->
+          
+          <!-- 数字 -->
           <integerinput
             v-if="item.type=='integer'"
             :style="lan == '3'?lanstyle:style"
@@ -166,7 +138,35 @@
             :decimal="item.decimal"
             :symbol="item.symbol"
           ></integerinput>
-          <!-- 金额框/下拉金额框(支持计算) -->
+          <!-- 百分比率     项目未用上 -->   
+          <ratio
+            v-if="item.type=='ratio'"
+            :style="lan == '3'?lanstyle:style"
+            v-model="formModel[item['key']]"
+            :disabled="item.disabled"
+            :readonly="item.readonly"
+            :decimal="item.decimal"
+          ></ratio>
+          <!-- 金额 -->
+          <currencyinput
+            v-if="item.type=='money'"
+            :style="lan == '3'?lanstyle:style"
+            v-model="formModel[item['key']]"
+            :disabled="item.disabled"
+            :readonly="item.readonly"
+            :decimal="item.decimal"
+            :symbol="item.symbol"
+          ></currencyinput>
+          <!-- 金额（计算） -->
+          <currencyinput
+            v-if="item.type=='calc'"
+            :style="lan == '3'?lanstyle:style"
+            v-model="formModel[item['key']]"
+            :disabled="true"
+            :decimal="item.decimal"
+            :symbol="item.symbol"
+          ></currencyinput>
+          <!-- 下拉联动金额（计算） -->
           <money-input
             :style="lan == '3'?lanstyle:style"
             v-if="item.type=='select' && item.money"

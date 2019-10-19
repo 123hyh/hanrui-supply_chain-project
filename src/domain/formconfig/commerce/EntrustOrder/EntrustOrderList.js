@@ -186,10 +186,11 @@ export default [
         disabled: true,
       },
       {
-        type: 'string',
+        type: 'integer',
         key: "currencyExchangeRate",
         name: "买方汇率",
         prop: "currencyExchangeRate",
+			  decimal:6,
         isShow:true,
         disabled: true
       },
@@ -310,16 +311,17 @@ export default [
       },
       {
         type: "number",
+        ratio:true,
         key: "serviceTaxRate",
-        name: "服务费率%",
+        name: "服务费率(%)",
         prop: "serviceTaxRate",
         disabled: true
       },
       {
-        type: 'string',
-        ratio:true,
+        type: 'integer',
         key: "orderExchangeRate",
         name: "订单汇率",
+			  decimal:6,
         prop: "orderExchangeRate",
         disabled: true
       },

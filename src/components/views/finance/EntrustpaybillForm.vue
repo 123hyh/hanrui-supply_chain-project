@@ -876,7 +876,7 @@ export default {
           var exchangerate = "";
           list.forEach(b => {
               if (currency == b.currency) {
-                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+                exchangerate = b.cenPrice;
               }
             });
             this.form.data.payMoneyRMBexchangeRate = exchangerate
@@ -887,27 +887,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      // try {
-      //   const {
-      //     data: { list }
-      //   } = await api.getExchangerate({});
-      //   for (let i = 0; i < list.length; i++) {
-      //     if (time == list[i].date.slice(0, 10)) {
-      //       var exchangerate = "";
-      //       list[i].rate.forEach(b => {
-      //         if (currency == b.currency) {
-      //           exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
-      //         }
-      //       });
-      //       this.form.data.payMoneyRMBexchangeRate = exchangerate
-      //       this.form.data = {...this.form.data}
-      //       return
-      //     }
-      //   }
-      //   this.$message.warning("请录入系统汇率");
-      // } catch (e) {
-      //   console.log(e);
-      // }
     }
   },
 

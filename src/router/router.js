@@ -1488,6 +1488,14 @@ export default new VueRouter({
           }
         },
         {
+          path: '/M0820',
+          component: _ =>
+            import('@/components/views/basicdata/SettlementList.vue'),
+          meta: {
+            title: '财务基础资料'
+          }
+        },
+        {
           path: '/otherbillForm',
           name: 'otherbillForm',
           component: _ =>
@@ -1852,7 +1860,7 @@ export default new VueRouter({
     {
       path: '*',
       redirect: '/404'
-    }
+    },
     /* {
       path: '/export',
       component: () => import('@/test/Export.vue')

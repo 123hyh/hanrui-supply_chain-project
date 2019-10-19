@@ -131,14 +131,12 @@ export default [
 			key: "netWeight",
 			name: "净重(KG)",
 			prop: "netWeight",
-			decimal:2
 		},
 		{
 			type: 'integer',
 			key: "grossWeight",
 			name: "毛重(KG)",
 			prop: "grossWeight",
-			decimal:2
 		},
 		{
 		  type: "string",
@@ -152,9 +150,8 @@ export default [
 			type: 'integer',
 			ratio:true,
 			key: "freightRate",
-			name: "运费费率%",
+			name: "运费费率(%)",
 			prop: "freightRate",
-			decimal: 2
 		},
 		{
 			type: 'string',
@@ -167,9 +164,8 @@ export default [
 			type: 'integer',
 			ratio:true,
 			key: "premiumRate",
-			name: "保费费率%",
+			name: "保费费率(%)",
 			prop: "premiumRate",
-			decimal: 2
 		},
 		{
 			type: 'string',
@@ -182,9 +178,8 @@ export default [
 			type: 'integer',
 			ratio:true,
 			key: "extrasRate",
-			name: "杂费费率%",
+			name: "杂费费率(%)",
 			prop: "extrasRate",
-			decimal: 2
 		},
 		{
 			type: 'string',
@@ -224,26 +219,26 @@ export default [
 			readonly:true
 		},
 		{
-			type: 'string',
+			type: 'integer',
 			key: "customsExchangeRate",
 			name: "海关汇率",
+			decimal:6,
 			prop: "customsExchangeRate",
-			// disabled: true,
+			disabled: true,
 		},
 		{
-			type: 'string',
+			type: 'integer',
 			ratio:true,
 			key: "customTaxRate",
-			name: "关税税率%",
+			name: "关税税率(%)",
 			prop: "customTaxRate",
 			disabled: true,
 		},
 		{
 			type: 'integer',
-			decimal: 2,
 			ratio:true,
 			key: "increaseTaxRate",
-			name: "关税加征%",
+			name: "关税加征(%)",
 			prop: "increaseTaxRate",
 		},
 		{
@@ -259,7 +254,7 @@ export default [
 			btn: true, 
 			type: 'string',
 			key: "exciseTaxRate",
-			name: "消费税率%",
+			name: "消费税率(%)",
 			prop: "exciseTaxRate",
 			ratio:true,
 			readonly: true,
@@ -302,7 +297,7 @@ export default [
 			type: 'string',
 			ratio:true,
 			key: "otherTaxRate",
-			name: "其他税率%",
+			name: "其他税率(%)",
 			prop: "otherTaxRate",
 			disabled: true,
 		},
@@ -328,10 +323,10 @@ export default [
 	] },
 	{ title: "服务费", showline:true, list: [
 		{
-			type: 'string',
+			type: 'integer',
 			ratio:true,
 			key: "serviceExchangeRate",
-			name: "费率%",
+			name: "费率(%)",
 			prop: "serviceExchangeRate",
 			disabled: true,
 		},
@@ -356,9 +351,10 @@ export default [
 	] },
 	{ title: "买方采购", showline:true, list: [
 		{
-			type: 'string',
+			type: 'integer',
 			key: "buyerExchangeRate",
 			name: "货款汇率",
+			decimal:6,
 			prop: "buyerExchangeRate",
 			disabled: true,
 		},
@@ -372,10 +368,11 @@ export default [
 			disabled: true,
 		},
 		{
-			type: 'string',
+			type: 'integer',
 			isShow:true,
 			key: "buyerRate",
 			name: "买方汇率",
+			decimal:6,
 			prop: "buyerRate",
 		},
 		{
@@ -400,10 +397,9 @@ export default [
 	{ title: "出口退税", showline:true, list: [
 		{
 			type: 'integer',
-			decimal: 2,
 			ratio:true,
 			key: "drawbackRate",
-			name: "退税率%",
+			name: "退税率(%)",
 			prop: "drawbackRate"
 		},
 		{
@@ -417,7 +413,6 @@ export default [
 	{ title: "", showline:true, list: [
 		{
 			type: 'integer',
-			decimal: 2,
 			key: "volume",
 			name: "体积(CBM)",
 			prop: "volume",

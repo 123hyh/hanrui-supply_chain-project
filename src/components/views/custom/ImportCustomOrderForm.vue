@@ -13,6 +13,7 @@
     <form-component
       :formModel="form.data"
       :formConfig="form.formConfig"
+        @handlerFormVerify="handlerFormVerify"
       @handlerSearchClick='handlerFormConfigClickSearch'
     >
     </form-component>
@@ -107,7 +108,7 @@ export default {
         deliveryOrderNo: (data = {}) => api.queryHkschedulebase(data),
         scheduleBaseCode: (data = {}) => api.queryHkschedulebase(data),
         carNumber: (data = {}) => api.queryTrainnumber(data),
-        packageKind: (data = {}) => api.querypackagetypeSearch(data),
+        packageKindName: (data = {}) => api.querypackagetypeSearch(data),
         entrustOrderNo: (data = {}) => api.queryentrustorderSearch(data),
         goodsName: (data = {}) => api.getEntrustGoods(data),
         taxNo: (data = {}) => api.getCustomsMaterielList(data),
@@ -150,7 +151,7 @@ export default {
         searchCode: 'trainNumberCode',
         config: _ => require('@/domain/tableconfig/basicdata/TrainNumber.js').default,
       },
-      packageKind: {
+      packageKindName: {
         title: '包装种类',
         searchCode: 'packageCode',
         config: _ => require('@/domain/tableconfig/basicdata/PackageType.js').default,
@@ -270,6 +271,7 @@ export default {
         data: [],
         tableConfig: []
       },
+      verify:'',
       clickRowData: {},
     };
   },
@@ -378,7 +380,7 @@ export default {
     setReqStatus () {
       console.log(this.dialogTarget)
       const WHITE_LIST = [
-        'receiveUnitName', 'carNumber', 'businessUnitName', 'transportMachine', 'declarationUnitName', 'deliveryOrderNo', 'scheduleBaseCode', 'packageKind',
+        'receiveUnitName', 'carNumber', 'businessUnitName', 'transportMachine', 'declarationUnitName', 'deliveryOrderNo', 'scheduleBaseCode', 'packageKindName',
         'goodsName', 'unitName', 'superviseTerm', 'exemption'
       ];
       return { status: WHITE_LIST.includes(this.dialogTarget) ? '2' : '' }
@@ -422,9 +424,8 @@ export default {
         case 'carNumber':
           this.form.data = { ...this.form.data, carNumber: data.trainNumberCode };
           break;
-        case 'packageKind':
-          // this.form.data = { ...this.form.data, packageKind: data.packageTypeName, packageKindCode: data.packageTypeCode };
-          this.form.data = { ...this.form.data, packageKind: data.packageTypeCode };
+        case 'packageKindName':
+          this.form.data = { ...this.form.data, packageKind: data.packageTypeCode, packageKindName: data.packageTypeName };
           break;
         case 'entrustOrderNo':
           this.form.data = { ...this.form.data, dealMode: data.dealMode, customType: data.reportGateType };
@@ -533,6 +534,9 @@ export default {
       this.initTableData(pageData);
     },
     async handlePreserve () {
+      if (!this.isVerify()) {
+        return
+      }
       if(this.status === 'add' && (!this.table.tempData.length)){
         this.$message({
             type: 'error',
@@ -614,7 +618,17 @@ export default {
           this.initTableData();
 
       }
-    }
+    },
+    handlerFormVerify ($refs) {
+      this.verify = $refs;
+    },
+    isVerify () {
+      let isVerify = false;
+      this.verify["formModel"].validate(valid => {
+        isVerify = valid;
+      });
+      return isVerify;
+    },
   },
   created () {
     this.initData()

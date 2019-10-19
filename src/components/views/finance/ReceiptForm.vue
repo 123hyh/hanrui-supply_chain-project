@@ -637,7 +637,7 @@ export default {
           var exchangerate = "";
           list.forEach(b => {
               if (currency == b.currency) {
-                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+                exchangerate = b.cenPrice;
               }
             });
             this.form.data.exchangeRate = exchangerate
@@ -649,28 +649,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      // try {
-      //   const {
-      //     data: { list }
-      //   } = await api.getExchangerate({});
-      //   for (let i = 0; i < list.length; i++) {
-      //     if (time == list[i].date.slice(0, 10)) {
-      //       var exchangerate = "";
-      //       list[i].rate.forEach(b => {
-      //         if (currency == b.currency) {
-      //           exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
-      //         }
-      //       });
-      //       this.form.data.exchangeRate = exchangerate
-      //       this.form.data.baseCurrency = eval(this.form.data.receiptsAmount * this.form.data.exchangerate || 0).toFixed(4)   //折本位币
-      //       this.form.data = {...this.form.data}
-      //       return
-      //     }
-      //   }
-      //   this.$message.warning("请录入系统汇率");
-      // } catch (e) {
-      //   console.log(e);
-      // }
     },
 
     // 查询 原币币别 汇率
@@ -704,7 +682,7 @@ export default {
           var exchangerate = "";
           list.forEach(b => {
               if (currency == b.currency) {
-                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+                exchangerate = b.cenPrice;
               }
             });
             this.form.data.originalSettlementExchangeRate = exchangerate
@@ -720,32 +698,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      // try {
-      //   const {
-      //     data: { list }
-      //   } = await api.getExchangerate({});
-      //   for (let i = 0; i < list.length; i++) {
-      //     if (time == list[i].date.slice(0, 10)) {
-      //       var exchangerate = "";
-      //       list[i].rate.forEach(b => {
-      //         if (currency == b.currency) {
-      //           exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
-      //         }
-      //       });
-      //       this.form.data.originalSettlementExchangeRate = exchangerate
-      //       if(this.form.data.originalSettlementExchangeRate){
-      //           this.form.data.originalMoneyAmount = eval(this.form.data.baseCurrency / this.form.data.originalSettlementExchangeRate || 0).toFixed(4)   //原币金额
-      //       }else{
-      //         this.form.data.originalMoneyAmount = 0
-      //       }
-      //       this.form.data = {...this.form.data}
-      //       return
-      //     }
-      //   }
-      //   this.$message.warning("请录入系统汇率");
-      // } catch (e) {
-      //   console.log(e);
-      // }
     },
 
   },

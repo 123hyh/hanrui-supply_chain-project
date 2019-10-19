@@ -31,7 +31,7 @@ export default {
     },
     decimal: {
       type: Number,
-      default: 0,
+      default: 4,
       desc: "小数位"
     }
   },

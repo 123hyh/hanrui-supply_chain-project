@@ -1,6 +1,6 @@
 /* 供应链客户 */
 <template>
-  <div class="tab-padding CustomerForm">
+  <div class="tab-padding customer-form">
     <preserve-btn
       :form='form.data'
       @handlePreserve="handlePreserve"
@@ -55,7 +55,7 @@
           :isSubTable='true'
           :tableData="table.tableData"
           :tableDataKey="table.tableDataKey"
-          :tabName=" form.data.status<=1 ? subActiveName:''"
+          :tabName=" (+form.data.status) <= 1 ? subActiveName:''"
           @handlerTableBtnClick="handlerTableBtnClick"
         >
           <template v-slot="slotProps">
@@ -78,7 +78,7 @@
     <!-- 弹窗 -->
     <section>
       <popover-component
-        :isShowPopover="dialog.isshow"
+        :isShowPopover.sync="dialog.isshow"
         :count="dialog.count"
         :formConfig="dialog.queryConfig"
         :ruleForm="dialog.ruleForm"
@@ -86,17 +86,15 @@
         :btnObj="dialog.btnObj"
         :popoverList="dialog.list"
         :popoverListKey="dialog.listKey"
-        @changeisShowPopover="closeDialog"
         @handlerSubPreservation="handlerSubPreservation"
         @handlePageChange="handlerFormConfigClickSearch"
         @handleBtnClickType="handlerFormConfigClickSearch"
       ></popover-component>
       <!-- 表格 下 弹窗 -->
       <popover-component
-        :isShowPopover="Tabledialog.isshow"
+        :isShowPopover.sync="Tabledialog.isshow"
         :popoverType="'form'"
         :formData="Tabledialog"
-        @changeisShowPopover="closeTableDialog"
         @formClickPreservation="handlerTableFormPreservation"
         @handlerFormConfigClickSearch="handlerFormConfigClickSearch"
       ></popover-component>
@@ -133,27 +131,6 @@ const searchParams = {
 export default {
   name: "Customerform",
   created () {
-    // let jurisdiction = this.$store.state.authorityControl.listBtn['M020105']
-    // if(jurisdiction.indexOf('finance')>-1){
-    //   this.initTabList = [
-    //     {
-    //       label: "基础资料",
-    //       name: "base"
-    //     },
-    //     {
-    //       label: "财务资料",
-    //       name: "finance"
-    //     },
-    //     {
-    //       label: "销售资料",
-    //       name: "sell"
-    //     },
-    //     {
-    //       label: "委托方",
-    //       name: "client"
-    //     }
-    //   ]
-    // }
     {
       this.initFormData();
       this.activeName = this.initTabList[0]["name"];
@@ -285,6 +262,7 @@ export default {
   },
   methods: {
     ...mapMutations(["addbreadCrumbsList"]),
+
     async tablebtn (row) {
       try {
         const { data } = await api.opcodeBankData(row);
@@ -295,10 +273,10 @@ export default {
         })
       } catch (error) {
         console.log(error)
-      } finally {
       }
     },
-    // 加入黑名单时间
+
+    // 加入黑名单事件
     async hanldeBlacklist () {
       this.utools.blacklist.call(
         this,
@@ -308,8 +286,10 @@ export default {
         }
       )
     },
+
     // 审核
-    handleVerify () { },
+    handleVerify () {
+     },
     async getAddress (type, code) {
       try {
         const { data } = await this.requestAddress[type](code);
@@ -319,6 +299,7 @@ export default {
       } finally {
       }
     },
+
     handleSelectOption (data, type) {
       for (let item of this.form.formConfig) {
         if (item.key === type) {
@@ -330,6 +311,7 @@ export default {
         }
       }
     },
+
     async getRegionList (type, code) {
       try {
         const { data } = await this.requestAddress[type](code);
@@ -338,6 +320,7 @@ export default {
         console.log(error);
       }
     },
+
     async initFormData () {
       const {
         status,
@@ -405,10 +388,7 @@ export default {
         console.log(error);
       }
     },
-    closeDialog () {
-      if (!this.dialog.isshow) return;
-      this.dialog.isshow = !this.dialog.isshow;
-    },
+
     handlerSubPreservation (clickRow) {
       switch (this.dialogName) {
         case "parentCustomerName":
@@ -492,6 +472,7 @@ export default {
           break;
       }
     },
+
     async handlePreserve () {
       if (this.activeName === 'client') return this.$message.success('保存成功！');
       this.isLoading = true;
@@ -514,6 +495,7 @@ export default {
         }
       )
     },
+
     async toggleTabRequest () {
       const { formData } = this.getActivePathData(this.$route.path);
       if (utools.judgeNullObj(formData[this.activeName], 1)) {
@@ -533,14 +515,17 @@ export default {
         console.log(error);
       }
     },
+
     setMethod () {
       return this.status == "add" ? "POST" : "PUT";
     },
+
     handleRollback () {
       this.$router.push({
         path: "/M0201"
       });
     },
+
     async getSubActiveNameTableData (sub) {
       try {
         this.table.data = [];
@@ -590,16 +575,14 @@ export default {
         console.log(error);
       }
     },
+
     setSubTabFormSelectList (data, type) {
       for (let item of this.Tabledialog.formConfig) {
         if (item.key !== type) continue;
         item.selectOption = utools.setRegionList(data);
       }
     },
-    closeTableDialog () {
-      if (!this.Tabledialog.isshow) return;
-      this.Tabledialog.isshow = !this.Tabledialog.isshow;
-    },
+
     async handlerTableFormPreservation () {
       let messageStatus = 0;
       try {
@@ -897,8 +880,7 @@ export default {
 </script>
 
 <style lang='less'>
-.tab-padding,
-.CustomerForm {
+.customer-form {
   .padding(@param: 0) {
     padding: @param;
   }

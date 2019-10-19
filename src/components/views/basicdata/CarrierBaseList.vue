@@ -45,11 +45,12 @@ export default {
     tableData: [],
     ruleForm: {},
     tableCount: 0,
-
     clickRow: {},
   }),
   computed: {
+
     ...mapGetters(['orderStatus']),
+
     queryBarFormConfig () {
       return [
         { label: "供应商编码", moduleBind: "carrierCode", isInput: true },
@@ -59,27 +60,41 @@ export default {
         { label: "至", moduleBind: "createTimeTo", isDate: true },
       ]
     },
+
     clickTypeAsync () {
       return {
-        'search': async (page) => {
+
+        'search': async (page = {}) => {
           try {
             const { data: { list, count } } = await api.querycarrierbaseSearch({ ...this.ruleForm, ...page });
             this.tableData = utools.toggleDataBoolean({ data: list, transFormFields: ['supplier'], isCn: true }), this.tableCount = count;
-            this.$refs.moviesTable.setCurrentRow(this.tableData.filter(e => (e[this.$route.query.key] == this.$route.query.code))[0] || '');
-          } catch (e) { console.log(e) }
+          } catch (e) {
+            this.$message.error('获取列表数据失败，请重试！')
+            console.log(e)
+          }
         },
+
         'add': () => this.jumpForm('add'),
-        'update': () => titleCallBack.call(this, this.clickRow, () => {
-          this.jumpForm('update')
-        }),
+
+        'update': () => titleCallBack.call(
+          this,
+          this.clickRow,
+          () => {
+            this.jumpForm('update')
+          }),
+
         'delete': () => {
-          titleCallBack.call(this, this.clickRow, async () => {
-            try {
-              const { status, data: { list, count } } = await api.deletecarrierbaseData(this.clickRow.carrierCode);
-              alertMessage.call(this, status, null, '删除')
-              this.clickTypeAsync['search']()
-            } catch (e) { console.log(e) }
-          })
+          titleCallBack.call(
+            this,
+            this.clickRow,
+            utools.removeReceiptsTips.bind(
+              this,
+              async () => {
+                await api.deletecarrierbaseData(this.clickRow.carrierCode);
+                this.clickTypeAsync.search()
+              }
+            )
+          )
         },
       }
     }
@@ -92,6 +107,7 @@ export default {
     handleBtnClick (clickType, page) {
       this.clickTypeAsync[clickType](page);
     },
+
     jumpForm (type) {
       let params = {
         path: '/CarrierBaseForm',
@@ -107,14 +123,13 @@ export default {
         name: "CarrierBaseForm"
       });
     },
+
     handleChange (param) {
       this.handleBtnClick('search', param)
     },
 
     dblclickTableRow (row) {
-      if (!(JSON.stringify(row) === JSON.stringify(this.clickRow))) {
-        this.clickRow = row;
-      }
+      this.clickRow = row;
       this.handleBtnClick('update');
     },
   },
@@ -123,6 +138,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

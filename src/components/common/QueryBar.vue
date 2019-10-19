@@ -162,7 +162,7 @@ export default {
     },
     async handlerClick (params) {
       // 如果点击删除 需要用户点击确认
-      // if (params === "delete" && !(await this.deleteAffirm())) return;
+      if (params === "delete" && !(await this.deleteAffirm())) return;
       this.$emit("handleBtnClickType", params);
     },
     rousePopover (key) {

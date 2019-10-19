@@ -52,36 +52,36 @@ export default [
 		name: "发运时间",
 		prop: "outTime"
 	},
-	{
-		type: "string",
-		key: "invoiceNo",
-		name: "发票号码",
-		prop: "invoiceNo",
-		rules
-	},
-	{
-		type: "select",
-		selectOption: [],
-		selectKey: "InvoiceTypes",
-		key: "invoiceType",
-		name: "发票类型",
-		prop: "invoiceType",
-		rules
-	},
-	{
-		type: "string",
-		key: "receivableNo",
-		name: "应收单号",
-		prop: "receivableNo",
-		rules
-	},
-	{
-		type: "string",
-		key: "invoiceAmount",
-		name: "发票金额",
-		prop: "invoiceAmount",
-		rules
-	},
+	// {
+	// 	type: "string",
+	// 	key: "invoiceNo",
+	// 	name: "发票号码",
+	// 	prop: "invoiceNo",
+	// 	rules
+	// },
+	// {
+	// 	type: "select",
+	// 	selectOption: [],
+	// 	selectKey: "InvoiceTypes",
+	// 	key: "invoiceType",
+	// 	name: "发票类型",
+	// 	prop: "invoiceType",
+	// 	rules
+	// },
+	// {
+	// 	type: "string",
+	// 	key: "receivableNo",
+	// 	name: "应收单号",
+	// 	prop: "receivableNo",
+	// 	rules
+	// },
+	// {
+	// 	type: "string",
+	// 	key: "invoiceAmount",
+	// 	name: "发票金额",
+	// 	prop: "invoiceAmount",
+	// 	rules
+	// },
 	{
 		type: "checkbox",
 		key: "followGoods",
@@ -89,12 +89,7 @@ export default [
 		prop: "followGoods",
 		rules
 	},
-	{
-		type: "textarea",
-		key: "remark",
-		name: "备注",
-		prop: "remark"
-	},
+
 	{
 		type: "string",
 		key: "reviewer",
@@ -106,5 +101,12 @@ export default [
 		key: "reviewTime",
 		name: "审核时间",
 		prop: "reviewTime"
-	}
+  },
+  {
+		type: "textarea",
+		key: "remark",
+		name: "备注",
+    prop: "remark",
+    layout: `flex-basis:100%;height:auto !important`
+	},
 ]

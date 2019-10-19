@@ -197,14 +197,14 @@ export default [{
 		key: "apGoodsAmountSum",
 		name: "委托单应付货款总额",
 		readonly: true,
-		rules: [...rules, {validator: validate.validateNum,}]
+		// rules: [...rules, {validator: validate.validateNum,}]
 	},
 	{
 		type: 'number',
 		key: "orderAmount",
 		name: "本次订货金额",
 		readonly: true,
-		rules: [...rules, {validator: validate.validateNum,}]
+		// rules: [...rules, {validator: validate.validateNum,}]
 	},
 	{
 		selectOption: [],

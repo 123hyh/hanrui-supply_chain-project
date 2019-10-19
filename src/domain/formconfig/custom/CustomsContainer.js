@@ -23,14 +23,12 @@ export default [
 		key: "containerSpecification",
 		name: "集装箱规格",
 		prop: "containerSpecification",
-		rules
 	},
 	{
 		type: "string",
 		key: "containerBox",
 		name: "集装箱号",
 		prop: "containerBox",
-		rules
 	},
 	{
 		type: "string",

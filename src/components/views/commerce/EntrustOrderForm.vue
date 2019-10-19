@@ -1846,22 +1846,23 @@ export default {
             "serviceExchangeRate"
           ] = this.entrustOrder.serviceTaxRate; //费率%
           this.formPopover.formData.ruleForm["serviceCurrency"] = "3"; // 服务费币别固定本位币人命币
-          // 海关汇率
-          if (this.head == "single") {
-            //单抬头
-            this.formPopover.formData.ruleForm[
-              "customsExchangeRate"
-            ] = this.entrustOrder.orderExchangeRate; // 海关汇率 = 订单汇率
-          } else if (this.head == "double") {
-            // 双抬头
-            this.formPopover.formData.ruleForm[
-              "customsExchangeRate"
-            ] = this.entrustOrder.orderExchangeRate; // 海关汇率 = 订单汇率
+          this.gethgtimeExchangerate()  //海关汇率
+          if(!this.entrustOrder.currencyExchangeRate){
+              let data = this.signDate.slice(0, 10);
+              let currency = this.utools.gecongfig(
+                this.entrustOrderKey,
+                "currency",
+                this.currency
+              );
+              this.entrustOrder.currencyExchangeRate = await this.getexchangeratetodata(
+                data,
+                currency
+              );
           }
           this.formPopover.formData.ruleForm["buyerExchangeRate"] =
             Math.round(
-              (this.orderExchangeRate / this.currencyExchangeRate) * 10000
-            ) / 10000; // 货款汇率 = 订单汇率 / 买方汇率
+              (this.orderExchangeRate / this.entrustOrder.currencyExchangeRate) * 1000000
+            ) / 1000000; // 货款汇率 = 订单汇率 / 买方汇率
           if (this.entrustOrderType == "1") {
             this.formPopover.formData.ruleForm["vatTaxRate"] = "1"; // 进口增值税税率  默认13%
             this.formPopover.formData.ruleForm = {
@@ -2390,39 +2391,19 @@ export default {
     //  规格型号 带出
     onArrivalGoodsModel(rowData) {
       // this.formPopover.formData.ruleForm["arrivalGoodsModel"] = rowData["specificationType"]; //来货规格型号
-      this.formPopover.formData.ruleForm["orderModel"] =
-        rowData["materielCode"]; //来货编码
-      this.formPopover.formData.ruleForm["arrivalGoodsName"] =
-        rowData["tradeName"]; //来货名称
+      this.formPopover.formData.ruleForm["orderModel"] = rowData["materielCode"]; //来货编码
+      this.formPopover.formData.ruleForm["arrivalGoodsName"] = rowData["tradeName"]; //来货名称
       this.formPopover.formData.ruleForm["goodsCode"] = rowData["materielCode"]; //商品编码
       this.formPopover.formData.ruleForm["goodsName"] = rowData["tradeName"]; //商品名称
-      this.formPopover.formData.ruleForm["sellerUnit"] =
-        rowData["measurementUnit"]; //成交单位编码
-      this.formPopover.formData.ruleForm["sellerUnitName"] =
-        rowData["measurementUnitName"]; //成交单位
-      this.formPopover.formData.ruleForm["arrivalGoodsCode"] =
-        rowData["materielCode"];
-        this.formPopover.formData.ruleForm["taxNo"] = rowData["taxNo"]; // 税号
-            this.formPopover.formData.ruleForm["attachNo"] = rowData["attachNo"]; // 附号
-            this.formPopover.formData.ruleForm["customTaxRate"] = rowData["customsRate"]; // 关税税率
-            this.formPopover.formData.ruleForm["increaseTaxRate"] = rowData["levyRate"]// 关税加征
-              this.formPopover.formData.ruleForm["superviseMode"] = rowData["superCondition"] // 监管条件
-              this.formPopover.formData.ruleForm["superviseModeName"] = rowData["superConditionName"] //监管条件
-      // api.getMaterielCustomAll().then(res => {
-      //   res.data.list.forEach(element => {
-      //     if (element.materielCode == rowData["materielCode"]) {
-      //       this.formPopover.formData.ruleForm["taxNo"] = element.taxNo; // 税号
-      //       this.formPopover.formData.ruleForm["attachNo"] = element.attachNo; // 附号
-      //       this.formPopover.formData.ruleForm["customTaxRate"] =
-      //         element.customsRate; // 关税税率
-      //       this.formPopover.formData.ruleForm["increaseTaxRate"] =
-      //         element.levyRate; // 关税加征
-      //         // 监管条件
-      //         this.formPopover.formData.ruleForm["superviseMode"] = superCondition
-      //         this.formPopover.formData.ruleForm["superviseModeName"] = {...this.formPopover.formData.ruleForm, ['superviseModeName']: superConditionName}
-      //     }
-      //   });
-      // });
+      this.formPopover.formData.ruleForm["sellerUnit"] = rowData["measurementUnit"]; //成交单位编码
+      this.formPopover.formData.ruleForm["sellerUnitName"] = rowData["measurementUnitName"]; //成交单位
+      this.formPopover.formData.ruleForm["arrivalGoodsCode"] = rowData["materielCode"];
+      this.formPopover.formData.ruleForm["taxNo"] = rowData["taxNo"]; // 税号
+      this.formPopover.formData.ruleForm["attachNo"] = rowData["attachNo"]; // 附号
+      this.formPopover.formData.ruleForm["customTaxRate"] = rowData["customsRate"]; // 关税税率
+      this.formPopover.formData.ruleForm["increaseTaxRate"] = rowData["levyRate"]// 关税加征
+      this.formPopover.formData.ruleForm["superviseMode"] = rowData["superCondition"] // 监管条件
+      this.formPopover.formData.ruleForm["superviseModeName"] = rowData["superConditionName"] //监管条件
     },
     // 规格型号 清空
     toArrivalGoodsModel() {
@@ -2438,6 +2419,8 @@ export default {
       this.formPopover.formData.ruleForm["attachNo"] = ""; // 附号
       this.formPopover.formData.ruleForm["customTaxRate"] = ""; // 关税税率
       this.formPopover.formData.ruleForm["increaseTaxRate"] = ""; // 关税加征
+      this.formPopover.formData.ruleForm["superviseMode"] = '' // 监管条件
+      this.formPopover.formData.ruleForm["superviseModeName"] = '' //监管条件
     },
     // 回调验证规则
     handlerFormVerify($refs) {
@@ -2467,7 +2450,7 @@ export default {
           var exchangerate = "";
           list.forEach(b => {
               if (currency == b.currency) {
-                exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
+                exchangerate = b.cenPrice;
               }
             });
             return exchangerate;
@@ -2476,25 +2459,33 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      // try {
-      //   const {
-      //     data: { list }
-      //   } = await api.getExchangerate({});
-      //   for (let i = 0; i < list.length; i++) {
-      //     if (data == list[i].date.slice(0, 10)) {
-      //       var exchangerate = "";
-      //       list[i].rate.forEach(b => {
-      //         if (currency == b.currency) {
-      //           exchangerate = Math.round((b.cenPrice / 100) * 10000) / 10000;
-      //         }
-      //       });
-      //       return exchangerate;
-      //     }
-      //   }
-      //   this.$message.warning("请录入系统汇率");
-      // } catch (e) {
-      //   console.log(e);
-      // }
+    },
+    // 查询商品的海关汇率
+    async gethgtimeExchangerate() {
+        let data = this.signDate.slice(0, 7);
+          let currency = this.utools.gecongfig(
+            this.entrustOrderKey,
+            "supplierCurrency",
+            this.supplierCurrency
+          );
+      try {
+        const vdata = await api.gethgtimeExchangerate(data);
+        var list = vdata.data
+        for (let i = 0; i < list.length; i++) {
+          var exchangerate = "";
+          list.forEach(b => {
+              if (currency == b.currency) {
+                exchangerate = b.cenPrice;
+              }
+            });
+          return this.formPopover.formData.ruleForm[
+              "customsExchangeRate"
+            ] = exchangerate; // 海关汇率
+        }
+        this.$message.warning("请录入系统汇率");
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   async created() {
@@ -2605,11 +2596,13 @@ export default {
     supplierCurrency: {
       async handler(newVal, oldVal) {
         if (newVal) {
+          this.$set(this.entrustOrder, "goodsValuecurrency", newVal);
+          this.$set(this.entrustOrder, "refundCustomerAmountcurrency", newVal);
+          this.$set(this.entrustOrder, "paidGoodsAmountcurrency", newVal);
           if (this.writeback) return;
           // 订单汇率 = 卖方汇率
           if (!this.signDate) return;
           let data = this.signDate.slice(0, 10);
-          debugger
           let currency = this.utools.gecongfig(
             this.entrustOrderKey,
             "supplierCurrency",
@@ -2619,16 +2612,11 @@ export default {
             data,
             currency
           );
-          //
-          this.$set(this.entrustOrder, "goodsValuecurrency", newVal);
-          this.$set(this.entrustOrder, "refundCustomerAmountcurrency", newVal);
-          this.$set(this.entrustOrder, "paidGoodsAmountcurrency", newVal);
         } else {
-          this.entrustOrder.orderExchangeRate = "";
-          //
           this.entrustOrder.goodsValuecurrency = "";
           this.entrustOrder.refundCustomerAmountcurrency = "";
           this.entrustOrder.paidGoodsAmountcurrency = "";
+          // this.entrustOrder.orderExchangeRate = "";
         }
       },
       deep: true
@@ -2638,20 +2626,18 @@ export default {
         if (newVal) {
           if (this.writeback) return;
           // 买方汇率
-          if (!this.signDate) return;
-          let data = this.signDate.slice(0, 10);
-          let currency = this.utools.gecongfig(
-            this.entrustOrderKey,
-            "currency",
-            this.currency
-          );
-          this.entrustOrder.currencyExchangeRate = await this.getexchangeratetodata(
-            data,
-            currency
-          );
-          //
-        } else {
-          //
+          if(this.signDate){
+            let data = this.signDate.slice(0, 10);
+            let currency = this.utools.gecongfig(
+              this.entrustOrderKey,
+              "currency",
+              this.currency
+            );
+            this.entrustOrder.currencyExchangeRate = await this.getexchangeratetodata(
+              data,
+              currency
+            );
+          }
         }
       },
       deep: true
@@ -2660,30 +2646,32 @@ export default {
       async handler(newVal, oldVal) {
         if (newVal) {
           if (this.writeback) return;
-          // 订单汇率 = 卖方汇率
-          if (!this.entrustOrder.supplierCurrency) return;
-          let data = this.signDate.slice(0, 10);
-          let currency = this.utools.gecongfig(
-            this.entrustOrderKey,
-            "supplierCurrency",
-            this.supplierCurrency
-          );
-          this.entrustOrder.orderExchangeRate = await this.getexchangeratetodata(
-            data,
-            currency
-          );
           // 买方汇率
-          if (!this.entrustOrder.currency) return;
-          let data1 = this.signDate.slice(0, 10);
-          let currency1 = this.utools.gecongfig(
-            this.entrustOrderKey,
-            "currency",
-            this.currency
-          );
-          this.entrustOrder.currencyExchangeRate = await this.getexchangeratetodata(
-            data1,
-            currency1
-          );
+          if(this.entrustOrder.currency){
+            let data1 = this.signDate.slice(0, 10);
+            let currency1 = this.utools.gecongfig(
+              this.entrustOrderKey,
+              "currency",
+              this.currency
+            );
+            this.entrustOrder.currencyExchangeRate = await this.getexchangeratetodata(
+              data1,
+              currency1
+            );
+          }
+          // 订单汇率 = 卖方汇率
+          if(this.entrustOrder.supplierCurrency){
+            let data = this.signDate.slice(0, 10);
+            let currency = this.utools.gecongfig(
+              this.entrustOrderKey,
+              "supplierCurrency",
+              this.supplierCurrency
+            );
+            this.entrustOrder.orderExchangeRate = await this.getexchangeratetodata(
+              data,
+              currency
+            );
+          }
         }
       },
       deep: true

@@ -55,7 +55,6 @@ export default [
     key: 'levyRate',
     name: '加征税率(%)',
     prop: 'levyRate',
-    rules
   },
   {
     type: 'number',
@@ -70,35 +69,30 @@ export default [
     key: 'rebateRate',
     name: '出口退税率(%)',
     prop: 'rebateRate',
-    rules
   },
   {
     type: 'number',
     key: 'averagePrice',
     name: '平均价单价',
     prop: 'averagePrice',
-    rules
   },
   {
     type: 'number',
     key: 'maxPrice',
     name: '最高单价',
     prop: 'maxPrice',
-    rules
   },
   {
     type: 'number',
     key: 'minPrice',
     name: '最低单价',
     prop: 'minPrice',
-    rules
   },
   {
     type: 'number',
     key: 'totalNo',
     name: '总数量值',
     prop: 'totalNo',
-    rules
   },
   {
     type: 'string',
@@ -201,27 +195,31 @@ export default [
   },
   {
     type: 'string',
-    key: 'originCountry',
-    prop: 'originCountry',
-    name: '原产国（地区）'
+    key: 'originCountryName', // originCountry
+    prop: 'originCountryName',
+    name: '原产国（地区）',
+    btn: true
   },
   {
     type: 'string',
-    key: 'domesticDestination',
-    prop: 'domesticDestination',
-    name: '境内目的地'
+    key: 'domesticDestinationName', // domesticDestination
+    prop: 'domesticDestinationName',
+    name: '境内目的地',
+    btn: true
   },
   {
     type: 'string',
-    key: 'goodsPlace',
-    prop: 'goodsPlace',
-    name: '境内货源地'
+    key: 'goodsPlaceName', // goodsPlace
+    prop: 'goodsPlaceName',
+    name: '境内货源地',
+    btn: true
   },
   {
     type: 'string',
-    key: 'finalCountry',
-    prop: 'finalCountry',
-    name: '最终目的国'
+    key: 'finalCountryName', // finalCountry
+    prop: 'finalCountryName',
+    name: '最终目的国',
+    btn: true
   },
   {
     type: 'select',
