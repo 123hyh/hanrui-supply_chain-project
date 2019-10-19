@@ -20,15 +20,17 @@ const cdn = {
   ] */
 	css: ['./static/font_830376_qzecyukz0s.css', './static/element-ui.css'],
 	js: [
-		'./static/accounting@0.4.1.min.js',
-		'./tinymce4.7.5/tinymce.min.js',
-		'./static/axios@0.19.0.min.js',
 		'./static/vue@2.6.10.min.js',
 		'./static/vue-router@3.1.2.min.js',
 		'./static/vuex@3.1.1.min.js',
 		'./static/element-ui@2.11.1.index.js',
+		'./static/axios@0.19.0.min.js',
+
 		'./static/echarts@4.2.1.min.js',
-		'./static/echarts-liquidfill.min.js'
+		'./static/echarts-liquidfill.min.js',
+		'./static/accounting@0.4.1.min.js',
+		'./tinymce4.7.5/tinymce.min.js',
+		
 	]
 };
 let externals = {
