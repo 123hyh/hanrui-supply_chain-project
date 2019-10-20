@@ -18,9 +18,21 @@ const cdn = {
     './echarts-liquidfill/echarts-liquidfill.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.5/tinymce.min.js'
   ] */
-	css: ['./static/font_830376_qzecyukz0s.css', './static/element-ui.css'],
+	css: ['./static/font_830376_qzecyukz0s.css', /* './static/element-ui.css' */ 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'],
 	js: [
-		'./static/vue@2.6.10.min.js',
+		/* 2.2 */
+		'https://cdn.jsdelivr.net/npm/vue',
+		'https://unpkg.com/vue-router/dist/vue-router.js',
+		'https://cdn.jsdelivr.net/npm/vuex',
+		'https://unpkg.com/element-ui@2.12.0/lib/index.js',
+		'https://unpkg.com/axios/dist/axios.min.js',
+		'https://unpkg.com/echarts@4.4.0/index.js',
+		'./static/echarts-liquidfill.min.js',
+		'https://unpkg.com/accounting@0.4.1/accounting.min.js',
+		'https://unpkg.com/tinymce@5.1.0/tinymce.min.js'
+
+		/* 1.1 */
+		/* './static/vue@2.6.10.min.js',
 		'./static/vue-router@3.1.2.min.js',
 		'./static/vuex@3.1.1.min.js',
 		'./static/element-ui@2.11.1.index.js',
@@ -29,7 +41,7 @@ const cdn = {
 		'./static/echarts@4.2.1.min.js',
 		'./static/echarts-liquidfill.min.js',
 		'./static/accounting@0.4.1.min.js',
-		'./tinymce4.7.5/tinymce.min.js',
+		'./tinymce4.7.5/tinymce.min.js', */
 		
 	]
 };
