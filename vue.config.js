@@ -1,5 +1,5 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const isProd = process.env.NODE_ENV == 'production';
 const HappyPack = require('happypack');
 const path = require('path');
@@ -116,18 +116,18 @@ module.exports = {
 			config.plugins
 				.push
 				//生产环境自动删除console
-				/*    new UglifyJsPlugin({
+				
+				(   new UglifyJsPlugin({
           uglifyOptions: {
             compress: {
-              warnings: false,
+              // warnings: false,
               drop_debugger: true,
-              drop_console: true,
+              // drop_console: true,
             },
           },
           sourceMap: false,
           parallel: true,
-        }) */
-				();
+        }));
 		} else {
 			config.plugins.push(
 				new HappyPack({

@@ -22,13 +22,21 @@
 		<% } %>
 		<!-- 使用CDN的JS文件 -->
 		<% for (var i in htmlWebpackPlugin.options.cdn &&
-		htmlWebpackPlugin.options.cdn.js) { %>
+		htmlWebpackPlugin.options.cdn.js) {
+			if(i<5){ %>
 		<link
 			href="<%= htmlWebpackPlugin.options.cdn.js[i] %>"
 			rel="preload"
 			as="script"
 		/>
-		<% } %>
+		<% }else{
+			%> <link
+			href="<%= htmlWebpackPlugin.options.cdn.js[i] %>"
+			async
+			as="script"
+		/><% 
+		}
+	} %>
 
 		<title></title>
 	</head>
