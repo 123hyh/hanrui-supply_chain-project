@@ -4,35 +4,11 @@ const isProd = process.env.NODE_ENV == 'production';
 const HappyPack = require('happypack');
 const path = require('path');
 const cdn = {
-	/*  css: [
-    'http://at.alicdn.com/t/font_830376_qzecyukz0s.css',
-    'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-  ],
-  js: [
-    'https://unpkg.com/axios/dist/axios.min.js',
-    'https://unpkg.com/vue@2.6.10/dist/vue.min.js',
-    'https://unpkg.com/vue-router@3.1.2/dist/vue-router.min.js',
-    'https://unpkg.com/vuex@3.1.1/dist/vuex.min.js',
-    'https://unpkg.com/element-ui/lib/index.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js',
-    './echarts-liquidfill/echarts-liquidfill.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.5/tinymce.min.js'
-  ] */
-	css: ['./static/font_830376_qzecyukz0s.css', /* './static/element-ui.css' */ 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'],
+	css: ['./static/font_830376_qzecyukz0s.css',  './static/element-ui.css'  ],
 	js: [
-		/* 2.2 */
-		'https://cdn.jsdelivr.net/npm/vue',
-		'https://unpkg.com/vue-router/dist/vue-router.js',
-		'https://cdn.jsdelivr.net/npm/vuex',
-		'https://unpkg.com/element-ui@2.12.0/lib/index.js',
-		'https://unpkg.com/axios/dist/axios.min.js',
-		'https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js',
-		'./static/echarts-liquidfill.min.js',
-		'https://unpkg.com/accounting@0.4.1/accounting.min.js',
-		'https://unpkg.com/tinymce@5.1.0/tinymce.min.js'
-
+	
 		/* 1.1 */
-		/* './static/vue@2.6.10.min.js',
+		'./static/vue@2.6.10.min.js',
 		'./static/vue-router@3.1.2.min.js',
 		'./static/vuex@3.1.1.min.js',
 		'./static/element-ui@2.11.1.index.js',
@@ -41,7 +17,7 @@ const cdn = {
 		'./static/echarts@4.2.1.min.js',
 		'./static/echarts-liquidfill.min.js',
 		'./static/accounting@0.4.1.min.js',
-		'./tinymce4.7.5/tinymce.min.js', */
+		'./tinymce4.7.5/tinymce.min.js',
 		
 	]
 };
@@ -177,6 +153,4 @@ module.exports = {
 			// config.module.rule('js').use('happypack/loader?id=js')
 		}
 	}
-	// 为生产构建中的babel&ts使用线程加载器
-	// parallel:  require('os').cpus().length > 1
 };
