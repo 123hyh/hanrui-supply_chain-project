@@ -26,7 +26,7 @@ const cdn = {
 		'https://cdn.jsdelivr.net/npm/vuex',
 		'https://unpkg.com/element-ui@2.12.0/lib/index.js',
 		'https://unpkg.com/axios/dist/axios.min.js',
-		'https://unpkg.com/browse/echarts@4.4.0/dist/echarts.min.js',
+		'https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.min.js',
 		'./static/echarts-liquidfill.min.js',
 		'https://unpkg.com/accounting@0.4.1/accounting.min.js',
 		'https://unpkg.com/tinymce@5.1.0/tinymce.min.js'
