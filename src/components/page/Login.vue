@@ -160,6 +160,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
+          delete service.defaults.headers.common['x-auth-token']
           try {
             const { data, token } = await api.goLogin(
               qs.stringify({
